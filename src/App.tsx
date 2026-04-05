@@ -247,7 +247,7 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               onError={onProfileError}
-              className="block h-full w-full rounded-[calc(2rem-3px)] object-cover object-center bg-surface-container-low"
+              className="block h-full w-full rounded-[calc(2rem-3px)] object-cover object-[center_32%] bg-surface-container-low"
             />
           </div>
         </motion.div>
