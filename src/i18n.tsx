@@ -23,7 +23,7 @@ const en = {
     strengths: 'Strengths',
     projects: 'Projects',
     metrics: 'Metrics',
-    timeline: 'Timeline',
+    timeline: 'Career & education',
   },
   hero: {
     roleLine1: 'Officer for Training Organization and Examination Management',
@@ -45,7 +45,7 @@ const en = {
     timeOpt: 'Time Optimization',
   },
   about: {
-    kicker: 'Core competencies',
+    kicker: 'About me',
     title:
       'Connecting training, examinations, and academic data into one effective system',
     p1: 'I focus on organizing training, examinations, and academic data at FPT Education, with hands-on experience on IAPS9, CMS, LMS9, Language Hub, and Fuge. My priorities are training progress, grade accuracy, exam scheduling, and integrity of student records.',
@@ -70,8 +70,8 @@ const en = {
     ],
   },
   strengths: {
-    kicker: 'Competency pillars',
-    title: 'Core Competency Pillars',
+    kicker: 'Strengths',
+    title: 'Core Competencies',
     pillars: [
       {
         title: 'Systems & Data',
@@ -103,8 +103,8 @@ const en = {
     ],
   },
   workflow: {
-    kicker: 'Operational Architecture',
-    title: 'Data Workflow Ecosystem',
+    kicker: '',
+    title: 'Systems administered and operated',
     nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'QA Archive'],
   },
   projects: {
@@ -142,7 +142,8 @@ const en = {
     educationHeading: 'Academic background',
     work: [
       {
-        title: 'Concurrent Training & Examination Management Officer',
+        title:
+          'Concurrent Officer for Training, Examination & IT Support',
         organization: 'FPT PolySchool Hue',
         period: 'Apr 2024 – Present',
         bullets: [
@@ -151,6 +152,7 @@ const en = {
           'Records, academic results, and grade distribution analysis.',
           'Learning systems: IAPS9, LMS9, CMS, Language Hub, Udemy, EOS, FLM.',
           'Academic affairs, graduation review, and student services across cohorts.',
+          'Supporting resolution of issues related to software and hardware.',
         ],
       },
       {
@@ -299,7 +301,7 @@ const vi: typeof en = {
     strengths: 'Thế mạnh',
     projects: 'Dự án',
     metrics: 'Số liệu',
-    timeline: 'Lộ trình',
+    timeline: 'Quá trình công tác và Học vấn',
   },
   hero: {
     roleLine1: 'Cán bộ Tổ chức và Quản lí Đào tạo, Khảo thí.',
@@ -321,7 +323,7 @@ const vi: typeof en = {
     timeOpt: 'Tối ưu thời gian',
   },
   about: {
-    kicker: 'Năng lực cốt lõi',
+    kicker: 'Giới thiệu ngắn về bản thân tôi',
     title:
       'Kết nối vận hành đào tạo, khảo thí và dữ liệu học vụ thành hệ thống hiệu quả',
     p1: 'Tôi chuyên sâu trong công tác tổ chức đào tạo, khảo thí và quản lý dữ liệu học vụ tại FPT Education, với kinh nghiệm thực tế trên IAPS9, CMS, LMS9, Language Hub và Fuge. Trọng tâm công việc là đảm bảo tiến độ đào tạo, độ chính xác điểm số, lịch thi và tính toàn vẹn của hồ sơ sinh viên.',
@@ -346,8 +348,8 @@ const vi: typeof en = {
     ],
   },
   strengths: {
-    kicker: 'Trụ cột năng lực',
-    title: 'Các trụ cột năng lực cốt lõi',
+    kicker: 'Thế mạnh',
+    title: 'Các năng lực cốt lõi',
     pillars: [
       {
         title: 'Hệ thống & dữ liệu',
@@ -379,8 +381,8 @@ const vi: typeof en = {
     ],
   },
   workflow: {
-    kicker: 'Kiến trúc vận hành',
-    title: 'Hệ sinh thái luồng dữ liệu',
+    kicker: '',
+    title: 'Các hệ thống đã quản trị và xử lí',
     nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'Lưu trữ QA'],
   },
   projects: {
@@ -418,7 +420,7 @@ const vi: typeof en = {
     educationHeading: 'Quá trình học tập',
     work: [
       {
-        title: 'Kiêm nhiệm Cán bộ TC & QL Đào tạo và Khảo thí',
+        title: 'Kiêm nhiệm Cán bộ TC & QL Đào tạo/Khảo thí/CB IT',
         organization: 'FPT PolySchool Huế',
         period: '01/4/2024 – hiện tại',
         bullets: [
@@ -426,7 +428,8 @@ const vi: typeof en = {
           'Tổ chức các hoạt động thi, bảo vệ, đánh giá kiểm tra hằng kỳ theo đúng quy chế đào tạo;',
           'Quản lí hồ sơ, kết quả học tập, phân tích Phổ điểm;',
           'Vận hành, quản lí các hệ thống học tập IAPS9, LMS9, CMS, Language Hub, Udemy, EOS, FLM;',
-          'Công tác Giáo vụ, xét tốt nghiệp, xử lí các dịch vụ cho Sinh viên các khóa.',
+          'Công tác Giáo vụ, xét tốt nghiệp, xử lí các dịch vụ cho Sinh viên các khóa;',
+          'Hỗ trợ xử lí các vấn đề liên quan đến phần mềm, phần cứng.',
         ],
       },
       {

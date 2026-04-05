@@ -327,7 +327,7 @@ const About = () => {
     <section className="py-24 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16">
         <div className="md:col-span-5">
-          <h2 className="text-xs font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
+          <h2 className="text-sm font-extrabold text-secondary tracking-tight mb-4 normal-case">
             {t.about.kicker}
           </h2>
           <h3 className="text-4xl font-bold text-on-surface mb-6 leading-tight">
@@ -436,9 +436,11 @@ const Workflow = () => {
     <section className="py-24 px-6 bg-surface-container-low overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16">
-          <h2 className="text-xs font-extrabold text-primary tracking-[0.2em] uppercase mb-4">
-            {t.workflow.kicker}
-          </h2>
+          {t.workflow.kicker ? (
+            <h2 className="text-xs font-extrabold text-primary tracking-[0.2em] uppercase mb-4">
+              {t.workflow.kicker}
+            </h2>
+          ) : null}
           <h3 className="text-4xl font-bold text-on-surface">{t.workflow.title}</h3>
         </div>
         <div className="relative flex flex-wrap justify-between items-center gap-8">
