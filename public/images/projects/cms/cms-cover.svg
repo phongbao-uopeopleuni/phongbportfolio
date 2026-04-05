@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="CMS Progress Monitoring  placeholder">
+  <rect width="1200" height="675" fill="#0f172a"/>
+  <rect x="80" y="100" width="1040" height="475" rx="16" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <circle cx="600" cy="320" r="8" fill="#22c55e"/>
+  <text x="600" y="400" text-anchor="middle" fill="#94a3b8" font-family="system-ui,sans-serif" font-size="28">CMS Progress Monitoring</text>
+  <text x="600" y="445" text-anchor="middle" fill="#64748b" font-family="system-ui,sans-serif" font-size="18">Thay b±ng £nh JPG/PNG trong public/images/projects/</text>
+</svg>

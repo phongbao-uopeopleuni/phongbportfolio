@@ -111,7 +111,6 @@ const en = {
     kicker: 'Featured projects',
     title: 'Case Studies & Solutions',
     github: 'GitHub Repositories',
-    painPoint: 'Pain Point',
     impact: 'Impact',
     list: [
       {
@@ -120,19 +119,19 @@ const en = {
         description:
           'Real-time tracking of student progress across CMS platforms, reducing manual reporting time by 60%.',
         tags: ['Python', 'CMS API', 'Automation'],
-        painPoint: 'Lagging student reports',
         impact: 'Live sync dashboard',
-        image: '/images/projects/cms-monitoring.svg',
+        image:
+          '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
-        title: 'Grade Upload Validation',
-        category: 'Quality Control',
+        title: 'Schedule builder tool',
+        category: 'Scheduling',
         description:
-          'Automated cross-check system for graduation eligibility K20, ensuring zero errors in final certification.',
-        tags: ['Excel VBA', 'Data Integrity', 'Audit'],
-        painPoint: 'Manual grade errors',
-        impact: '99.9% Accuracy rate',
-        image: '/images/projects/grade-validation.svg',
+          'Detects conflicts across shifts, class periods, and instructor assignments before publishing timetables.',
+        tags: ['Excel', 'Conflict checks', 'Timetabling'],
+        impact: 'Automatic clash detection',
+        image:
+          '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
     ],
   },
@@ -282,6 +281,10 @@ const en = {
         href: 'https://github.com/phongbao-uopeopleuni',
       },
       { label: 'LinkedIn', href: '#' },
+      {
+        label: 'Facebook',
+        href: 'https://www.facebook.com/pbao280/',
+      },
     ],
     personalTitle: 'Personal information',
     phone: '077 575 3003',
@@ -384,7 +387,6 @@ const vi: typeof en = {
     kicker: 'Dự án nổi bật',
     title: 'Case study & giải pháp',
     github: 'Kho mã GitHub',
-    painPoint: 'Điểm nghẽn',
     impact: 'Tác động',
     list: [
       {
@@ -393,19 +395,19 @@ const vi: typeof en = {
         description:
           'Theo dõi tiến độ sinh viên trên CMS theo thời gian thực, giảm ~60% thời gian báo cáo thủ công.',
         tags: ['Python', 'API CMS', 'Tự động hóa'],
-        painPoint: 'Báo cáo sinh viên chậm',
         impact: 'Dashboard đồng bộ trực tiếp',
-        image: '/images/projects/cms-monitoring.svg',
+        image:
+          '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
-        title: 'Kiểm tra upload điểm',
-        category: 'Kiểm soát chất lượng',
+        title: 'Tool làm thời khóa biểu',
+        category: 'Lập lịch',
         description:
-          'Hệ thống đối chiếu tự động điều kiện tốt nghiệp K20, hạn chế sai sót khi cấp chứng nhận.',
-        tags: ['Excel VBA', 'Toàn vẹn dữ liệu', 'Kiểm toán'],
-        painPoint: 'Sai sót nhập điểm thủ công',
-        impact: 'Độ chính xác 99,9%',
-        image: '/images/projects/grade-validation.svg',
+          'Có thể check được nếu trùng ca, trùng tiết, trùng giảng viên.',
+        tags: ['Excel', 'Thời khóa biểu', 'Kiểm tra xung đột'],
+        impact: 'Phát hiện trùng lịch trước khi ban hành',
+        image:
+          '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
     ],
   },
@@ -556,6 +558,10 @@ const vi: typeof en = {
         href: 'https://github.com/phongbao-uopeopleuni',
       },
       { label: 'LinkedIn', href: '#' },
+      {
+        label: 'Facebook',
+        href: 'https://www.facebook.com/pbao280/',
+      },
     ],
     personalTitle: 'Thông tin cá nhân',
     phone: '077 575 3003',

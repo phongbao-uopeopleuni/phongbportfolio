@@ -32,7 +32,13 @@ import { useState, useEffect, useCallback } from 'react';
 import { I18nProvider, useI18n } from './i18n';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
-const HERO_PROFILE_PUBLIC = '/images/hero/profile.jpg';
+/** Paths under `public/` — must include Vite `base` (e.g. /phongbportfolio/) for GitHub Pages. */
+function publicUrl(path: string): string {
+  const clean = path.startsWith('/') ? path.slice(1) : path;
+  return `${import.meta.env.BASE_URL}${clean}`;
+}
+
+const heroProfileFallback = publicUrl('/images/hero/profile.jpg');
 
 // --- Components ---
 
@@ -139,7 +145,7 @@ const Hero = () => {
   const [profileSrc, setProfileSrc] = useState(heroProfileBundled);
   const onProfileError = useCallback(() => {
     setProfileSrc((current) =>
-      current === HERO_PROFILE_PUBLIC ? current : HERO_PROFILE_PUBLIC,
+      current === heroProfileFallback ? current : heroProfileFallback,
     );
   }, []);
 
@@ -488,7 +494,7 @@ const Projects = () => {
             >
               <div className="aspect-video relative overflow-hidden">
                 <img
-                  src={project.image}
+                  src={publicUrl(project.image)}
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -514,19 +520,11 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <div className="grid grid-cols-2 gap-4 border-t border-outline-variant/10 pt-6">
-                  <div>
-                    <p className="text-[10px] font-bold text-secondary uppercase">
-                      {t.projects.painPoint}
-                    </p>
-                    <p className="text-xs font-medium">{project.painPoint}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-bold text-tertiary uppercase">
-                      {t.projects.impact}
-                    </p>
-                    <p className="text-xs font-medium">{project.impact}</p>
-                  </div>
+                <div className="border-t border-outline-variant/10 pt-6">
+                  <p className="text-[10px] font-bold text-tertiary uppercase">
+                    {t.projects.impact}
+                  </p>
+                  <p className="text-xs font-medium">{project.impact}</p>
                 </div>
               </div>
             </motion.div>
@@ -544,7 +542,7 @@ const Timeline = () => {
     <section id="timeline" className="py-24 px-6 bg-surface-container-low">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-14">
-          <h2 className="text-xs font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
+          <h2 className="text-sm md:text-base font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
             {t.timeline.kicker}
           </h2>
           <h3 className="text-4xl font-bold text-on-surface">{t.timeline.title}</h3>
