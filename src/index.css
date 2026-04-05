@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-manrope: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #004e8a;
+  --color-primary-container: #0066b2;
+  --color-secondary: #a04100;
+  --color-secondary-container: #fd7629;
+  --color-tertiary: #005921;
+  --color-surface: #f8f9fa;
+  --color-surface-container-low: #f3f4f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #191c1d;
+  --color-on-surface-variant: #414751;
+  --color-outline-variant: #c1c7d3;
+}
+
+@layer base {
+  /* One step up from browser default (16px -> 18px) for readability */
+  html {
+    font-size: 112.5%;
+  }
+
+  body {
+    @apply font-inter bg-surface text-on-surface-variant antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-manrope text-on-surface;
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #004e8a 0%, #fd7629 50%, #005921 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-nav {
+  @apply bg-white/80 backdrop-blur-md sticky top-0 z-50 h-20 shadow-[0_10px_40px_rgba(0,78,138,0.06)];
+}

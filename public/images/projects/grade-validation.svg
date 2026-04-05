@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Grade Upload Validation  placeholder">
+  <rect width="1200" height="675" fill="#1e1b4b"/>
+  <rect x="80" y="100" width="1040" height="475" rx="16" fill="#312e81" stroke="#4c1d95" stroke-width="2"/>
+  <path d="M420 340l80 80 200-200" fill="none" stroke="#a78bfa" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="420" text-anchor="middle" fill="#c4b5fd" font-family="system-ui,sans-serif" font-size="28">Grade Upload Validation</text>
+  <text x="600" y="465" text-anchor="middle" fill="#8b5cf6" font-family="system-ui,sans-serif" font-size="18">Thay b±ng £nh JPG/PNG trong public/images/projects/</text>
+</svg>
