@@ -5,7 +5,10 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  const githubPages = process.env.GITHUB_PAGES === 'true';
   return {
+    // GitHub project page: https://phongbao-uopeopleuni.github.io/phongbportfolio/
+    base: githubPages ? '/phongbportfolio/' : '/',
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
