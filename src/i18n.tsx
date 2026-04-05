@@ -19,7 +19,7 @@ export const defaultLocale: Locale = 'vi';
 
 const en = {
   nav: {
-    brand: 'Academic Architect',
+    brand: 'Portfolio',
     strengths: 'Strengths',
     projects: 'Projects',
     metrics: 'Metrics',
@@ -45,36 +45,36 @@ const en = {
     timeOpt: 'Time Optimization',
   },
   about: {
-    kicker: 'About me',
+    kicker: 'A short introduction about me',
     title:
-      'Connecting training, examinations, and academic data into one effective system',
-    p1: 'I focus on organizing training, examinations, and academic data at FPT Education, with hands-on experience on IAPS9, CMS, LMS9, Language Hub, and Fuge. My priorities are training progress, grade accuracy, exam scheduling, and integrity of student records.',
-    p2: 'Alongside operations, I build tools with Excel, Python, and AI-assisted logic to standardize graduation data, monitor CMS progress, optimize grade entry, and reduce manual work across training and examination workflows.',
+      'Connecting training operations, examinations, and academic data into an efficient system',
+    p1: 'I specialize in organizing training, examinations, and academic data management at FPT Education, with hands-on experience on IAPS9, CMS, LMS9, Language Hub, and Fuge. My focus is ensuring training progress, grade accuracy, exam schedules, and the integrity of student records.',
+    p2: 'Alongside day-to-day operations, I develop support tools with Excel, Python, and AI-assisted logic to standardize graduation data, monitor CMS progress, optimize grade entry, and reduce manual work across training and examination workflows.',
     cards: [
       {
         title: 'Examination operations',
-        desc: 'Exam schedules, records, grade distributions, and accurate archival of examination data.',
+        desc: 'Managing exam schedules, records, grade distributions, and accurate archival workflows for examination data.',
       },
       {
         title: 'Data standardization',
-        desc: 'Graduation data, Fuge grade entry, and validation of student data.',
+        desc: 'Graduation data processing, Fuge grade entry, and validation of student data accuracy.',
       },
       {
         title: 'System integration',
-        desc: 'Connected workflows across CMS, LMS9, Language Hub, Fuge, and IAPS9.',
+        desc: 'End-to-end workflows connecting CMS, LMS9, Language Hub, Fuge, and IAPS9.',
       },
       {
         title: 'Process automation',
-        desc: 'CMS check tools, large-scale Excel, and Python scripts for academic operations.',
+        desc: 'CMS check tools, large-scale Excel processing, and Python scripts supporting academic operations.',
       },
     ],
   },
   strengths: {
     kicker: 'Strengths',
-    title: 'Core Competencies',
+    title: 'Core competencies',
     pillars: [
       {
-        title: 'Systems & Data',
+        title: 'Systems & data',
         items: [
           'IAPS9, LMS9, CMS & Language Hub',
           'Fuge integration & grade pipelines',
@@ -83,7 +83,7 @@ const en = {
         ],
       },
       {
-        title: 'Education Operations',
+        title: 'Education operations',
         items: [
           'Training & exam schedules',
           'Exam coordination',
@@ -92,11 +92,11 @@ const en = {
         ],
       },
       {
-        title: 'Growth & Innovation',
+        title: 'Growth & innovation',
         items: [
-          'AI-assisted tooling',
-          'Automation & Python scripts',
-          'Pedagogical methods',
+          'AI-assisted tools',
+          'Automation & Python',
+          'Pedagogical practice',
           'Continuous learning',
         ],
       },
@@ -104,46 +104,46 @@ const en = {
   },
   workflow: {
     kicker: '',
-    title: 'Systems administered and operated',
+    title: 'Systems administered and managed',
     nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'QA Archive'],
   },
   projects: {
     kicker: 'Featured projects',
-    title: 'Case Studies & Solutions',
-    github: 'GitHub Repositories',
+    title: 'Case studies & solutions',
+    github: 'GitHub repositories',
     impact: 'Impact',
     list: [
       {
-        title: 'CMS Progress Monitoring',
-        category: 'Efficiency Tool',
+        title: 'CMS progress monitoring',
+        category: 'Efficiency tool',
         description:
-          'Real-time tracking of student progress across CMS platforms, reducing manual reporting time by 60%.',
+          'Real-time monitoring of student progress on CMS, reducing manual reporting time by ~60%.',
         tags: ['Python', 'CMS API', 'Automation'],
-        impact: 'Live sync dashboard',
+        impact: 'Live synchronized dashboard',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
-        title: 'Schedule builder tool',
+        title: 'Timetable builder tool',
         category: 'Scheduling',
         description:
-          'Detects conflicts across shifts, class periods, and instructor assignments before publishing timetables.',
-        tags: ['Excel', 'Conflict checks', 'Timetabling'],
-        impact: 'Automatic clash detection',
+          'Checks for overlapping shifts, periods, and instructor assignments.',
+        tags: ['Excel', 'Timetabling', 'Conflict checks'],
+        impact: 'Detect schedule clashes before release',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
     ],
   },
   timeline: {
-    kicker: 'The Journey',
-    title: 'Career & Academic Milestones',
+    kicker: 'The journey',
+    title: 'Career & academic milestones',
     workHeading: 'Work experience',
-    educationHeading: 'Academic background',
+    educationHeading: 'Education',
     work: [
       {
         title:
-          'Concurrent Officer for Training, Examination & IT Support',
+          'Concurrent officer for training, examination & IT support',
         organization: 'FPT PolySchool Hue',
         period: 'Apr 2024 – Present',
         bullets: [
@@ -204,7 +204,8 @@ const en = {
         blocks: [
           {
             period: 'Aug 2017 – Dec 2019',
-            description: 'Associate of Applied Science, Healthcare Management',
+            description:
+              'Associate of Applied Science — Healthcare Management',
           },
           {
             period: 'Jan 2015 – Dec 2016',
@@ -217,7 +218,7 @@ const en = {
         blocks: [
           {
             period: 'Jul 2014 – Dec 2014',
-            description: 'ESL English Program',
+            description: 'ESL English program',
           },
         ],
       },
@@ -226,7 +227,7 @@ const en = {
         blocks: [
           {
             period: 'Aug 2012 – May 2014',
-            description: 'Information Technology – Software Engineering',
+            description: 'Information technology — Software engineering',
           },
         ],
       },
@@ -238,21 +239,21 @@ const en = {
       {
         year: '2024',
         items: [
-          'Successfully implemented training and student orientation project series.',
+          'Successfully delivered a series of training and student orientation projects.',
         ],
       },
       {
         year: '2023',
         items: [
-          'Outstanding Employee, PTCĐ Assurance Board (2023)',
+          'Outstanding employee, PTCĐ Assurance Board (2023)',
           'Staff with outstanding academic performance of the year',
         ],
       },
       {
         year: '2022',
         items: [
-          'Outstanding Employee, PTCĐ Assurance Board (2022)',
-          'Outstanding Instructor, AMA English Center Hue',
+          'Outstanding employee, PTCĐ Assurance Board (2022)',
+          'Outstanding instructor, AMA English Center Hue',
         ],
       },
       {
@@ -267,7 +268,7 @@ const en = {
     ],
   },
   certs: {
-    title: 'Certifications & Credentials',
+    title: 'Certificates & credentials',
     items: [
       { label: 'TOEIC 700', sub: 'Business English' },
       { label: 'Pedagogy', sub: 'Training Professionalism' },
