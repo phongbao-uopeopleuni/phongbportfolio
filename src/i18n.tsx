@@ -271,7 +271,7 @@ const en = {
     title: 'Certificates & credentials',
     items: [
       { label: 'TOEIC 700', sub: 'Business English' },
-      { label: 'Pedagogy', sub: 'Training Professionalism' },
+      { label: 'Pedagogical training (Vocational–College)', sub: 'Training Professionalism' },
       { label: 'Excel Specialist', sub: 'Advanced Data Management' },
       { label: 'IT Fundamentals', sub: 'Systems Administration' },
     ],
@@ -549,8 +549,8 @@ const vi: typeof en = {
     title: 'Chứng chỉ & thành tích',
     items: [
       { label: 'TOEIC 700', sub: 'Tiếng Anh thương mại' },
-      { label: 'Sư phạm', sub: 'Năng lực đào tạo' },
-      { label: 'Chuyên gia Excel', sub: 'Quản lý dữ liệu nâng cao' },
+      { label: 'NVSP Trung cấp - Cao đẳng', sub: 'Năng lực đào tạo' },
+      { label: 'Thành thạo Excel', sub: 'Quản lý dữ liệu nâng cao' },
       { label: 'Nền tảng CNTT', sub: 'Quản trị hệ thống' },
     ],
   },
