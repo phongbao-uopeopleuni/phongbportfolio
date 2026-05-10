@@ -38,7 +38,9 @@ function publicUrl(path: string): string {
   return `${import.meta.env.BASE_URL}${clean}`;
 }
 
-const heroProfileFallback = publicUrl('/images/hero/profile.jpg');
+const heroProfileFallback = publicUrl(
+  `/images/hero/${encodeURIComponent('pic 1.jpg')}`,
+);
 
 // --- Components ---
 
