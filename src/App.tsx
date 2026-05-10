@@ -512,6 +512,18 @@ const Projects = () => {
                 <p className="text-sm text-on-surface-variant mb-6">
                   {project.description}
                 </p>
+                {'gallery' in project && project.gallery?.length ? (
+                  <div className="flex gap-3 mb-6 overflow-x-auto pb-1">
+                    {project.gallery.map((src, g) => (
+                      <img
+                        key={g}
+                        src={publicUrl(src)}
+                        alt=""
+                        className="h-24 w-auto max-w-[45%] shrink-0 rounded-xl object-cover border border-outline-variant/15"
+                      />
+                    ))}
+                  </div>
+                ) : null}
                 <div className="flex flex-wrap gap-2 mb-8">
                   {project.tags.map((tag, j) => (
                     <span
@@ -522,6 +534,17 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
+                {'videoUrl' in project && project.videoUrl ? (
+                  <a
+                    href={project.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline mb-8"
+                  >
+                    {t.projects.watchVideo}
+                    <ChevronRight size={16} className="shrink-0" />
+                  </a>
+                ) : null}
                 <div className="border-t border-outline-variant/10 pt-6">
                   <p className="text-[10px] font-bold text-tertiary uppercase">
                     {t.projects.impact}

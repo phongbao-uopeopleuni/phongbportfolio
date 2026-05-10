@@ -112,6 +112,7 @@ const en = {
     title: 'Case studies & solutions',
     github: 'GitHub repositories',
     impact: 'Impact',
+    watchVideo: 'Watch demo video',
     list: [
       {
         title: 'CMS progress monitoring',
@@ -132,6 +133,21 @@ const en = {
         impact: 'Detect schedule clashes before release',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
+      },
+      {
+        title: 'Timetable tool demo',
+        category: 'Video & screenshots',
+        description:
+          'Video walkthrough and screenshots illustrating conflict checks for shifts, periods, and instructors.',
+        tags: ['YouTube', 'Excel', 'Timetabling'],
+        impact: 'Makes the solution tangible for training teams',
+        image:
+          '/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg',
+        gallery: [
+          '/images/projects/tkb/z7810883920207_da66c312fea21a5118dd3d4b50dcde06.jpg',
+          '/images/projects/tkb/z7810881404285_f179659f2b70a07a5585e29ddb0ef59e.jpg',
+        ],
+        videoUrl: 'https://youtu.be/zRkD5tdxXh4',
       },
     ],
   },
@@ -236,6 +252,12 @@ const en = {
   achievements: {
     title: 'Achievements',
     groups: [
+      {
+        year: '2025',
+        items: [
+          'Department Award for Excellence in Operational Completion',
+        ],
+      },
       {
         year: '2024',
         items: [
@@ -391,6 +413,7 @@ const vi: typeof en = {
     title: 'Case study & giải pháp',
     github: 'Kho mã GitHub',
     impact: 'Tác động',
+    watchVideo: 'Xem video demo',
     list: [
       {
         title: 'Giám sát tiến độ CMS',
@@ -411,6 +434,21 @@ const vi: typeof en = {
         impact: 'Phát hiện trùng lịch trước khi ban hành',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
+      },
+      {
+        title: 'Demo tool thời khóa biểu',
+        category: 'Video & hình ảnh',
+        description:
+          'Video walkthrough và ảnh minh họa quy trình kiểm tra xung đột ca, tiết, giảng viên trên công cụ TKB.',
+        tags: ['YouTube', 'Excel', 'TKB'],
+        impact: 'Trực quan hóa giải pháp cho đội ngũ đào tạo',
+        image:
+          '/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg',
+        gallery: [
+          '/images/projects/tkb/z7810883920207_da66c312fea21a5118dd3d4b50dcde06.jpg',
+          '/images/projects/tkb/z7810881404285_f179659f2b70a07a5585e29ddb0ef59e.jpg',
+        ],
+        videoUrl: 'https://youtu.be/zRkD5tdxXh4',
       },
     ],
   },
@@ -514,6 +552,12 @@ const vi: typeof en = {
   achievements: {
     title: 'Thành tích đạt được',
     groups: [
+      {
+        year: '2025',
+        items: [
+          'Đạt giải Bộ phận hoàn thành xuất sắc vận hành',
+        ],
+      },
       {
         year: '2024',
         items: [
