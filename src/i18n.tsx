@@ -20,14 +20,23 @@ export const defaultLocale: Locale = 'vi';
 const en = {
   nav: {
     brand: 'Portfolio',
-    strengths: 'Strengths',
-    projects: 'Projects',
+    about: 'About',
     metrics: 'Metrics',
-    timeline: 'Career & education',
+    strengths: 'Strengths',
+    workflow: 'Systems',
+    projects: 'Projects',
+    timeline: 'Journey',
+    album: 'Album',
+    achievements: 'Achievements',
+    certs: 'Certificates',
+    contact: 'Contact',
   },
   hero: {
     roleLine1: 'Officer for Training Organization and Examination Management',
     roleLine2: 'System Automation & Data Integrity Architect',
+    badgeTrainingOps: 'Training operations',
+    badgeDataIntegrity: 'Data integrity',
+    badgeAutomation: 'Automation systems',
     badgeToeic: 'TOEIC 700',
     badgePedagogy: 'Pedagogical practice (TC-CĐ)',
     badgeBs: 'Bachelor of Computer Science',
@@ -111,36 +120,47 @@ const en = {
     kicker: 'Featured projects',
     title: 'Case studies & solutions',
     github: 'GitHub repositories',
-    impact: 'Impact',
+    githubUrl: 'https://github.com/phongbao-uopeopleuni',
+    problem: 'Problem',
+    solution: 'Solution',
+    technology: 'Technology',
+    impact: 'Result / Impact',
+    screenshotSlot: 'Screenshot placeholder',
     watchVideo: 'Watch demo video',
     list: [
       {
         title: 'CMS progress monitoring',
         category: 'Efficiency tool',
-        description:
-          'Real-time monitoring of student progress on CMS, reducing manual reporting time by ~60%.',
+        problem:
+          'Manual CMS progress checks took significant time and made it easy to miss delayed learners.',
+        solution:
+          'Automated progress synchronization and dashboard views for completion status, exceptions, and follow-up.',
         tags: ['Python', 'CMS API', 'Automation'],
-        impact: 'Live synchronized dashboard',
+        impact: 'Reduced manual reporting time by ~60% with a live synchronized dashboard.',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
         title: 'Timetable builder tool',
         category: 'Scheduling',
-        description:
-          'Checks for overlapping shifts, periods, and instructor assignments.',
+        problem:
+          'Overlapping shifts, periods, and instructor assignments were difficult to catch before publishing schedules.',
+        solution:
+          'Excel-based validation rules detect conflicts early and flag rows that need review.',
         tags: ['Excel', 'Timetabling', 'Conflict checks'],
-        impact: 'Detect schedule clashes before release',
+        impact: 'Detected schedule clashes before release and reduced repeated manual checking.',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
       {
         title: 'Timetable tool demo',
         category: 'Video & screenshots',
-        description:
-          'Video walkthrough and screenshots illustrating conflict checks for shifts, periods, and instructors.',
+        problem:
+          'Training teams needed a concrete walkthrough to understand how the timetable checks work.',
+        solution:
+          'Prepared a demo video and screenshot flow showing conflict checks for shifts, periods, and instructors.',
         tags: ['YouTube', 'Excel', 'Timetabling'],
-        impact: 'Makes the solution tangible for training teams',
+        impact: 'Made the solution easier to review, present, and hand off to training teams.',
         image:
           '/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg',
         gallery: [
@@ -163,12 +183,9 @@ const en = {
         organization: 'FPT PolySchool Hue',
         period: 'Apr 2024 – Present',
         bullets: [
-          'Term-based training planning and management: teaching, faculty assignment, extracurricular activities.',
-          'Exams, defenses, and end-of-term assessments organized per training regulations.',
-          'Records, academic results, and grade distribution analysis.',
-          'Learning systems: IAPS9, LMS9, CMS, Language Hub, Udemy, EOS, FLM.',
-          'Academic affairs, graduation review, and student services across cohorts.',
-          'Supporting resolution of issues related to software and hardware.',
+          'Managed term-based training and examination operations, including faculty assignment and assessments across cohorts.',
+          'Operated IAPS9, LMS9, CMS, Language Hub, and Fuge workflows to protect grade and student-record integrity.',
+          'Built Excel/Python support tools that reduced manual reporting and grade-processing work.',
         ],
       },
       {
@@ -176,9 +193,8 @@ const en = {
         organization: 'FPT PolySchool Hue',
         period: 'Aug 2022 – Mar 2024',
         bullets: [
-          'Class advisory planning and delivery.',
-          'Tuition follow-up, coordinating departments on academics, conduct, and student integrity.',
-          'Bridging parents, students, and the school.',
+          'Planned class advisory workflows and coordinated academic, conduct, and tuition follow-up.',
+          'Connected parents, students, and departments for timely student-service resolution.',
         ],
       },
       {
@@ -186,14 +202,14 @@ const en = {
         organization: 'AMA English Center – Hue',
         period: 'Sep 2020 – May 2022',
         bullets: [
-          'English instruction.',
-          'Extracurricular activities and interpretation.',
+          'Delivered English instruction and learner support.',
+          'Supported extracurricular activities and interpretation.',
         ],
       },
       {
         title: 'Intern',
         organization: 'Granville Medical Center, North Carolina, USA',
-        period: '',
+        period: 'Period to be updated',
         bullets: [
           'Verification and data entry for medical records.',
         ],
@@ -201,7 +217,7 @@ const en = {
       {
         title: 'Volunteer',
         organization: 'Vidant Medical Center, North Carolina, USA',
-        period: '',
+        period: 'Period to be updated',
         bullets: ['Patient Services department.'],
       },
     ],
@@ -289,6 +305,20 @@ const en = {
       },
     ],
   },
+  album: {
+    kicker: 'Work moments',
+    title: 'Album — moments at work',
+    note: 'A collection of photos from training operations, examinations, and team activities. Click a photo to enlarge.',
+    empty: 'Photos are being updated.',
+    closeLabel: 'Close',
+    prevLabel: 'Previous photo',
+    nextLabel: 'Next photo',
+    photos: [
+      { src: '/images/album/work-01.jpg', caption: 'Training & examination operations' },
+      { src: '/images/album/work-02.jpg', caption: 'CMS progress monitoring' },
+      { src: '/images/album/work-03.jpg', caption: 'Timetable coordination' },
+    ],
+  },
   certs: {
     title: 'Certificates & credentials',
     items: [
@@ -298,37 +328,52 @@ const en = {
       { label: 'IT Fundamentals', sub: 'Systems Administration' },
     ],
   },
+  contact: {
+    kicker: 'Contact',
+    title: 'Let’s connect about training operations, data integrity, and automation.',
+    description:
+      'Feel free to reach out directly by email or phone — I’m happy to discuss training operations, academic data, and automation.',
+    emailLabel: 'Email',
+    email: 'baophongcmu@gmail.com',
+    phoneLabel: 'Phone',
+    phone: '077 575 3003',
+    cta: 'Connect with me',
+  },
   footer: {
-    quickLinks: 'Quick Links',
+    tagline: 'Training operations · Data integrity · Automation',
     links: [
       {
         label: 'GitHub',
         href: 'https://github.com/phongbao-uopeopleuni',
       },
-      { label: 'LinkedIn', href: '#' },
       {
         label: 'Facebook',
         href: 'https://www.facebook.com/pbao280/',
       },
     ],
-    personalTitle: 'Personal information',
-    phone: '077 575 3003',
-    email: 'baophongcmu@gmail.com',
-    facebookUrl: 'https://www.facebook.com/pbao280/',
   },
 };
 
 const vi: typeof en = {
   nav: {
     brand: 'Portfolio',
-    strengths: 'Thế mạnh',
-    projects: 'Dự án',
+    about: 'Giới thiệu',
     metrics: 'Số liệu',
-    timeline: 'Quá trình công tác và Học vấn',
+    strengths: 'Thế mạnh',
+    workflow: 'Hệ thống',
+    projects: 'Dự án',
+    timeline: 'Hành trình',
+    album: 'Album',
+    achievements: 'Thành tích',
+    certs: 'Chứng chỉ',
+    contact: 'Liên hệ',
   },
   hero: {
     roleLine1: 'Cán bộ Tổ chức và Quản lí Đào tạo, Khảo thí.',
     roleLine2: 'Tự động hóa hệ thống & đảm bảo toàn vẹn dữ liệu',
+    badgeTrainingOps: 'Vận hành đào tạo',
+    badgeDataIntegrity: 'Toàn vẹn dữ liệu',
+    badgeAutomation: 'Tự động hóa hệ thống',
     badgeToeic: 'TOEIC 700',
     badgePedagogy: 'Nghiệp vụ sư phạm TC-CĐ',
     badgeBs: 'Cử nhân Khoa học máy tính',
@@ -412,36 +457,47 @@ const vi: typeof en = {
     kicker: 'Dự án nổi bật',
     title: 'Case study & giải pháp',
     github: 'Kho mã GitHub',
-    impact: 'Tác động',
+    githubUrl: 'https://github.com/phongbao-uopeopleuni',
+    problem: 'Vấn đề',
+    solution: 'Giải pháp',
+    technology: 'Công nghệ',
+    impact: 'Kết quả / Tác động',
+    screenshotSlot: 'Vị trí ảnh minh họa',
     watchVideo: 'Xem video demo',
     list: [
       {
         title: 'Giám sát tiến độ CMS',
         category: 'Công cụ hiệu quả',
-        description:
-          'Theo dõi tiến độ sinh viên trên CMS theo thời gian thực, giảm ~60% thời gian báo cáo thủ công.',
+        problem:
+          'Việc kiểm tra tiến độ CMS thủ công tốn nhiều thời gian và dễ bỏ sót sinh viên cần theo dõi.',
+        solution:
+          'Tự động đồng bộ dữ liệu tiến độ và dựng dashboard để theo dõi trạng thái hoàn thành, ngoại lệ và nhắc việc.',
         tags: ['Python', 'API CMS', 'Tự động hóa'],
-        impact: 'Dashboard đồng bộ trực tiếp',
+        impact: 'Giảm khoảng 60% thời gian báo cáo thủ công nhờ dashboard đồng bộ trực tiếp.',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
         title: 'Tool làm thời khóa biểu',
         category: 'Lập lịch',
-        description:
-          'Có thể check được nếu trùng ca, trùng tiết, trùng giảng viên.',
+        problem:
+          'Trùng ca, trùng tiết và trùng giảng viên khó phát hiện đầy đủ trước khi ban hành thời khóa biểu.',
+        solution:
+          'Thiết lập bộ quy tắc kiểm tra trên Excel để phát hiện xung đột sớm và đánh dấu dòng cần rà soát.',
         tags: ['Excel', 'Thời khóa biểu', 'Kiểm tra xung đột'],
-        impact: 'Phát hiện trùng lịch trước khi ban hành',
+        impact: 'Phát hiện trùng lịch trước khi ban hành và giảm vòng kiểm tra thủ công lặp lại.',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
       {
         title: 'Demo tool thời khóa biểu',
         category: 'Video & hình ảnh',
-        description:
-          'Video walkthrough và ảnh minh họa quy trình kiểm tra xung đột ca, tiết, giảng viên trên công cụ TKB.',
+        problem:
+          'Đội ngũ đào tạo cần một bản minh họa cụ thể để hiểu quy trình kiểm tra của công cụ TKB.',
+        solution:
+          'Chuẩn bị video demo và luồng ảnh minh họa quy trình kiểm tra xung đột ca, tiết, giảng viên.',
         tags: ['YouTube', 'Excel', 'TKB'],
-        impact: 'Trực quan hóa giải pháp cho đội ngũ đào tạo',
+        impact: 'Giúp giải pháp dễ đánh giá, dễ trình bày và dễ bàn giao cho đội ngũ đào tạo.',
         image:
           '/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg',
         gallery: [
@@ -463,12 +519,9 @@ const vi: typeof en = {
         organization: 'FPT PolySchool Huế',
         period: '01/4/2024 – hiện tại',
         bullets: [
-          'Lên kế hoạch Tổ chức & Quản lí Đào tạo hằng kỳ: công tác giảng dạy, phân công giảng viên, hoạt động ngoại khóa;',
-          'Tổ chức các hoạt động thi, bảo vệ, đánh giá kiểm tra hằng kỳ theo đúng quy chế đào tạo;',
-          'Quản lí hồ sơ, kết quả học tập, phân tích Phổ điểm;',
-          'Vận hành, quản lí các hệ thống học tập IAPS9, LMS9, CMS, Language Hub, Udemy, EOS, FLM;',
-          'Công tác Giáo vụ, xét tốt nghiệp, xử lí các dịch vụ cho Sinh viên các khóa;',
-          'Hỗ trợ xử lí các vấn đề liên quan đến phần mềm, phần cứng.',
+          'Quản lí vận hành đào tạo và khảo thí theo kỳ, gồm phân công giảng viên, lịch đánh giá và điều phối hồ sơ nhiều khóa.',
+          'Vận hành IAPS9, LMS9, CMS, Language Hub và Fuge để bảo đảm tính toàn vẹn điểm số, tiến độ và hồ sơ sinh viên.',
+          'Xây dựng công cụ Excel/Python giúp giảm thao tác báo cáo và xử lí điểm thủ công.',
         ],
       },
       {
@@ -476,9 +529,8 @@ const vi: typeof en = {
         organization: 'FPT PolySchool Huế',
         period: '01/8/2022 – 31/3/2024',
         bullets: [
-          'Xây dựng, tổ chức kế hoạch Chủ nhiệm các lớp;',
-          'Chăm sóc phí, phối hợp các bộ môn quản lí học tập, kiểm tra nề nếp, tư cách Sinh viên;',
-          'Thực hiện duy trì, kết nối thông tin giữa Phụ huynh, Sinh viên và nhà trường.',
+          'Xây dựng kế hoạch chủ nhiệm và phối hợp theo dõi học tập, nề nếp, học phí cho sinh viên.',
+          'Duy trì kết nối giữa phụ huynh, sinh viên và các bộ phận để xử lí vấn đề kịp thời.',
         ],
       },
       {
@@ -486,20 +538,20 @@ const vi: typeof en = {
         organization: 'Trung tâm Anh ngữ AMA – Huế',
         period: '09/2020 – 05/2022',
         bullets: [
-          'Giảng dạy tiếng Anh;',
-          'Tổ chức các hoạt động ngoại khóa, phiên dịch.',
+          'Giảng dạy tiếng Anh và hỗ trợ tiến bộ học viên.',
+          'Hỗ trợ hoạt động ngoại khóa và phiên dịch.',
         ],
       },
       {
         title: 'Thực tập sinh',
         organization: 'Granville Medical Center – tiểu bang North Carolina, Hoa Kỳ',
-        period: '',
+        period: 'Thời gian sẽ cập nhật',
         bullets: ['Kiểm tra, xử lí nhập liệu hồ sơ bệnh án;'],
       },
       {
         title: 'Tình nguyện viên',
         organization: 'Vidant Medical Center – tiểu bang North Carolina, Hoa Kỳ',
-        period: '',
+        period: 'Thời gian sẽ cập nhật',
         bullets: ['Các hoạt động tại bộ phận Dịch vụ bệnh nhân.'],
       },
     ],
@@ -589,6 +641,20 @@ const vi: typeof en = {
       },
     ],
   },
+  album: {
+    kicker: 'Khoảnh khắc công tác',
+    title: 'Album — khoảnh khắc công tác',
+    note: 'Tập hợp hình ảnh trong quá trình vận hành đào tạo, khảo thí và các hoạt động cùng đồng nghiệp. Nhấp vào ảnh để xem lớn.',
+    empty: 'Hình ảnh đang được cập nhật.',
+    closeLabel: 'Đóng',
+    prevLabel: 'Ảnh trước',
+    nextLabel: 'Ảnh sau',
+    photos: [
+      { src: '/images/album/work-01.jpg', caption: 'Vận hành đào tạo & khảo thí' },
+      { src: '/images/album/work-02.jpg', caption: 'Giám sát tiến độ CMS' },
+      { src: '/images/album/work-03.jpg', caption: 'Điều phối thời khóa biểu' },
+    ],
+  },
   certs: {
     title: 'Chứng chỉ & thành tích',
     items: [
@@ -598,23 +664,29 @@ const vi: typeof en = {
       { label: 'Nền tảng CNTT', sub: 'Quản trị hệ thống' },
     ],
   },
+  contact: {
+    kicker: 'Liên hệ',
+    title: 'Kết nối để trao đổi về vận hành đào tạo, dữ liệu học vụ và tự động hóa.',
+    description:
+      'Bạn có thể liên hệ trực tiếp qua email hoặc điện thoại — rất sẵn lòng trao đổi về vận hành đào tạo, dữ liệu học vụ và tự động hóa.',
+    emailLabel: 'Email',
+    email: 'baophongcmu@gmail.com',
+    phoneLabel: 'Số điện thoại',
+    phone: '077 575 3003',
+    cta: 'Kết nối với tôi',
+  },
   footer: {
-    quickLinks: 'Liên kết nhanh',
+    tagline: 'Vận hành đào tạo · Toàn vẹn dữ liệu · Tự động hóa',
     links: [
       {
         label: 'GitHub',
         href: 'https://github.com/phongbao-uopeopleuni',
       },
-      { label: 'LinkedIn', href: '#' },
       {
         label: 'Facebook',
         href: 'https://www.facebook.com/pbao280/',
       },
     ],
-    personalTitle: 'Thông tin cá nhân',
-    phone: '077 575 3003',
-    email: 'baophongcmu@gmail.com',
-    facebookUrl: 'https://www.facebook.com/pbao280/',
   },
 };
 

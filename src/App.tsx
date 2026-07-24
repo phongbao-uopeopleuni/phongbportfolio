@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Mail,
   School,
-  Terminal,
   Database,
   Settings,
   TrendingUp,
@@ -20,15 +19,17 @@ import {
   Brain,
   UploadCloud,
   Archive,
-  Globe,
   Phone,
   Zap,
-  Table,
-  Code2,
-  Coffee,
+  Download,
+  ArrowUpRight,
+  Briefcase,
+  GraduationCap,
+  ChevronLeft,
+  ImageIcon,
 } from 'lucide-react';
-import { motion } from 'motion/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { I18nProvider, useI18n } from './i18n';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
@@ -42,97 +43,385 @@ const heroProfileFallback = publicUrl(
   `/images/hero/${encodeURIComponent('pic 1.jpg')}`,
 );
 
+/** Drop the CV file at public/cv/bao-phong-cv.pdf to make the hero CTA work. */
+const cvUrl = publicUrl('/cv/bao-phong-cv.pdf');
+
+// --- Shared pieces ---
+
+/** Section eyebrow rendered as a code comment; the real title is an h2. */
+const SectionHeading = ({
+  kicker,
+  title,
+  align = 'left',
+}: {
+  kicker?: string;
+  title: string;
+  align?: 'left' | 'center';
+}) => (
+  <div className={`mb-12 md:mb-16 ${align === 'center' ? 'text-center' : ''}`}>
+    {kicker ? (
+      <p className="font-mono text-sm text-accent mb-3">
+        <span aria-hidden="true">{'// '}</span>
+        {kicker}
+      </p>
+    ) : null}
+    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
+      {title}
+    </h2>
+  </div>
+);
+
+const SkipLink = () => {
+  const { locale } = useI18n();
+  return (
+    <a href="#home" className="skip-link">
+      {locale === 'vi' ? 'Bỏ qua đến nội dung chính' : 'Skip to main content'}
+    </a>
+  );
+};
+
+/** Hiện dần phần tử khi cuộn tới; delay (ms) tạo hiệu ứng lần lượt. */
+const Reveal = ({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${isVisible ? 'is-visible' : ''} ${className}`}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+    >
+      {children}
+    </div>
+  );
+};
+
+/** Con trỏ tùy biến: chấm bám chính xác + vòng bám trễ mượt. Chỉ bật khi có chuột thật. */
+const CustomCursor = () => {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!fine || reduce) return;
+
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    setEnabled(true);
+    document.body.classList.add('cursor-none');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+      const interactive = (e.target as Element)?.closest?.(
+        'a, button, [role="button"], input, textarea, select, label',
+      );
+      ring.classList.toggle('is-hovering', Boolean(interactive));
+    };
+    const onDown = () => ring.classList.add('is-clicking');
+    const onUp = () => ring.classList.remove('is-clicking');
+    const onLeave = () => {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    };
+    const onEnter = () => {
+      dot.style.opacity = '1';
+      ring.style.opacity = '0.6';
+    };
+
+    const loop = () => {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+      raf = requestAnimationFrame(loop);
+    };
+    loop();
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mousedown', onDown);
+    window.addEventListener('mouseup', onUp);
+    document.addEventListener('mouseleave', onLeave);
+    document.addEventListener('mouseenter', onEnter);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousedown', onDown);
+      window.removeEventListener('mouseup', onUp);
+      document.removeEventListener('mouseleave', onLeave);
+      document.removeEventListener('mouseenter', onEnter);
+      document.body.classList.remove('cursor-none');
+    };
+  }, []);
+
+  return (
+    <div aria-hidden="true" style={{ display: enabled ? undefined : 'none' }}>
+      <div ref={ringRef} className="cursor-ring" />
+      <div ref={dotRef} className="cursor-dot" />
+    </div>
+  );
+};
+
+/** Màn hình boot dạng terminal, hiện một lần mỗi phiên rồi mờ dần. */
+const Preloader = () => {
+  const [phase, setPhase] = useState<'loading' | 'fadeout' | 'gone'>(() => {
+    try {
+      return sessionStorage.getItem('booted') ? 'gone' : 'loading';
+    } catch {
+      return 'loading';
+    }
+  });
+
+  useEffect(() => {
+    if (phase === 'gone') return;
+    try {
+      sessionStorage.setItem('booted', '1');
+    } catch {
+      /* sessionStorage không khả dụng — vẫn chạy bình thường */
+    }
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const t = setTimeout(() => setPhase('fadeout'), reduce ? 150 : 1500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (phase !== 'fadeout') return;
+    const t = setTimeout(() => setPhase('gone'), 500);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+  if (phase === 'gone') return null;
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-surface px-6 transition-opacity duration-500 ${
+        phase === 'fadeout' ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      }`}
+    >
+      <div className="w-[min(90vw,26rem)] font-mono text-sm">
+        <p className="flex items-center gap-3 text-ink">
+          <span className="preloader-spinner" />
+          <span>
+            <span className="text-accent">~/</span>bao-phong
+            <span className="text-muted"> — booting…</span>
+          </span>
+        </p>
+        <div className="mt-5 space-y-1.5 text-muted">
+          <p>
+            <span className="text-accent">$</span> loading assets
+          </p>
+          <p>
+            <span className="text-accent">$</span> mounting components
+          </p>
+          <p>
+            <span className="text-accent">$</span> ready
+            <span className="cursor-blink text-accent"> _</span>
+          </p>
+        </div>
+        <div className="mt-5 h-1 rounded-full bg-line overflow-hidden">
+          <div className="h-full rounded-full bg-accent preloader-bar" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Components ---
 
 const Navbar = () => {
   const { locale, setLocale, t } = useI18n();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeId, setActiveId] = useState('home');
 
   const navItems = [
-    { href: '#strengths', label: t.nav.strengths },
-    { href: '#projects', label: t.nav.projects },
+    { href: '#about', label: t.nav.about },
     { href: '#metrics', label: t.nav.metrics },
+    { href: '#strengths', label: t.nav.strengths },
+    { href: '#workflow', label: t.nav.workflow },
+    { href: '#projects', label: t.nav.projects },
     { href: '#timeline', label: t.nav.timeline },
+    { href: '#album', label: t.nav.album },
+    { href: '#achievements', label: t.nav.achievements },
+    { href: '#contact', label: t.nav.contact },
   ];
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      setScrollProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Scroll-spy: làm sáng mục nav theo section đang hiển thị giữa màn hình
+  useEffect(() => {
+    const sections = document.querySelectorAll('main section[id]');
+    if (!sections.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isMobileMenuOpen]);
+
   const langBtn = (active: boolean) =>
-    `px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+    `px-2.5 py-1.5 font-mono text-xs transition-colors ${
       active
-        ? 'bg-secondary-container text-white shadow-sm'
-        : 'bg-transparent text-on-surface-variant hover:text-on-surface'
+        ? 'text-accent underline underline-offset-4 decoration-2'
+        : 'text-muted hover:text-ink'
     }`;
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/80 backdrop-blur-md shadow-sm h-16'
-          : 'bg-transparent h-20'
+          ? 'bg-surface/90 backdrop-blur-md border-line h-16'
+          : 'bg-transparent border-transparent h-20'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-        <div className="text-xl font-bold text-primary font-manrope tracking-tight">
-          {t.nav.brand}
+      <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
+        <a href="#home" className="font-mono text-sm text-ink font-semibold">
+          <span className="text-accent">~/</span>bao-phong
+          <span className="cursor-blink text-accent" aria-hidden="true">
+            _
+          </span>
+        </a>
+
+        <div className="hidden xl:flex items-center gap-5 font-mono text-[13px]">
+          {navItems.map((item) => {
+            const isActive = item.href === `#${activeId}`;
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? 'true' : undefined}
+                className={`transition-colors ${
+                  isActive ? 'text-accent' : 'text-muted hover:text-accent'
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </div>
 
-        <div className="hidden md:flex items-center gap-8 font-manrope font-semibold text-sm">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-on-surface-variant hover:text-primary transition-colors"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-full">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center border border-line rounded-md px-1">
             <button
               type="button"
               className={langBtn(locale === 'vi')}
               onClick={() => setLocale('vi')}
               aria-pressed={locale === 'vi'}
             >
-              VI
+              vi
             </button>
+            <span className="text-line" aria-hidden="true">
+              /
+            </span>
             <button
               type="button"
               className={langBtn(locale === 'en')}
               onClick={() => setLocale('en')}
               aria-pressed={locale === 'en'}
             >
-              EN
+              en
             </button>
           </div>
           <button
             type="button"
-            className="md:hidden text-on-surface"
+            className="xl:hidden p-2 text-ink hover:text-accent transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-expanded={isMobileMenuOpen}
+            aria-label={
+              isMobileMenuOpen
+                ? locale === 'vi'
+                  ? 'Đóng menu'
+                  : 'Close menu'
+                : locale === 'vi'
+                  ? 'Mở menu'
+                  : 'Open menu'
+            }
           >
-            {isMobileMenuOpen ? <X /> : <Menu />}
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
+      {/* Thanh tiến độ cuộn trang */}
+      <div
+        className="absolute bottom-0 left-0 h-0.5 bg-accent transition-[width] duration-150 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+        aria-hidden="true"
+      />
+
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-outline-variant/10 p-6 flex flex-col gap-4 shadow-xl">
+        <div className="xl:hidden absolute top-full left-0 right-0 bg-panel border-y border-line p-6 flex flex-col gap-4">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-on-surface-variant font-semibold"
+              className="font-mono text-sm text-muted hover:text-accent transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
+              <span className="text-accent" aria-hidden="true">
+                {'> '}
+              </span>
               {item.label}
             </a>
           ))}
@@ -152,95 +441,71 @@ const Hero = () => {
   }, []);
 
   const badges = [
-    {
-      icon: <Terminal size={16} />,
-      text: t.hero.badgeBs,
-      color: 'text-primary',
-    },
-    { icon: <Zap size={16} />, text: t.hero.badgeToeic, color: 'text-secondary' },
-    {
-      icon: <School size={16} />,
-      text: t.hero.badgePedagogy,
-      color: 'text-tertiary',
-    },
-    {
-      icon: <Table size={16} />,
-      text: t.hero.badgeExcel,
-      color: 'text-emerald-600',
-    },
-    {
-      icon: <Code2 size={16} />,
-      text: t.hero.badgePython,
-      color: 'text-primary',
-    },
-    {
-      icon: <Coffee size={16} />,
-      text: t.hero.badgeJava,
-      color: 'text-red-600',
-    },
-    {
-      icon: <Database size={16} />,
-      text: t.hero.badgeMysql,
-      color: 'text-primary-container',
-    },
+    { icon: <School size={14} />, text: t.hero.badgeTrainingOps },
+    { icon: <Database size={14} />, text: t.hero.badgeDataIntegrity },
+    { icon: <Settings size={14} />, text: t.hero.badgeAutomation },
+    { icon: <Zap size={14} />, text: t.hero.badgeToeic },
   ];
 
   return (
-    <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-surface to-surface"></div>
-      <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
-        <motion.div
-          className="md:col-span-7"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-6xl md:text-7xl font-extrabold text-on-surface leading-[1.1] mb-6">
+    <section id="home" className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6 overflow-hidden">
+      <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true"></div>
+      <div className="max-w-6xl mx-auto grid md:grid-cols-[7fr_5fr] gap-10 md:gap-12 items-center">
+        <div className="min-w-0 hero-reveal">
+          <p className="font-mono text-sm text-accent mb-5">
+            <span aria-hidden="true">$ </span>whoami
+          </p>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink leading-[1.05] mb-6 break-words">
             Bảo Phong
           </h1>
-          <p className="text-2xl font-manrope font-semibold text-primary mb-8 leading-snug">
-            {t.hero.roleLine1} <br />
-            <span className="text-on-surface-variant font-normal text-xl">
-              {t.hero.roleLine2}
-            </span>
+          <p className="text-lg sm:text-xl text-ink font-medium mb-2 leading-snug break-words">
+            {t.hero.roleLine1}
+          </p>
+          <p className="font-mono text-sm sm:text-base text-muted mb-8 break-words">
+            {t.hero.roleLine2}
           </p>
 
-          <div className="flex flex-wrap gap-3 mb-10">
+          <ul className="flex flex-wrap gap-2.5 mb-10 list-none">
             {badges.map((badge, i) => (
-              <span
+              <li
                 key={i}
-                className="px-4 py-2 rounded-xl bg-white shadow-sm flex items-center gap-2 text-sm font-medium border border-outline-variant/10"
+                className="px-3 py-1.5 rounded-md border border-line bg-panel flex items-center gap-2 font-mono text-xs text-muted"
               >
-                <span className={badge.color}>{badge.icon}</span>
+                <span className="text-accent">{badge.icon}</span>
                 {badge.text}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
 
           <div className="flex flex-wrap gap-4">
             <a
               href="#projects"
-              className="px-8 py-4 bg-primary text-white rounded-full font-bold hover:scale-105 transition-transform shadow-lg shadow-primary/20 inline-block text-center"
+              className="px-6 py-3 bg-accent text-accent-ink rounded-md font-semibold text-sm hover:brightness-110 transition-[filter] inline-flex items-center gap-2"
             >
               {t.hero.ctaProjects}
+              <ChevronRight size={16} className="shrink-0" />
             </a>
-            <button
-              type="button"
-              className="px-8 py-4 border-2 border-primary text-primary rounded-full font-bold hover:bg-primary/5 transition-colors"
+            <a
+              href={cvUrl}
+              download
+              className="px-6 py-3 border border-line text-ink rounded-md font-semibold text-sm hover:border-accent hover:text-accent transition-colors inline-flex items-center gap-2"
             >
+              <Download size={16} className="shrink-0" />
               {t.hero.ctaCv}
-            </button>
+            </a>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="md:col-span-5 flex justify-center md:justify-end"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.12 }}
-        >
-          {/* Ảnh profile (bundle JPG + fallback public) */}
-          <div className="w-full max-w-[min(100%,26rem)] aspect-square rounded-[2rem] p-[3px] bg-gradient-to-br from-primary via-secondary-container to-tertiary shadow-xl">
+        <div className="min-w-0 flex justify-center md:justify-end hero-reveal hero-reveal-delay">
+          {/* Ảnh profile trong khung "cửa sổ terminal" (bundle JPG + fallback public).
+              Kích thước khung co giãn theo breakpoint: gọn trên mobile, đầy cột trên laptop. */}
+          <div className="w-full max-w-[min(100%,17rem)] sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem] rounded-lg border border-line bg-panel overflow-hidden shadow-2xl shadow-black/40">
+            <div className="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 border-b border-line">
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-line" aria-hidden="true"></span>
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-line" aria-hidden="true"></span>
+              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-accent/60" aria-hidden="true"></span>
+              <span className="ml-2 font-mono text-xs text-muted">profile.jpg</span>
+            </div>
             <img
               src={profileSrc}
               alt="Bảo Phong"
@@ -249,67 +514,9 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               onError={onProfileError}
-              className="block h-full w-full rounded-[calc(2rem-3px)] object-cover object-[center_32%] bg-surface-container-low"
+              className="block w-full aspect-[4/5] sm:aspect-square object-cover object-[center_32%]"
             />
           </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-const Metrics = () => {
-  const { t } = useI18n();
-  const metrics = [
-    {
-      label: t.metrics.students,
-      value: '300+',
-      icon: <TrendingUp size={20} />,
-      color: 'bg-secondary-container',
-    },
-    {
-      label: t.metrics.dataPoints,
-      value: '5000+',
-      icon: <Activity size={20} />,
-      color: 'bg-primary',
-    },
-    {
-      label: t.metrics.automationTools,
-      value: '3+',
-      icon: <Cpu size={20} />,
-      color: 'bg-tertiary',
-    },
-    {
-      label: t.metrics.timeOpt,
-      value: '70%',
-      icon: <Clock size={20} />,
-      color: 'bg-secondary-container',
-    },
-  ];
-
-  return (
-    <section id="metrics" className="bg-surface-container-low py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {metrics.map((metric, i) => (
-            <motion.div
-              key={i}
-              className="bg-white p-8 rounded-xl relative overflow-hidden group"
-              whileHover={{ y: -5 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <div
-                className={`absolute left-0 top-0 w-1 h-full ${metric.color}`}
-              ></div>
-              <p className="text-xs font-medium text-on-surface-variant mb-2">
-                {metric.label}
-              </p>
-              <div className="flex items-end gap-2">
-                <h3 className="text-4xl font-bold text-primary">{metric.value}</h3>
-                <span className="text-tertiary mb-1">{metric.icon}</span>
-              </div>
-            </motion.div>
-          ))}
         </div>
       </div>
     </section>
@@ -318,34 +525,28 @@ const Metrics = () => {
 
 const About = () => {
   const { t } = useI18n();
-  const cardStyles = [
-    'text-primary',
-    'text-secondary',
-    'text-tertiary',
-    'text-on-surface',
-  ];
 
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-16">
-        <div className="md:col-span-5">
-          <h2 className="text-sm font-extrabold text-secondary tracking-tight mb-4 normal-case">
-            {t.about.kicker}
-          </h2>
-          <h3 className="text-4xl font-bold text-on-surface mb-6 leading-tight">
-            {t.about.title}
-          </h3>
-          <div className="space-y-4 text-lg text-on-surface-variant leading-relaxed">
+    <section id="about" className="py-16 md:py-24 px-6 border-t border-line">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-[5fr_7fr] gap-10 md:gap-12 lg:gap-16">
+        <div className="min-w-0">
+          <SectionHeading kicker={t.about.kicker} title={t.about.title} />
+          <div className="space-y-4 text-base leading-relaxed -mt-6 md:-mt-8">
             <p>{t.about.p1}</p>
             <p>{t.about.p2}</p>
           </div>
         </div>
-        <div className="md:col-span-7 bg-surface-container-low rounded-3xl p-10 flex flex-col justify-center">
-          <div className="grid grid-cols-2 gap-8">
+        <div className="min-w-0 rounded-lg border border-line bg-panel p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
             {t.about.cards.map((item, i) => (
               <div key={i} className="space-y-2">
-                <h4 className={`font-bold ${cardStyles[i]}`}>{item.title}</h4>
-                <p className="text-sm text-on-surface-variant">{item.desc}</p>
+                <h3 className="font-semibold text-ink text-base">
+                  <span className="font-mono text-accent text-sm mr-2" aria-hidden="true">
+                    0{i + 1}.
+                  </span>
+                  {item.title}
+                </h3>
+                <p className="text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -355,66 +556,104 @@ const About = () => {
   );
 };
 
-const Strengths = () => {
+const Metrics = () => {
   const { t } = useI18n();
-  const pillarsUi = [
-    {
-      icon: <Database size={28} />,
-      color: 'border-primary',
-      iconBg: 'bg-primary/10',
-      iconColor: 'text-primary',
-    },
-    {
-      icon: <BookOpen size={28} />,
-      color: 'border-secondary-container',
-      iconBg: 'bg-secondary-container/10',
-      iconColor: 'text-secondary-container',
-    },
-    {
-      icon: <Brain size={28} />,
-      color: 'border-tertiary',
-      iconBg: 'bg-tertiary/10',
-      iconColor: 'text-tertiary',
-    },
+  const metrics = [
+    { label: t.metrics.students, value: '300+', icon: <TrendingUp size={18} /> },
+    { label: t.metrics.dataPoints, value: '5000+', icon: <Activity size={18} /> },
+    { label: t.metrics.automationTools, value: '3+', icon: <Cpu size={18} /> },
+    { label: t.metrics.timeOpt, value: '70%', icon: <Clock size={18} /> },
   ];
 
   return (
-    <section id="strengths" className="py-24 px-6 bg-surface">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-xs font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
-            {t.strengths.kicker}
-          </h2>
-          <h3 className="text-4xl font-bold text-on-surface">{t.strengths.title}</h3>
-        </div>
-        <div className="grid md:grid-cols-3 gap-8">
+    <section id="metrics" className="px-6 border-t border-line bg-panel/50">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+        {metrics.map((metric, i) => (
+          <Reveal
+            key={i}
+            delay={i * 160}
+            className="reveal-left reveal-slow py-10 md:py-12 px-6 border-line border-b sm:border-b-0 last:border-b-0 md:border-r md:first:border-l"
+          >
+            <span className="text-accent block mb-3">{metric.icon}</span>
+            <p className="font-mono text-3xl lg:text-4xl font-bold text-ink mb-1">
+              {metric.value}
+            </p>
+            <p className="font-mono text-xs uppercase tracking-wider">
+              {metric.label}
+            </p>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const Strengths = () => {
+  const { t } = useI18n();
+  const pillarMeta = [
+    { icon: <Database size={20} key="db" />, file: 'systems.data' },
+    { icon: <BookOpen size={20} key="book" />, file: 'operations.edu' },
+    { icon: <Brain size={20} key="brain" />, file: 'innovation.dev' },
+  ];
+  const total = String(t.strengths.pillars.length).padStart(2, '0');
+
+  return (
+    <section id="strengths" className="py-16 md:py-24 px-6 border-t border-line">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeading
+          kicker={t.strengths.kicker}
+          title={t.strengths.title}
+          align="center"
+        />
+        <div className="grid md:grid-cols-3 gap-5">
           {t.strengths.pillars.map((pillar, i) => {
-            const ui = pillarsUi[i];
+            const meta = pillarMeta[i];
             return (
-              <motion.div
+              <Reveal
                 key={i}
-                className={`bg-white p-8 rounded-2xl border-t-4 ${ui.color} shadow-sm hover:shadow-xl transition-all duration-500`}
-                whileHover={{ y: -10 }}
+                delay={i * 90}
+                className="group rounded-lg border border-line bg-panel overflow-hidden hover:border-accent/50 transition-colors"
               >
-                <div
-                  className={`w-14 h-14 ${ui.iconBg} rounded-xl flex items-center justify-center mb-6 ${ui.iconColor}`}
-                >
-                  {ui.icon}
+                {/* Thanh tiêu đề dạng tab tên file */}
+                <div className="flex items-center justify-between px-5 py-2.5 border-b border-line font-mono text-xs">
+                  <span className="flex items-center gap-2 text-muted">
+                    <span
+                      className="w-2 h-2 rounded-full bg-accent/70"
+                      aria-hidden="true"
+                    />
+                    {meta.file}
+                  </span>
+                  <span className="text-muted/50" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')} / {total}
+                  </span>
                 </div>
-                <h4 className="text-xl font-bold text-on-surface mb-4">
-                  {pillar.title}
-                </h4>
-                <ul className="space-y-3 text-sm">
-                  {pillar.items.map((item, j) => (
-                    <li key={j} className="flex items-center gap-2">
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${ui.iconColor.replace('text-', 'bg-')}`}
-                      ></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+
+                <div className="p-5 md:p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="w-10 h-10 rounded-md border border-line flex items-center justify-center text-accent shrink-0 group-hover:border-accent/50 transition-colors">
+                      {meta.icon}
+                    </span>
+                    <h3 className="text-lg font-semibold text-ink leading-tight">
+                      {pillar.title}
+                    </h3>
+                  </div>
+
+                  {/* Danh sách năng lực với cột số dòng như editor */}
+                  <ul>
+                    {pillar.items.map((item, j) => (
+                      <li
+                        key={j}
+                        className="grid grid-cols-[1.75rem_1fr] gap-3 py-1"
+                      >
+                        <span className="font-mono text-xs text-accent/60 text-right tabular-nums select-none border-r border-line pr-2 leading-6">
+                          {String(j + 1).padStart(2, '0')}
+                        </span>
+                        <span className="text-sm text-muted leading-6">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
             );
           })}
         </div>
@@ -425,38 +664,46 @@ const Strengths = () => {
 
 const Workflow = () => {
   const { t } = useI18n();
-  const nodeUi = [
-    { icon: <UploadCloud size={32} />, color: 'text-secondary' },
-    { icon: <School size={32} />, color: 'text-primary' },
-    { icon: <Activity size={32} />, color: 'text-tertiary' },
-    { icon: <Settings size={32} />, color: 'text-primary-container' },
-    { icon: <BookOpen size={32} />, color: 'text-secondary-container' },
-    { icon: <Archive size={32} />, color: 'text-on-surface-variant' },
+  const nodeIcons = [
+    <UploadCloud size={16} key="upload" />,
+    <School size={16} key="school" />,
+    <Activity size={16} key="activity" />,
+    <Settings size={16} key="settings" />,
+    <BookOpen size={16} key="book" />,
+    <Archive size={16} key="archive" />,
   ];
 
   return (
-    <section className="py-24 px-6 bg-surface-container-low overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-16">
-          {t.workflow.kicker ? (
-            <h2 className="text-xs font-extrabold text-primary tracking-[0.2em] uppercase mb-4">
-              {t.workflow.kicker}
-            </h2>
-          ) : null}
-          <h3 className="text-4xl font-bold text-on-surface">{t.workflow.title}</h3>
-        </div>
-        <div className="relative flex flex-wrap justify-between items-center gap-8">
-          {t.workflow.nodes.map((label, i) => {
-            const ui = nodeUi[i];
-            return (
-              <div key={i} className="flex flex-col items-center gap-4 group">
-                <div className="w-20 h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center border border-outline-variant/10 group-hover:scale-110 transition-transform duration-300">
-                  <span className={ui.color}>{ui.icon}</span>
-                </div>
-                <span className="font-bold text-sm">{label}</span>
-              </div>
-            );
-          })}
+    <section id="workflow" className="py-16 md:py-24 px-6 border-t border-line bg-panel/50">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeading kicker={t.workflow.kicker} title={t.workflow.title} align="center" />
+        <div className="max-w-2xl mx-auto rounded-lg border border-line bg-surface overflow-hidden shadow-2xl shadow-black/40">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-line">
+            <span className="w-3 h-3 rounded-full bg-line" aria-hidden="true"></span>
+            <span className="w-3 h-3 rounded-full bg-line" aria-hidden="true"></span>
+            <span className="w-3 h-3 rounded-full bg-accent/60" aria-hidden="true"></span>
+            <span className="ml-2 font-mono text-xs text-muted">systems.sh</span>
+          </div>
+          <div className="p-6 md:p-8 font-mono text-sm">
+            <p className="mb-6">
+              <span className="text-accent" aria-hidden="true">
+                $&nbsp;
+              </span>
+              <span className="text-ink">ls</span> ./systems
+            </p>
+            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4 list-none mb-7">
+              {t.workflow.nodes.map((label, i) => (
+                <li key={i} className="flex items-center gap-2.5 text-ink min-w-0">
+                  <span className="text-accent shrink-0">{nodeIcons[i]}</span>
+                  <span className="truncate">{label}</span>
+                </li>
+              ))}
+            </ul>
+            <p aria-hidden="true">
+              <span className="text-accent">$&nbsp;</span>
+              <span className="cursor-blink text-accent">▍</span>
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -467,95 +714,130 @@ const Projects = () => {
   const { t } = useI18n();
 
   return (
-    <section id="projects" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-end mb-16 flex-wrap gap-4">
+    <section id="projects" className="py-16 md:py-24 px-6 border-t border-line">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-end mb-12 md:mb-16 flex-wrap gap-4">
           <div>
-            <h2 className="text-xs font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
+            <p className="font-mono text-sm text-accent mb-3">
+              <span aria-hidden="true">{'// '}</span>
               {t.projects.kicker}
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
+              {t.projects.title}
             </h2>
-            <h3 className="text-4xl font-bold text-on-surface">{t.projects.title}</h3>
           </div>
-          <button
-            type="button"
-            className="text-primary font-bold flex items-center gap-2 hover:gap-4 transition-all group"
+          <a
+            href={t.projects.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-sm text-accent inline-flex items-center gap-1.5 hover:underline underline-offset-4"
           >
-            {t.projects.github}{' '}
-            <ChevronRight
-              size={20}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </button>
+            {t.projects.github}
+            <ArrowUpRight size={16} className="shrink-0" />
+          </a>
         </div>
-        <div className="grid md:grid-cols-2 gap-10">
-          {t.projects.list.map((project, i) => (
-            <motion.div
-              key={i}
-              className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 flex flex-col"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src={publicUrl(project.image)}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 text-white">
-                  <span className="px-3 py-1 rounded-full bg-secondary-container text-[10px] font-bold uppercase tracking-widest">
-                    {project.category}
-                  </span>
-                  <h4 className="text-2xl font-bold mt-2">{project.title}</h4>
+
+        <div className="flex flex-col gap-16 md:gap-24">
+          {t.projects.list.map((project, i) => {
+            const reversed = i % 2 === 1;
+            return (
+              <article
+                key={i}
+                className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center"
+              >
+                {/* Ảnh: xen kẽ trái/phải theo thứ tự dự án */}
+                <div className={`min-w-0 ${reversed ? 'md:order-2' : ''}`}>
+                  <div className="relative rounded-lg border border-line bg-panel overflow-hidden">
+                    <img
+                      src={publicUrl(project.image)}
+                      alt={project.title}
+                      loading="lazy"
+                      className="w-full aspect-video object-cover"
+                    />
+                    <div className="absolute left-3 top-3 rounded border border-line bg-surface/90 px-2 py-0.5 font-mono text-[11px] text-muted">
+                      {t.projects.screenshotSlot}
+                    </div>
+                  </div>
+                  {'gallery' in project && project.gallery?.length ? (
+                    <div className="grid grid-cols-3 gap-3 mt-3">
+                      {project.gallery.map((src, g) => (
+                        <img
+                          key={g}
+                          src={publicUrl(src)}
+                          alt=""
+                          loading="lazy"
+                          className="w-full aspect-video rounded border border-line object-cover"
+                        />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
-              </div>
-              <div className="p-8">
-                <p className="text-sm text-on-surface-variant mb-6">
-                  {project.description}
-                </p>
-                {'gallery' in project && project.gallery?.length ? (
-                  <div className="flex gap-3 mb-6 overflow-x-auto pb-1">
-                    {project.gallery.map((src, g) => (
-                      <img
-                        key={g}
-                        src={publicUrl(src)}
-                        alt=""
-                        className="h-24 w-auto max-w-[45%] shrink-0 rounded-xl object-cover border border-outline-variant/15"
-                      />
+
+                <div className={`min-w-0 ${reversed ? 'md:order-1' : ''}`}>
+                  <p className="font-mono text-sm text-accent mb-3">
+                    <span aria-hidden="true">0{i + 1} · </span>[{project.category}]
+                  </p>
+                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-ink mb-6 leading-tight">
+                    {project.title}
+                  </h3>
+
+                  <div className="space-y-5 text-sm leading-relaxed">
+                    <div>
+                      <p className="font-mono text-xs text-ink mb-1.5">
+                        <span className="text-accent" aria-hidden="true">
+                          {'> '}
+                        </span>
+                        {t.projects.problem}
+                      </p>
+                      <p>{project.problem}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-xs text-ink mb-1.5">
+                        <span className="text-accent" aria-hidden="true">
+                          {'> '}
+                        </span>
+                        {t.projects.solution}
+                      </p>
+                      <p>{project.solution}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mt-6">
+                    {project.tags.map((tag, j) => (
+                      <span
+                        key={j}
+                        className="px-2.5 py-0.5 rounded border border-line font-mono text-xs"
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
-                ) : null}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tags.map((tag, j) => (
-                    <span
-                      key={j}
-                      className="px-3 py-1 bg-surface-container-low rounded-full text-xs font-semibold"
+
+                  {/* Tác động: điểm nhấn chính của mỗi case study */}
+                  <div className="border-l-2 border-accent pl-4 md:pl-5 mt-8">
+                    <p className="font-mono text-xs text-muted mb-1">
+                      {t.projects.impact}
+                    </p>
+                    <p className="text-base md:text-lg font-semibold text-ink leading-snug">
+                      {project.impact}
+                    </p>
+                  </div>
+
+                  {'videoUrl' in project && project.videoUrl ? (
+                    <a
+                      href={project.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 rounded-md border border-line font-mono text-sm text-accent hover:border-accent transition-colors"
                     >
-                      {tag}
-                    </span>
-                  ))}
+                      {t.projects.watchVideo}
+                      <ArrowUpRight size={15} className="shrink-0" />
+                    </a>
+                  ) : null}
                 </div>
-                {'videoUrl' in project && project.videoUrl ? (
-                  <a
-                    href={project.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline mb-8"
-                  >
-                    {t.projects.watchVideo}
-                    <ChevronRight size={16} className="shrink-0" />
-                  </a>
-                ) : null}
-                <div className="border-t border-outline-variant/10 pt-6">
-                  <p className="text-[10px] font-bold text-tertiary uppercase">
-                    {t.projects.impact}
-                  </p>
-                  <p className="text-xs font-medium">{project.impact}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -566,66 +848,75 @@ const Timeline = () => {
   const { t } = useI18n();
 
   return (
-    <section id="timeline" className="py-24 px-6 bg-surface-container-low">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-14">
-          <h2 className="text-sm md:text-base font-extrabold text-secondary tracking-[0.2em] uppercase mb-4">
-            {t.timeline.kicker}
-          </h2>
-          <h3 className="text-4xl font-bold text-on-surface">{t.timeline.title}</h3>
-        </div>
+    <section id="timeline" className="py-16 md:py-24 px-6 border-t border-line bg-panel/50">
+      <div className="max-w-5xl mx-auto">
+        <SectionHeading kicker={t.timeline.kicker} title={t.timeline.title} align="center" />
 
-        <div className="border-l-4 border-primary pl-6 md:pl-8 space-y-16 md:space-y-20">
-          <div>
-            <h4 className="text-sm font-extrabold text-secondary tracking-[0.15em] uppercase mb-8 -ml-1">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-12 xl:gap-16 items-start">
+          <div className="min-w-0">
+            <h3 className="flex items-center gap-2.5 font-mono text-sm text-accent mb-7">
+              <Briefcase size={15} className="shrink-0" aria-hidden="true" />
               {t.timeline.workHeading}
-            </h4>
-            <div className="flex flex-col gap-6 md:gap-8">
+            </h3>
+            <div className="border-l border-line pl-6 md:pl-7 flex flex-col gap-5">
               {t.timeline.work.map((job, i) => (
-                <div
-                  key={i}
-                  className="relative rounded-2xl bg-white p-5 md:p-6 shadow-sm border border-outline-variant/15"
-                >
-                  <span className="absolute -left-[1.65rem] md:-left-[2.15rem] top-6 w-3 h-3 rounded-full bg-primary border-2 border-white shadow-sm" />
-                  <p className="text-base font-bold text-primary leading-snug">{job.title}</p>
-                  <p className="text-sm font-semibold text-on-surface mt-1.5">{job.organization}</p>
-                  {job.period ? (
-                    <p className="text-xs text-on-surface-variant mt-1 mb-3">{job.period}</p>
-                  ) : null}
-                  <ul
-                    className={`list-disc list-outside ml-4 space-y-2 text-sm text-on-surface-variant leading-relaxed ${job.period ? '' : 'mt-2'}`}
-                  >
-                    {job.bullets.map((line, j) => (
-                      <li key={j}>{line}</li>
-                    ))}
-                  </ul>
-                </div>
+                <Reveal key={i} delay={i * 70} className="relative">
+                  <span
+                    className="absolute -left-[1.84rem] md:-left-[2.09rem] top-7 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-surface"
+                    aria-hidden="true"
+                  />
+                  <div className="rounded-lg border border-line bg-surface p-5 md:p-6 hover:border-accent/50 transition-colors">
+                    <p className="text-base font-semibold text-ink leading-snug">{job.title}</p>
+                    <p className="text-sm mt-1">{job.organization}</p>
+                    {job.period ? (
+                      <p className="mt-2.5">
+                        <span className="inline-block rounded border border-line px-2 py-0.5 font-mono text-xs text-accent">
+                          {job.period}
+                        </span>
+                      </p>
+                    ) : null}
+                    <ul className="mt-3.5 space-y-2 text-sm leading-relaxed">
+                      {job.bullets.map((line, j) => (
+                        <li key={j} className="flex gap-2.5">
+                          <span className="font-mono text-accent shrink-0" aria-hidden="true">
+                            -
+                          </span>
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-extrabold text-secondary tracking-[0.15em] uppercase mb-8 -ml-1">
+          <div className="min-w-0">
+            <h3 className="flex items-center gap-2.5 font-mono text-sm text-accent mb-7">
+              <GraduationCap size={16} className="shrink-0" aria-hidden="true" />
               {t.timeline.educationHeading}
-            </h4>
-            <div className="flex flex-col gap-6 md:gap-8">
+            </h3>
+            <div className="border-l border-line pl-6 md:pl-7 flex flex-col gap-5">
               {t.timeline.education.map((school, i) => (
-                <div
-                  key={i}
-                  className="relative rounded-2xl bg-white p-5 md:p-6 shadow-sm border border-outline-variant/15"
-                >
-                  <span className="absolute -left-[1.65rem] md:-left-[2.15rem] top-6 w-3 h-3 rounded-full bg-primary border-2 border-white shadow-sm" />
-                  <p className="text-base font-bold text-primary leading-snug">{school.school}</p>
-                  <div className="mt-4 space-y-4">
-                    {school.blocks.map((block, j) => (
-                      <div key={j} className="text-sm text-on-surface-variant leading-relaxed">
-                        <span className="font-semibold text-on-surface">{block.period}</span>
-                        {' — '}
-                        <span>{block.description}</span>
-                      </div>
-                    ))}
+                <Reveal key={i} delay={i * 70} className="relative">
+                  <span
+                    className="absolute -left-[1.84rem] md:-left-[2.09rem] top-7 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-surface"
+                    aria-hidden="true"
+                  />
+                  <div className="rounded-lg border border-line bg-surface p-5 md:p-6 hover:border-accent/50 transition-colors">
+                    <p className="text-base font-semibold text-ink leading-snug">{school.school}</p>
+                    <div className="mt-3.5 space-y-3.5">
+                      {school.blocks.map((block, j) => (
+                        <div key={j} className="text-sm leading-relaxed">
+                          <span className="inline-block rounded border border-line px-2 py-0.5 font-mono text-xs text-accent">
+                            {block.period}
+                          </span>
+                          <span className="block mt-1.5 text-ink">{block.description}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -639,25 +930,51 @@ const Achievements = () => {
   const { t } = useI18n();
 
   return (
-    <section id="achievements" className="py-24 px-6 bg-primary">
+    <section id="achievements" className="py-16 md:py-24 px-6 border-t border-line">
       <div className="max-w-3xl mx-auto">
-        <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 font-manrope tracking-tight text-white drop-shadow-sm">
-          {t.achievements.title}
-        </h3>
-        <div className="rounded-2xl bg-white p-6 md:p-9 shadow-2xl shadow-black/25 ring-1 ring-black/10">
-          <div className="flex flex-col gap-8 md:gap-10">
-            {t.achievements.groups.map((group, i) => (
-              <div key={i}>
-                <p className="text-lg md:text-xl font-bold text-secondary mb-3 tracking-tight">
-                  {group.year}
-                </p>
-                <ul className="list-disc list-outside ml-5 space-y-2.5 text-base md:text-lg leading-relaxed text-on-surface marker:text-primary">
-                  {group.items.map((item, j) => (
-                    <li key={j}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+        <SectionHeading title={t.achievements.title} align="center" />
+        <div className="rounded-lg border border-line bg-panel p-6 md:p-10">
+          <p className="font-mono text-xs text-muted mb-8">
+            <span className="text-accent" aria-hidden="true">
+              $&nbsp;
+            </span>
+            git log --achievements
+          </p>
+          <div className="flex flex-col">
+            {t.achievements.groups.map((group, i) => {
+              const isLast = i === t.achievements.groups.length - 1;
+              return (
+                <Reveal
+                  key={i}
+                  delay={i * 80}
+                  className="grid grid-cols-[4rem_1fr] md:grid-cols-[6.5rem_1fr] gap-4 md:gap-8"
+                >
+                  <div className="pt-px text-right">
+                    <span className="font-mono text-sm font-bold text-accent">
+                      {group.year}
+                    </span>
+                  </div>
+                  <div
+                    className={`relative border-l border-line pl-5 md:pl-7 ${isLast ? 'pb-1' : 'pb-8'}`}
+                  >
+                    <span
+                      className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-panel"
+                      aria-hidden="true"
+                    />
+                    <ul className="space-y-2.5 text-base leading-relaxed text-ink">
+                      {group.items.map((item, j) => (
+                        <li key={j} className="flex gap-2.5">
+                          <span className="font-mono text-accent shrink-0" aria-hidden="true">
+                            -
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -665,42 +982,201 @@ const Achievements = () => {
   );
 };
 
-const Certifications = () => {
+const Album = () => {
   const { t } = useI18n();
-  const certUi = [
-    { icon: <Globe size={32} />, color: 'hover:bg-primary' },
-    { icon: <Brain size={32} />, color: 'hover:bg-secondary-container' },
-    { icon: <Database size={32} />, color: 'hover:bg-tertiary' },
-    { icon: <Terminal size={32} />, color: 'hover:bg-primary-container' },
+  const photos = t.album.photos;
+  const [active, setActive] = useState<number | null>(null);
+
+  const close = useCallback(() => setActive(null), []);
+  const go = useCallback(
+    (dir: number) =>
+      setActive((a) =>
+        a === null ? a : (a + dir + photos.length) % photos.length,
+      ),
+    [photos.length],
+  );
+
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') go(1);
+      else if (e.key === 'ArrowLeft') go(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [active, close, go]);
+
+  return (
+    <section id="album" className="py-16 md:py-24 px-6 border-t border-line">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeading kicker={t.album.kicker} title={t.album.title} align="center" />
+        <p className="-mt-8 md:-mt-10 mb-10 text-center text-sm text-muted max-w-2xl mx-auto">
+          {t.album.note}
+        </p>
+
+        {photos.length ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            {photos.map((photo, i) => (
+              <Reveal key={photo.src} delay={i * 60}>
+                <button
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className="group relative block w-full aspect-square rounded-lg border border-line overflow-hidden bg-panel hover:border-accent/50 transition-colors"
+                >
+                  <img
+                    src={publicUrl(photo.src)}
+                    alt={photo.caption}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-surface/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="block font-mono text-xs text-ink text-left leading-snug">
+                      {photo.caption}
+                    </span>
+                  </span>
+                </button>
+              </Reveal>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-dashed border-line bg-panel/40 py-16 flex flex-col items-center gap-3 text-muted">
+            <ImageIcon size={28} className="text-accent" aria-hidden="true" />
+            <p className="font-mono text-sm">{t.album.empty}</p>
+          </div>
+        )}
+      </div>
+
+      {active !== null ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={photos[active].caption}
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-surface/95 backdrop-blur-sm p-4 md:p-8"
+          onClick={close}
+        >
+          <button
+            type="button"
+            onClick={close}
+            aria-label={t.album.closeLabel}
+            className="absolute top-4 right-4 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
+          >
+            <X size={20} />
+          </button>
+
+          {photos.length > 1 ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                go(-1);
+              }}
+              aria-label={t.album.prevLabel}
+              className="absolute left-3 md:left-6 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
+            >
+              <ChevronLeft size={22} />
+            </button>
+          ) : null}
+
+          <figure
+            className="max-w-4xl w-full flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={publicUrl(photos[active].src)}
+              alt={photos[active].caption}
+              className="max-h-[78vh] w-auto max-w-full rounded-lg border border-line object-contain"
+            />
+            <figcaption className="mt-4 font-mono text-sm text-muted text-center">
+              <span className="text-accent" aria-hidden="true">
+                {String(active + 1).padStart(2, '0')}
+              </span>
+              {' / '}
+              {String(photos.length).padStart(2, '0')} · {photos[active].caption}
+            </figcaption>
+          </figure>
+
+          {photos.length > 1 ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                go(1);
+              }}
+              aria-label={t.album.nextLabel}
+              className="absolute right-3 md:right-6 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
+            >
+              <ChevronRight size={22} />
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+    </section>
+  );
+};
+
+const Contact = () => {
+  const { t } = useI18n();
+  const contactItems = [
+    {
+      label: t.contact.emailLabel,
+      value: t.contact.email,
+      href: `mailto:${t.contact.email}`,
+      icon: <Mail size={18} />,
+    },
+    {
+      label: t.contact.phoneLabel,
+      value: t.contact.phone,
+      href: `tel:${t.contact.phone.replace(/\s/g, '')}`,
+      icon: <Phone size={18} />,
+    },
   ];
 
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold text-on-surface">{t.certs.title}</h3>
+    <section id="contact" className="py-16 md:py-24 px-6 border-t border-line">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-start">
+        <div className="min-w-0">
+          <p className="font-mono text-sm text-accent mb-3">
+            <span aria-hidden="true">{'// '}</span>
+            {t.contact.kicker}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink mb-6 leading-tight break-words">
+            {t.contact.title}
+          </h2>
+          <p className="text-base leading-relaxed mb-8 break-words">
+            {t.contact.description}
+          </p>
+          <a
+            href={`mailto:${t.contact.email}`}
+            className="inline-flex max-w-full items-center gap-2 px-6 py-3 rounded-md bg-accent text-accent-ink font-semibold text-sm hover:brightness-110 transition-[filter]"
+          >
+            <Mail size={16} className="shrink-0" />
+            {t.contact.cta}
+          </a>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {t.certs.items.map((cert, i) => {
-            const ui = certUi[i];
-            return (
-              <motion.div
-                key={i}
-                className={`p-6 bg-surface-container-low rounded-2xl flex flex-col items-center text-center group ${ui.color} transition-colors duration-500`}
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="text-primary group-hover:text-white mb-4 transition-colors">
-                  {ui.icon}
-                </div>
-                <h5 className="font-bold group-hover:text-white transition-colors">
-                  {cert.label}
-                </h5>
-                <p className="text-xs group-hover:text-white/80 transition-colors">
-                  {cert.sub}
-                </p>
-              </motion.div>
-            );
-          })}
+
+        <div className="grid gap-4 min-w-0">
+          {contactItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className="group flex min-w-0 items-center gap-4 rounded-lg border border-line bg-panel p-5 hover:border-accent/50 transition-colors"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line text-accent">
+                {item.icon}
+              </span>
+              <span className="min-w-0">
+                <span className="block font-mono text-xs text-muted">{item.label}</span>
+                <span className="block break-words font-mono text-sm font-semibold text-ink group-hover:text-accent transition-colors">
+                  {item.value}
+                </span>
+              </span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
@@ -709,56 +1185,26 @@ const Certifications = () => {
 
 const Footer = () => {
   const { t } = useI18n();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-surface py-12 mt-20 border-t border-outline-variant/10">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 text-sm">
-        <div>
-          <h5 className="font-bold text-on-surface mb-6">{t.footer.quickLinks}</h5>
-          <div className="flex flex-col gap-3">
-            {t.footer.links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.href.startsWith('http') ? '_blank' : undefined}
-                rel={
-                  link.href.startsWith('http')
-                    ? 'noopener noreferrer'
-                    : undefined
-                }
-                className="text-on-surface-variant hover:text-secondary-container transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h5 className="font-bold text-on-surface mb-6">{t.footer.personalTitle}</h5>
-          <div className="space-y-3 text-on-surface-variant">
+    <footer className="border-t border-line py-10">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4 font-mono text-xs md:flex-row md:justify-between">
+        <p className="text-center md:text-left">
+          © {year} Bảo Phong · {t.footer.tagline}
+        </p>
+        <div className="flex items-center gap-5">
+          {t.footer.links.map((link) => (
             <a
-              href="tel:+84775753003"
-              className="flex items-center gap-2 hover:text-primary transition-colors"
-            >
-              <Phone size={16} className="shrink-0 text-primary" aria-hidden />
-              <span>{t.footer.phone}</span>
-            </a>
-            <a
-              href={`mailto:${t.footer.email}`}
-              className="flex items-center gap-2 hover:text-primary transition-colors break-all"
-            >
-              <Mail size={16} className="shrink-0 text-primary" aria-hidden />
-              <span>{t.footer.email}</span>
-            </a>
-            <a
-              href={t.footer.facebookUrl}
+              key={link.label}
+              href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="block hover:text-primary transition-colors break-all underline-offset-2 hover:underline"
+              className="transition-colors hover:text-accent"
             >
-              {t.footer.facebookUrl}
+              {link.label}
             </a>
-          </div>
+          ))}
         </div>
       </div>
     </footer>
@@ -768,17 +1214,21 @@ const Footer = () => {
 function AppContent() {
   return (
     <div className="min-h-screen">
+      <Preloader />
+      <CustomCursor />
+      <SkipLink />
       <Navbar />
       <main>
         <Hero />
-        <Metrics />
         <About />
+        <Metrics />
         <Strengths />
         <Workflow />
         <Projects />
         <Timeline />
+        <Album />
         <Achievements />
-        <Certifications />
+        <Contact />
       </main>
       <Footer />
     </div>
