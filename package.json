@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "optimize:album": "node scripts/optimize-album.mjs"
+    "optimize:album": "node scripts/optimize-album.mjs",
+    "og": "node scripts/make-og-image.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
