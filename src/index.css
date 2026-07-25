@@ -70,6 +70,71 @@
   mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black 40%, transparent 100%);
 }
 
+/* --- Băng ảnh tự chạy ngang (marquee) --- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 95s linear infinite;
+}
+
+/* Chấm "live" nhấp nháy cho nhãn auto-scroll */
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Nhân đôi nội dung: chạy từ 0 về -50% = trôi từ phải sang trái, lặp liền mạch */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Dừng khi rê chuột hoặc khi focus bằng bàn phím */
+.marquee:hover .marquee-track,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
+
 /* Blinking terminal cursor in the navbar brand */
 .cursor-blink {
   animation: cursor-blink 1.1s steps(2, start) infinite;

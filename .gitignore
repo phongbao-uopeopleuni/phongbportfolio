@@ -9,3 +9,6 @@ coverage/
 
 # Claude Code local settings (personal, không chia sẻ)
 .claude/settings.local.json
+
+# Ảnh gốc album (đã tối ưu sang .webp trong public; giữ bản gốc ngoài deploy)
+_album-originals/

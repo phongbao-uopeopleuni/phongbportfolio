@@ -1012,50 +1012,82 @@ const Album = () => {
   }, [active, close, go]);
 
   return (
-    <section id="album" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading kicker={t.album.kicker} title={t.album.title} align="center" />
-        <p className="-mt-8 md:-mt-10 mb-10 text-center text-sm text-muted max-w-2xl mx-auto">
-          {t.album.note}
+    <section id="album" className="py-16 md:py-24 border-t border-line overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 text-center">
+        <p className="font-mono text-sm text-accent mb-4 flex flex-wrap items-center justify-center gap-x-2">
+          <span aria-hidden="true">$</span>
+          <span>
+            open <span className="text-ink">~/album</span> --slideshow
+          </span>
+          <span className="cursor-blink text-accent" aria-hidden="true">
+            _
+          </span>
         </p>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
+          {t.album.title}
+        </h2>
+        <div className="mt-6 mb-10 flex flex-wrap items-center justify-center gap-2 font-mono text-xs text-muted">
+          {t.album.tags.map((tag, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1"
+            >
+              <Zap size={12} className="text-accent" aria-hidden="true" />
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
 
-        {photos.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {photos.map((photo, i) => (
-              <Reveal key={photo.src} delay={i * 60}>
+      {photos.length ? (
+        // Băng ảnh tự chạy ngang (marquee) — nhân đôi để lặp liền mạch
+        <div className="marquee">
+          <div className="marquee-track">
+            {photos.concat(photos).map((photo, i) => {
+              const real = i % photos.length;
+              const isClone = i >= photos.length;
+              return (
                 <button
+                  key={i}
                   type="button"
-                  onClick={() => setActive(i)}
-                  className="group relative block w-full aspect-square rounded-lg border border-line overflow-hidden bg-panel hover:border-accent/50 transition-colors"
+                  onClick={() => setActive(real)}
+                  aria-hidden={isClone ? 'true' : undefined}
+                  tabIndex={isClone ? -1 : undefined}
+                  aria-label={photo.caption || t.album.photoAlt}
+                  className="marquee-item group relative block h-44 md:h-56 mr-3 md:mr-4 shrink-0 rounded-lg border border-line overflow-hidden bg-panel hover:border-accent/50 transition-colors"
                 >
                   <img
                     src={publicUrl(photo.src)}
-                    alt={photo.caption}
+                    alt={isClone ? '' : photo.caption || t.album.photoAlt}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="h-full w-auto max-w-none object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-surface/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="block font-mono text-xs text-ink text-left leading-snug">
-                      {photo.caption}
+                  {photo.caption ? (
+                    <span className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-surface/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="block font-mono text-xs text-ink text-left leading-snug">
+                        {photo.caption}
+                      </span>
                     </span>
-                  </span>
+                  ) : null}
                 </button>
-              </Reveal>
-            ))}
+              );
+            })}
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div className="max-w-6xl mx-auto px-6">
           <div className="rounded-lg border border-dashed border-line bg-panel/40 py-16 flex flex-col items-center gap-3 text-muted">
             <ImageIcon size={28} className="text-accent" aria-hidden="true" />
             <p className="font-mono text-sm">{t.album.empty}</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {active !== null ? (
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={photos[active].caption}
+          aria-label={photos[active].caption || t.album.photoAlt}
           className="fixed inset-0 z-[60] flex items-center justify-center bg-surface/95 backdrop-blur-sm p-4 md:p-8"
           onClick={close}
         >
@@ -1088,7 +1120,7 @@ const Album = () => {
           >
             <img
               src={publicUrl(photos[active].src)}
-              alt={photos[active].caption}
+              alt={photos[active].caption || t.album.photoAlt}
               className="max-h-[78vh] w-auto max-w-full rounded-lg border border-line object-contain"
             />
             <figcaption className="mt-4 font-mono text-sm text-muted text-center">
@@ -1096,7 +1128,8 @@ const Album = () => {
                 {String(active + 1).padStart(2, '0')}
               </span>
               {' / '}
-              {String(photos.length).padStart(2, '0')} · {photos[active].caption}
+              {String(photos.length).padStart(2, '0')}
+              {photos[active].caption ? ` · ${photos[active].caption}` : ''}
             </figcaption>
           </figure>
 
