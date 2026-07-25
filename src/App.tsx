@@ -839,6 +839,68 @@ const Projects = () => {
             );
           })}
         </div>
+
+        {/* Tầng 2: website đã hoàn thiện — lưới card, thêm dự án mới không cần ảnh */}
+        {t.projects.works.length ? (
+          <div className="mt-20 md:mt-28 pt-12 md:pt-16 border-t border-line">
+            <div className="mb-8 md:mb-10">
+              <p className="font-mono text-sm text-accent mb-3">
+                <span aria-hidden="true">{'// '}</span>
+                {t.projects.worksKicker}
+              </p>
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-ink">
+                {t.projects.worksTitle}
+              </h3>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
+                {t.projects.worksNote}
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {t.projects.works.map((work, i) => (
+                <a
+                  key={i}
+                  href={work.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex min-w-0 flex-col rounded-lg border border-line bg-panel p-5 transition-colors hover:border-accent ${
+                    work.highlight ? 'sm:col-span-2' : ''
+                  }`}
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-mono text-xs text-muted">[{work.type}]</p>
+                    {work.wip ? (
+                      <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-accent">
+                        {t.projects.worksWipBadge}
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <p className="mt-2.5 text-base font-semibold leading-snug text-ink">
+                    {work.name}
+                  </p>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed">{work.role}</p>
+
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {work.stack.map((item, j) => (
+                      <span
+                        key={j}
+                        className="rounded border border-line px-2 py-0.5 font-mono text-[11px]"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-accent">
+                    {work.wip ? t.projects.worksWip : t.projects.worksLive}
+                    <ArrowUpRight size={14} className="shrink-0" />
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -1219,12 +1281,53 @@ const Contact = () => {
 const Footer = () => {
   const { t } = useI18n();
   const year = new Date().getFullYear();
+  const line = `© ${year} Bảo Phong`;
+  const [typed, setTyped] = useState('');
+  const lineRef = useRef<HTMLParagraphElement>(null);
+
+  /* Gõ từng ký tự khi footer lọt vào khung nhìn; hiện thẳng nếu người dùng tắt chuyển động. */
+  useEffect(() => {
+    const el = lineRef.current;
+    if (!el) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setTyped(line);
+      return;
+    }
+
+    let timer: number | undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        let i = 0;
+        timer = window.setInterval(() => {
+          i += 1;
+          setTyped(line.slice(0, i));
+          if (i >= line.length) window.clearInterval(timer);
+        }, 55);
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      window.clearInterval(timer);
+    };
+  }, [line]);
 
   return (
     <footer className="border-t border-line py-10">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4 font-mono text-xs md:flex-row md:justify-between">
-        <p className="text-center md:text-left">
-          © {year} Bảo Phong · {t.footer.tagline}
+        <p ref={lineRef} className="text-center md:text-left">
+          {/* Đọc màn hình lấy chuỗi đầy đủ, phần gõ dần chỉ để nhìn */}
+          <span className="sr-only">{line}</span>
+          <span aria-hidden="true">
+            <span className="text-accent">$&nbsp;</span>
+            {typed}
+            <span className="cursor-blink text-accent">▍</span>
+          </span>
         </p>
         <div className="flex items-center gap-5">
           {t.footer.links.map((link) => (

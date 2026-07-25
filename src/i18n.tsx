@@ -17,6 +17,23 @@ export type Locale = 'vi' | 'en';
 
 export const defaultLocale: Locale = 'vi';
 
+/**
+ * Dự án web ở tầng 2 của mục "Dự án": chỉ text + link, không cần ảnh,
+ * nên thêm một dự án mới chỉ tốn thêm một object.
+ */
+export type ProjectWork = {
+  name: string;
+  /** Nhãn ngắn trong ngoặc vuông, ví dụ "Nhà hàng · Greenville, NC". */
+  type: string;
+  role: string;
+  stack: string[];
+  url: string;
+  /** Cho card chiếm 2 cột — dành cho dự án đáng chú ý nhất. */
+  highlight?: boolean;
+  /** Đang xây dựng: đổi nhãn link và thêm badge. */
+  wip?: boolean;
+};
+
 const en = {
   nav: {
     brand: 'Portfolio',
@@ -125,7 +142,7 @@ const en = {
     solution: 'Solution',
     technology: 'Technology',
     impact: 'Result / Impact',
-    screenshotSlot: 'Screenshot placeholder',
+    screenshotSlot: 'Photo from the actual project',
     watchVideo: 'Watch demo video',
     list: [
       {
@@ -170,6 +187,57 @@ const en = {
         videoUrl: 'https://youtu.be/zRkD5tdxXh4',
       },
     ],
+    worksKicker: 'Other work',
+    worksTitle: 'Websites & products shipped',
+    worksNote:
+      'Projects built outside of work — from a custom genealogy web app to local business websites in Vietnam and the United States.',
+    worksLive: 'Visit site',
+    worksWip: 'Preview build',
+    worksWipBadge: 'In progress',
+    works: [
+      {
+        name: 'Phòng Tuy Biên Quận Công online genealogy',
+        type: 'Web app · Nguyễn Phước clan',
+        role:
+          'Designed and built the whole platform: an interactive family tree across 8 generations, member search, PDF export, statistics, gravesite lookup, member registration, and a clan news and album section. Ancestral anniversary dates are counted down from the lunar calendar, and the lookup flow is reworked for phone-first use.',
+        stack: ['Web app', 'Interactive family tree', 'PDF export', 'Cloudflare'],
+        url: 'https://www.phongtuybienquancong.info/',
+        highlight: true,
+      },
+      {
+        name: 'EC Phở Vietnamese Noodle House',
+        type: 'Restaurant · Greenville, NC',
+        role:
+          'Menu and storytelling site with Gallery, Blog, and Contact pages, plus schema.org Restaurant structured data for local search.',
+        stack: ['React', 'Vite', 'Vercel', 'schema.org SEO'],
+        url: 'https://www.ecphonoodlehousenc.com/home-page',
+      },
+      {
+        name: "Fairy's House Huế",
+        type: 'Homestay · Huế, Vietnam',
+        role:
+          'Bilingual Vietnamese–English homestay site with a live Huế weather bar, a local travel guide section, and one-tap Zalo, hotline, and directions actions.',
+        stack: ['React', 'Vite', 'VI–EN bilingual', 'Local SEO'],
+        url: 'https://www.fairyshousehue.com/',
+      },
+      {
+        name: 'North Carolina Phở',
+        type: 'Restaurant · Washington, NC',
+        role:
+          'Bilingual English–Vietnamese restaurant site. Still being finished on a temporary Vercel domain before the official domain goes live.',
+        stack: ['React', 'Vite', 'Vercel', 'EN–VI bilingual'],
+        url: 'https://ncpho-ten.vercel.app/',
+        wip: true,
+      },
+      {
+        name: 'EC Star Nails & Spa',
+        type: 'Beauty salon · Greenville, NC',
+        role:
+          'Service site built on Google Sites: page structure for Services, Gallery, About, and Contact, plus the salon copy itself.',
+        stack: ['Google Sites', 'Content & IA'],
+        url: 'https://www.ecstarnailsandspagreenvillenc.com/',
+      },
+    ] as ProjectWork[],
   },
   timeline: {
     kicker: 'The journey',
@@ -370,7 +438,6 @@ const en = {
     cta: 'Connect with me',
   },
   footer: {
-    tagline: 'Training operations · Data integrity · Automation',
     links: [
       {
         label: 'GitHub',
@@ -492,7 +559,7 @@ const vi: typeof en = {
     solution: 'Giải pháp',
     technology: 'Công nghệ',
     impact: 'Kết quả / Tác động',
-    screenshotSlot: 'Vị trí ảnh minh họa',
+    screenshotSlot: 'Ảnh từ dự án thực tế',
     watchVideo: 'Xem video demo',
     list: [
       {
@@ -537,6 +604,57 @@ const vi: typeof en = {
         videoUrl: 'https://youtu.be/zRkD5tdxXh4',
       },
     ],
+    worksKicker: 'Sản phẩm khác',
+    worksTitle: 'Website & sản phẩm đã hoàn thiện',
+    worksNote:
+      'Các dự án làm ngoài công việc chính — từ web app gia phả tự phát triển đến website cho doanh nghiệp địa phương tại Việt Nam và Hoa Kỳ.',
+    worksLive: 'Xem site',
+    worksWip: 'Xem bản dựng',
+    worksWipBadge: 'Đang xây dựng',
+    works: [
+      {
+        name: 'Gia phả online Phòng Tuy Biên Quận Công',
+        type: 'Web app · Nguyễn Phước Tộc',
+        role:
+          'Thiết kế và phát triển toàn bộ hệ thống: cây gia phả tương tác 8 đời, tìm kiếm thành viên, xuất PDF, thống kê, tra cứu mộ phần, đăng ký tài khoản và mục tin tức – album dòng họ. Ngày giỗ được đếm ngược theo lịch âm, luồng tra cứu tối ưu riêng cho điện thoại.',
+        stack: ['Web app', 'Cây gia phả tương tác', 'Xuất PDF', 'Cloudflare'],
+        url: 'https://www.phongtuybienquancong.info/',
+        highlight: true,
+      },
+      {
+        name: 'EC Phở Vietnamese Noodle House',
+        type: 'Nhà hàng · Greenville, NC',
+        role:
+          'Website giới thiệu và thực đơn với các trang Gallery, Blog, Contact; gắn dữ liệu có cấu trúc schema.org Restaurant phục vụ tìm kiếm địa phương.',
+        stack: ['React', 'Vite', 'Vercel', 'SEO schema.org'],
+        url: 'https://www.ecphonoodlehousenc.com/home-page',
+      },
+      {
+        name: "Fairy's House Huế",
+        type: 'Homestay · Huế',
+        role:
+          'Website homestay song ngữ Việt – Anh, có thanh thời tiết Huế cập nhật trực tiếp, chuyên mục cẩm nang du lịch và các nút liên hệ nhanh Zalo, hotline, chỉ đường.',
+        stack: ['React', 'Vite', 'Song ngữ VI–EN', 'SEO local'],
+        url: 'https://www.fairyshousehue.com/',
+      },
+      {
+        name: 'North Carolina Phở',
+        type: 'Nhà hàng · Washington, NC',
+        role:
+          'Website nhà hàng song ngữ Anh – Việt. Đang hoàn thiện trên tên miền tạm của Vercel trước khi trỏ về tên miền chính thức.',
+        stack: ['React', 'Vite', 'Vercel', 'Song ngữ EN–VI'],
+        url: 'https://ncpho-ten.vercel.app/',
+        wip: true,
+      },
+      {
+        name: 'EC Star Nails & Spa',
+        type: 'Làm đẹp · Greenville, NC',
+        role:
+          'Website dịch vụ dựng trên Google Sites: tổ chức cấu trúc trang Services, Gallery, About, Contact và biên tập toàn bộ nội dung giới thiệu tiệm.',
+        stack: ['Google Sites', 'Nội dung & cấu trúc trang'],
+        url: 'https://www.ecstarnailsandspagreenvillenc.com/',
+      },
+    ] as ProjectWork[],
   },
   timeline: {
     kicker: 'Hành trình',
@@ -736,7 +854,6 @@ const vi: typeof en = {
     cta: 'Kết nối với tôi',
   },
   footer: {
-    tagline: 'Vận hành đào tạo · Toàn vẹn dữ liệu · Tự động hóa',
     links: [
       {
         label: 'GitHub',
