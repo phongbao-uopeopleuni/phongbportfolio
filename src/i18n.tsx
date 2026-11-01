@@ -44,13 +44,15 @@ const en = {
     projects: 'Projects',
     timeline: 'Journey',
     album: 'Album',
+    canva: 'Designs',
     achievements: 'Achievements',
     certs: 'Certificates',
     contact: 'Contact',
   },
   hero: {
     roleLine1: 'Officer for Training Organization and Examination Management',
-    roleLine2: 'System Automation & Data Integrity Architect',
+    roleLine2:
+      'With more than five years in education, I have grown through roles in teaching, homeroom management, and training and examination operations. My Bachelor of Computer Science background enables me to apply technology and data to training management, from standardizing processes to improving learning effectiveness and the learner experience. I hope to contribute and grow with an organization over the long term.',
     badgeTrainingOps: 'Training operations',
     badgeDataIntegrity: 'Data integrity',
     badgeAutomation: 'Automation systems',
@@ -221,6 +223,15 @@ const en = {
         url: 'https://www.fairyshousehue.com/',
       },
       {
+        name: 'Dr. Nguyen Dac Nguyen Clinic',
+        type: 'Fertility & OB-GYN clinic · Hue, Vietnam',
+        role:
+          'Patient-facing clinic website with a doctor profile, care categories, appointment flow, health resources, FAQs, a consultation form, and one-tap Zalo, phone, and Google Maps actions. Currently being finalized on a temporary Vercel domain.',
+        stack: ['React', 'Vite', 'Vercel', 'Local SEO'],
+        url: 'https://drnguyenclinic.vercel.app/',
+        wip: true,
+      },
+      {
         name: 'North Carolina Phở',
         type: 'Restaurant · Washington, NC',
         role:
@@ -249,11 +260,13 @@ const en = {
         title:
           'Concurrent officer for training, examination & IT support',
         organization: 'FPT PolySchool Hue',
-        period: 'Apr 2024 – Present',
+        period: 'Apr 1, 2024 – Apr 30, 2026',
         bullets: [
-          'Managed term-based training and examination operations, including faculty assignment and assessments across cohorts.',
-          'Operated IAPS9, LMS9, CMS, Language Hub, and Fuge workflows to protect grade and student-record integrity.',
-          'Built Excel/Python support tools that reduced manual reporting and grade-processing work.',
+          'Planned and delivered teaching, training, and examination activities in compliance with institutional regulations, including faculty assignments, assessment schedules, and multi-cohort records coordination.',
+          'Managed learning data, academic results, grade distributions, and periodic reports while safeguarding the accuracy and integrity of student records.',
+          'Operated training and examination systems including IAPS9, LMS9, CMS, Udemy, EOS, FLM, Language Hub, and Fuge.',
+          'Coordinated with instructors and departments to maintain training quality.',
+          'Used Claude, ChatGPT, Codex, and NotebookLM to build tools and applications for training and examination operations; combined Excel/Python tools to reduce manual reporting and grade-processing work.',
         ],
       },
       {
@@ -277,7 +290,7 @@ const en = {
       {
         title: 'Intern',
         organization: 'Granville Medical Center, North Carolina, USA',
-        period: 'Period to be updated',
+        period: 'Jun 2019 – Dec 2019',
         bullets: [
           'Verification and data entry for medical records.',
         ],
@@ -285,7 +298,7 @@ const en = {
       {
         title: 'Volunteer',
         organization: 'Vidant Medical Center, North Carolina, USA',
-        period: 'Period to be updated',
+        period: 'Dec 5, 2017 – Feb 2018; Aug 2018 – Nov 2018',
         bullets: ['Patient Services department.'],
       },
     ],
@@ -295,21 +308,21 @@ const en = {
         blocks: [
           {
             period: 'Jun 2025 – Nov 2026',
-            description: 'Bachelor of Computer Science',
+            description: 'Bachelor of Science in Computer Science (B.S.)',
           },
         ],
       },
       {
-        school: 'Pitt Community College, North Carolina, USA',
+        school: 'Pitt Community College, USA',
         blocks: [
           {
             period: 'Aug 2017 – Dec 2019',
             description:
-              'Associate of Applied Science — Healthcare Management',
+              'Associate in Applied Science (AAS) — Healthcare Management',
           },
           {
             period: 'Jan 2015 – Dec 2016',
-            description: 'Associate in General Education',
+            description: 'Associate in General Education (AGE)',
           },
         ],
       },
@@ -319,15 +332,6 @@ const en = {
           {
             period: 'Jul 2014 – Dec 2014',
             description: 'ESL English program',
-          },
-        ],
-      },
-      {
-        school: 'Duy Tan University, Da Nang, Vietnam',
-        blocks: [
-          {
-            period: 'Aug 2012 – May 2014',
-            description: 'Information technology — Software engineering',
           },
         ],
       },
@@ -417,6 +421,17 @@ const en = {
       { src: '/images/album/images_30.webp', caption: '' },
     ],
   },
+  canvaAlbum: {
+    kicker: 'Creative work',
+    title: 'Album — Canva publications designed by me',
+    note:
+      'A selection of PC Express internal publications that I planned and designed in Canva for communication, events, and student activities.',
+    designAlt: 'PC Express publication designed in Canva',
+    closeLabel: 'Close design preview',
+    prevLabel: 'Previous design',
+    nextLabel: 'Next design',
+    itemsLabel: 'self-designed publications',
+  },
   certs: {
     title: 'Certificates & credentials',
     items: [
@@ -461,13 +476,15 @@ const vi: typeof en = {
     projects: 'Dự án',
     timeline: 'Hành trình',
     album: 'Album',
+    canva: 'Thiết kế',
     achievements: 'Thành tích',
     certs: 'Chứng chỉ',
     contact: 'Liên hệ',
   },
   hero: {
     roleLine1: 'Cán bộ Tổ chức và Quản lí Đào tạo, Khảo thí.',
-    roleLine2: 'Tự động hóa hệ thống & đảm bảo toàn vẹn dữ liệu',
+    roleLine2:
+      'Hơn 5 năm gắn bó với lĩnh vực giáo dục, trưởng thành qua các vai trò giảng dạy, chủ nhiệm và tổ chức đào tạo – khảo thí. Với nền tảng Cử nhân Khoa học Máy tính là lợi thế để ứng dụng công nghệ và dữ liệu vào công tác quản lý đào tạo, từ chuẩn hóa quy trình đến nâng cao hiệu quả học tập và trải nghiệm của học viên. Mong muốn được đồng hành và đóng góp lâu dài cùng tổ chức.',
     badgeTrainingOps: 'Vận hành đào tạo',
     badgeDataIntegrity: 'Toàn vẹn dữ liệu',
     badgeAutomation: 'Tự động hóa hệ thống',
@@ -638,6 +655,15 @@ const vi: typeof en = {
         url: 'https://www.fairyshousehue.com/',
       },
       {
+        name: 'Phòng khám TS.BS. Đắc Nguyên',
+        type: 'Hiếm muộn & Sản Phụ khoa · Huế',
+        role:
+          'Website giới thiệu phòng khám với hồ sơ bác sĩ, nhóm dịch vụ, quy trình đặt lịch, nội dung sức khỏe, FAQ, biểu mẫu tư vấn và các hành động nhanh qua Zalo, điện thoại, Google Maps. Đang hoàn thiện trên tên miền tạm của Vercel.',
+        stack: ['React', 'Vite', 'Vercel', 'SEO local'],
+        url: 'https://drnguyenclinic.vercel.app/',
+        wip: true,
+      },
+      {
         name: 'North Carolina Phở',
         type: 'Nhà hàng · Washington, NC',
         role:
@@ -665,11 +691,13 @@ const vi: typeof en = {
       {
         title: 'Kiêm nhiệm Cán bộ TC & QL Đào tạo/Khảo thí/CB IT',
         organization: 'FPT PolySchool Huế',
-        period: '01/4/2024 – hiện tại',
+        period: '01/4/2024 – 30/4/2026',
         bullets: [
-          'Quản lí vận hành đào tạo và khảo thí theo kỳ, gồm phân công giảng viên, lịch đánh giá và điều phối hồ sơ nhiều khóa.',
-          'Vận hành IAPS9, LMS9, CMS, Language Hub và Fuge để bảo đảm tính toàn vẹn điểm số, tiến độ và hồ sơ sinh viên.',
-          'Xây dựng công cụ Excel/Python giúp giảm thao tác báo cáo và xử lí điểm thủ công.',
+          'Lập kế hoạch và triển khai hoạt động giảng dạy, đào tạo, khảo thí theo đúng quy chế; phân công giảng viên, xây dựng lịch đánh giá và điều phối hồ sơ nhiều khóa.',
+          'Quản lý dữ liệu học tập, kết quả học tập, phổ điểm và báo cáo định kỳ, bảo đảm tính chính xác và toàn vẹn của hồ sơ sinh viên.',
+          'Vận hành các hệ thống đào tạo và thi gồm IAPS9, LMS9, CMS, Udemy, EOS, FLM, Language Hub và Fuge.',
+          'Phối hợp với giảng viên và các phòng ban nhằm bảo đảm chất lượng đào tạo.',
+          'Sử dụng thành thạo Claude, ChatGPT, Codex và NotebookLM để xây dựng công cụ, ứng dụng phục vụ vận hành đào tạo và khảo thí; kết hợp Excel/Python nhằm giảm thao tác báo cáo và xử lý điểm thủ công.',
         ],
       },
       {
@@ -693,38 +721,37 @@ const vi: typeof en = {
       {
         title: 'Thực tập sinh',
         organization: 'Granville Medical Center – tiểu bang North Carolina, Hoa Kỳ',
-        period: 'Thời gian sẽ cập nhật',
+        period: '06/2019 – 12/2019',
         bullets: ['Kiểm tra, xử lí nhập liệu hồ sơ bệnh án;'],
       },
       {
         title: 'Tình nguyện viên',
         organization: 'Vidant Medical Center – tiểu bang North Carolina, Hoa Kỳ',
-        period: 'Thời gian sẽ cập nhật',
+        period: '05/12/2017 – 02/2018; 08/2018 – 11/2018',
         bullets: ['Các hoạt động tại bộ phận Dịch vụ bệnh nhân.'],
       },
     ],
     education: [
       {
-        school: 'Trường Đại học University of the People, Hoa Kỳ',
+        school: 'University of the People, Hoa Kỳ',
         blocks: [
           {
             period: '06/2025 – 11/2026',
-            description: 'Cử nhân Khoa học máy tính',
+            description: 'Cử nhân Khoa học Máy tính (B.S.)',
           },
         ],
       },
       {
-        school:
-          'Trường Cao đẳng cộng đồng Pitt Community College – tiểu bang North Carolina, Hoa Kỳ',
+        school: 'Pitt Community College, Hoa Kỳ',
         blocks: [
           {
             period: '08/2017 – 12/2019',
             description:
-              'Cao đẳng Khoa học Ứng dụng, chuyên ngành Quản lí chăm sóc sức khỏe',
+              'Cao đẳng Khoa học Ứng dụng (AAS) – Quản lý Chăm sóc Sức khỏe',
           },
           {
             period: '01/2015 – 12/2016',
-            description: 'Cao đẳng Giáo dục Phổ thông',
+            description: 'Cao đẳng Giáo dục Đại cương (AGE)',
           },
         ],
       },
@@ -735,15 +762,6 @@ const vi: typeof en = {
           {
             period: '07/2014 – 12/2014',
             description: 'Chương trình tiếng Anh ESL',
-          },
-        ],
-      },
-      {
-        school: 'Trường Đại học Duy Tân – Đà Nẵng, Việt Nam',
-        blocks: [
-          {
-            period: '08/2012 – 05/2014',
-            description: 'Công nghệ thông tin – Kĩ thuật phần mềm',
           },
         ],
       },
@@ -832,6 +850,17 @@ const vi: typeof en = {
       { src: '/images/album/images_29.webp', caption: '' },
       { src: '/images/album/images_30.webp', caption: '' },
     ],
+  },
+  canvaAlbum: {
+    kicker: 'Sản phẩm sáng tạo',
+    title: 'Album — Các ấn phẩm tự thiết kế bằng Canva',
+    note:
+      'Tuyển chọn các ấn phẩm nội bộ PC Express do tôi lên ý tưởng và trực tiếp thiết kế trên Canva, phục vụ truyền thông, sự kiện và hoạt động sinh viên.',
+    designAlt: 'Ấn phẩm PC Express tự thiết kế bằng Canva',
+    closeLabel: 'Đóng bản xem thiết kế',
+    prevLabel: 'Thiết kế trước',
+    nextLabel: 'Thiết kế tiếp theo',
+    itemsLabel: 'ấn phẩm tự thiết kế',
   },
   certs: {
     title: 'Chứng chỉ & thành tích',
