@@ -43,8 +43,16 @@ const heroProfileFallback = publicUrl(
   `/images/hero/${encodeURIComponent('pic 1.jpg')}`,
 );
 
-/** Drop the CV file at public/cv/bao-phong-cv.pdf to make the hero CTA work. */
-const cvUrl = publicUrl('/cv/bao-phong-cv.pdf');
+/** Current CV file served from public/. */
+const cvUrl = publicUrl(`/${encodeURIComponent('1. PhongBCV_Updated.pdf')}`);
+
+const canvaDesigns = Array.from({length: 13}, (_, index) => {
+  const number = index + 1;
+  return {
+    number,
+    src: `/images/projects/canvathietke/${number}.webp`,
+  };
+});
 
 // --- Shared pieces ---
 
@@ -278,8 +286,9 @@ const Navbar = () => {
     { href: '#workflow', label: t.nav.workflow },
     { href: '#projects', label: t.nav.projects },
     { href: '#timeline', label: t.nav.timeline },
-    { href: '#album', label: t.nav.album },
     { href: '#achievements', label: t.nav.achievements },
+    { href: '#album', label: t.nav.album },
+    { href: '#canva-album', label: t.nav.canva },
     { href: '#contact', label: t.nav.contact },
   ];
 
@@ -440,13 +449,6 @@ const Hero = () => {
     );
   }, []);
 
-  const badges = [
-    { icon: <School size={14} />, text: t.hero.badgeTrainingOps },
-    { icon: <Database size={14} />, text: t.hero.badgeDataIntegrity },
-    { icon: <Settings size={14} />, text: t.hero.badgeAutomation },
-    { icon: <Zap size={14} />, text: t.hero.badgeToeic },
-  ];
-
   return (
     <section id="home" className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6 overflow-hidden">
       <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true"></div>
@@ -461,21 +463,9 @@ const Hero = () => {
           <p className="text-lg sm:text-xl text-ink font-medium mb-2 leading-snug break-words">
             {t.hero.roleLine1}
           </p>
-          <p className="font-mono text-sm sm:text-base text-muted mb-8 break-words">
+          <p className="max-w-3xl text-base sm:text-lg text-muted mb-10 leading-relaxed break-words">
             {t.hero.roleLine2}
           </p>
-
-          <ul className="flex flex-wrap gap-2.5 mb-10 list-none">
-            {badges.map((badge, i) => (
-              <li
-                key={i}
-                className="px-3 py-1.5 rounded-md border border-line bg-panel flex items-center gap-2 font-mono text-xs text-muted"
-              >
-                <span className="text-accent">{badge.icon}</span>
-                {badge.text}
-              </li>
-            ))}
-          </ul>
 
           <div className="flex flex-wrap gap-4">
             <a
@@ -1214,6 +1204,165 @@ const Album = () => {
   );
 };
 
+const CanvaAlbum = () => {
+  const {t} = useI18n();
+  const [active, setActive] = useState<number | null>(null);
+
+  const close = useCallback(() => setActive(null), []);
+  const go = useCallback(
+    (direction: number) =>
+      setActive((current) =>
+        current === null
+          ? current
+          : (current + direction + canvaDesigns.length) % canvaDesigns.length,
+      ),
+    [],
+  );
+
+  useEffect(() => {
+    if (active === null) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+      else if (event.key === 'ArrowRight') go(1);
+      else if (event.key === 'ArrowLeft') go(-1);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [active, close, go]);
+
+  return (
+    <section
+      id="canva-album"
+      className="py-16 md:py-24 px-6 border-t border-line bg-panel/30"
+    >
+      <div className="max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-[1fr_auto] md:items-end gap-5 mb-10 md:mb-12">
+          <div className="max-w-3xl">
+            <p className="font-mono text-sm text-accent mb-3">
+              <span aria-hidden="true">{'// '}</span>
+              {t.canvaAlbum.kicker}
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink leading-tight">
+              {t.canvaAlbum.title}
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-muted">
+              {t.canvaAlbum.note}
+            </p>
+          </div>
+          <p className="w-fit rounded-md border border-line bg-surface px-3 py-2 font-mono text-xs text-muted">
+            <span className="text-accent font-semibold">
+              {String(canvaDesigns.length).padStart(2, '0')}
+            </span>{' '}
+            {t.canvaAlbum.itemsLabel}
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {canvaDesigns.map((design, index) => {
+            const number = String(design.number).padStart(2, '0');
+            const label = `${t.canvaAlbum.designAlt} ${number}`;
+            return (
+              <Reveal key={design.number} delay={(index % 6) * 55}>
+                <button
+                  type="button"
+                  onClick={() => setActive(index)}
+                  aria-label={label}
+                  className="group block w-full overflow-hidden rounded-lg border border-line bg-surface text-left transition-colors hover:border-accent/60"
+                >
+                  <span className="relative block aspect-[4/3] overflow-hidden bg-panel">
+                    <img
+                      src={publicUrl(design.src)}
+                      alt={label}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                    />
+                    <span className="absolute inset-0 bg-accent/0 transition-colors group-hover:bg-accent/5" />
+                    <span className="absolute left-3 top-3 rounded border border-accent/40 bg-surface/90 px-2 py-1 font-mono text-xs font-semibold text-accent backdrop-blur-sm">
+                      {number}
+                    </span>
+                  </span>
+                  <span className="flex items-center justify-between gap-3 px-4 py-3">
+                    <span className="font-mono text-sm text-ink">PC Express</span>
+                    <span className="inline-flex items-center gap-1 font-mono text-xs text-muted transition-colors group-hover:text-accent">
+                      Canva
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </span>
+                  </span>
+                </button>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+
+      {active !== null ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${t.canvaAlbum.designAlt} ${String(canvaDesigns[active].number).padStart(2, '0')}`}
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-surface/95 p-4 backdrop-blur-sm md:p-8"
+          onClick={close}
+        >
+          <button
+            type="button"
+            onClick={close}
+            aria-label={t.canvaAlbum.closeLabel}
+            className="absolute right-4 top-4 rounded-md border border-line p-2 text-ink transition-colors hover:border-accent hover:text-accent"
+          >
+            <X size={20} />
+          </button>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              go(-1);
+            }}
+            aria-label={t.canvaAlbum.prevLabel}
+            className="absolute left-3 rounded-md border border-line bg-surface/80 p-2 text-ink transition-colors hover:border-accent hover:text-accent md:left-6"
+          >
+            <ChevronLeft size={22} />
+          </button>
+
+          <figure
+            className="flex w-full max-w-6xl flex-col items-center"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img
+              src={publicUrl(canvaDesigns[active].src)}
+              alt={`${t.canvaAlbum.designAlt} ${String(canvaDesigns[active].number).padStart(2, '0')}`}
+              className="max-h-[82vh] max-w-full rounded-lg border border-line object-contain"
+            />
+            <figcaption className="mt-4 font-mono text-sm text-muted">
+              <span className="text-accent">
+                {String(active + 1).padStart(2, '0')}
+              </span>{' '}
+              / {String(canvaDesigns.length).padStart(2, '0')} · PC Express
+            </figcaption>
+          </figure>
+
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              go(1);
+            }}
+            aria-label={t.canvaAlbum.nextLabel}
+            className="absolute right-3 rounded-md border border-line bg-surface/80 p-2 text-ink transition-colors hover:border-accent hover:text-accent md:right-6"
+          >
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      ) : null}
+    </section>
+  );
+};
+
 const Contact = () => {
   const { t } = useI18n();
   const contactItems = [
@@ -1362,8 +1511,9 @@ function AppContent() {
         <Workflow />
         <Projects />
         <Timeline />
-        <Album />
         <Achievements />
+        <Album />
+        <CanvaAlbum />
         <Contact />
       </main>
       <Footer />

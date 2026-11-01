@@ -12,3 +12,6 @@ coverage/
 
 # Ảnh gốc album (đã tối ưu sang .webp trong public; giữ bản gốc ngoài deploy)
 _album-originals/
+
+# Ảnh Canva gốc (đã tối ưu sang WebP trong public; giữ ngoài deploy)
+_canvathietke-originals/
