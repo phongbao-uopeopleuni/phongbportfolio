@@ -28,8 +28,9 @@ import {
   ChevronLeft,
   ImageIcon,
 } from 'lucide-react';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import type { ReactNode } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { I18nProvider, useI18n } from './i18n';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
@@ -1521,10 +1522,32 @@ function AppContent() {
   );
 }
 
+/* Showcase nap rieng: nguoi vao trang chu khong tai code cua no. */
+const ShowcaseRoutes = lazy(() => import('./features/showcase/ShowcaseRoutes'));
+
+const RouteFallback = () => (
+  <div className="min-h-screen flex items-center justify-center font-mono text-sm text-muted">
+    <span className="preloader-spinner mr-3" aria-hidden="true" />
+    <span>loading…</span>
+  </div>
+);
+
 export default function App() {
   return (
     <I18nProvider>
-      <AppContent />
+      <Routes>
+        <Route path="/" element={<AppContent />} />
+        <Route
+          path="/showcase/*"
+          element={
+            <Suspense fallback={<RouteFallback />}>
+              <ShowcaseRoutes />
+            </Suspense>
+          }
+        />
+        {/* Duong dan la: dua ve portfolio thay vi hien trang trong */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </I18nProvider>
   );
 }
