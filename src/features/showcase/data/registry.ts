@@ -1,8 +1,8 @@
 import type {ShowcaseProject} from '../types/showcase';
 
-/** Tat toan bo khu vuc showcase ma khong can revert: link dieu huong bien mat
- *  va /showcase chuyen huong ve trang chu. */
-export const SHOWCASE_ENABLED = true;
+/* Co bat/tat nam o ../enabled.ts de App.tsx doc duoc ma khong phai keo
+   toan bo registry vao chunk trang chu. */
+export {SHOWCASE_ENABLED} from '../enabled';
 
 /** Chi liet ke du an CO THAT va chay duoc. Khong dua du an du dinh vao day. */
 export const PROJECTS: ShowcaseProject[] = [

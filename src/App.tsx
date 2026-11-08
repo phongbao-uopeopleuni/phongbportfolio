@@ -30,7 +30,8 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import type { ReactNode } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
+import { SHOWCASE_ENABLED } from './features/showcase/enabled';
 import { I18nProvider, useI18n } from './i18n';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
@@ -372,6 +373,14 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          {SHOWCASE_ENABLED && (
+            <Link
+              to="/showcase"
+              className="hidden sm:inline rounded-md border border-line px-3 py-1.5 font-mono text-xs text-accent transition-colors hover:border-accent"
+            >
+              /showcase
+            </Link>
+          )}
           <div className="flex items-center border border-line rounded-md px-1">
             <button
               type="button"
@@ -435,6 +444,16 @@ const Navbar = () => {
               {item.label}
             </a>
           ))}
+          {SHOWCASE_ENABLED && (
+            <Link
+              to="/showcase"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-2 border-t border-line pt-4 font-mono text-sm text-accent"
+            >
+              <span aria-hidden="true">{'/ '}</span>
+              {t.nav.showcase}
+            </Link>
+          )}
         </div>
       )}
     </nav>
@@ -1540,9 +1559,13 @@ export default function App() {
         <Route
           path="/showcase/*"
           element={
-            <Suspense fallback={<RouteFallback />}>
-              <ShowcaseRoutes />
-            </Suspense>
+            SHOWCASE_ENABLED ? (
+              <Suspense fallback={<RouteFallback />}>
+                <ShowcaseRoutes />
+              </Suspense>
+            ) : (
+              <Navigate to="/" replace />
+            )
           }
         />
         {/* Duong dan la: dua ve portfolio thay vi hien trang trong */}
