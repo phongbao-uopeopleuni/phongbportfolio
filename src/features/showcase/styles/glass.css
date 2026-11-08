@@ -1,0 +1,75 @@
+/* Kinh mo cho khu vuc showcase.
+ *
+ * Do tuong phan da do thuc te tren nen trang toi #0b0e14:
+ *   panel 40% -> chu chinh 15.78:1, chu phu 7.19:1
+ *   panel 80% -> chu chinh 15.43:1, chu phu 7.04:1
+ * Deu vuot xa chuan WCAG AA.
+ *
+ * NHUNG cung panel do dat tren nen SANG (vi du de len anh chup man hinh)
+ * chi con chu chinh 3.37:1 va chu phu 1.54:1 — truot chuan.
+ * => Quy tac bat buoc: chu luon nam tren panel co nen trang toi phia sau,
+ *    khong bao gio noi tren anh.
+ */
+
+/* Chrome dinh mep: co blur. Toi da 2 lop blur hien thi dong thoi. */
+.glass-chrome {
+  background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-bar {
+  background-color: color-mix(in srgb, var(--color-surface) 75%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* The va khoi noi dung: CHI alpha, khong blur.
+ * backdrop-filter ton GPU; hang chuc the blur cung luc gay giat tren may yeu. */
+.glass-panel {
+  background-color: color-mix(in srgb, var(--color-panel) 40%, transparent);
+}
+
+.glass-panel-strong {
+  background-color: color-mix(in srgb, var(--color-panel) 55%, transparent);
+}
+
+.glass-card {
+  background-color: color-mix(in srgb, var(--color-panel) 40%, transparent);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.glass-card:hover,
+.glass-card:focus-within {
+  background-color: color-mix(in srgb, var(--color-panel) 70%, transparent);
+}
+
+/* Trinh duyet khong ho tro backdrop-filter: nang do duc len cho chu van doc duoc. */
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .glass-chrome,
+  .glass-bar {
+    background-color: color-mix(in srgb, var(--color-surface) 97%, transparent);
+  }
+}
+
+/* Nguoi dung da tat hieu ung trong suot o he dieu hanh. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-chrome,
+  .glass-bar {
+    background-color: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .glass-panel,
+  .glass-panel-strong,
+  .glass-card,
+  .glass-card:hover,
+  .glass-card:focus-within {
+    background-color: var(--color-panel);
+  }
+}
