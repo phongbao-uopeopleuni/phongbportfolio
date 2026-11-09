@@ -1,5 +1,5 @@
 /**
- * Thuat toan lap lich CPU - ham thuan, khong phu thuoc React.
+ * Thuat toan lap lich CPU — ham thuan, khong phu thuoc React.
  * Mo phong theo tung nhip thoi gian nguyen (tick): mot vong lap duy nhat phuc vu
  * ca nam thuat toan, va tu no sinh ra dong thoi gian lan cac su kien giai thich.
  */
@@ -39,11 +39,11 @@ export type ScheduleResult = {
 };
 
 export const ALGORITHMS: {id: Algorithm; label: {vi: string; en: string}}[] = [
-  {id: 'fcfs', label: {vi: 'FCFS - d?n tru?c ch?y tru?c', en: 'FCFS'}},
-  {id: 'sjf', label: {vi: 'SJF - ng?n nh?t tru?c', en: 'SJF'}},
-  {id: 'srtf', label: {vi: 'SRTF - c�n l?i ng?n nh?t', en: 'SRTF'}},
-  {id: 'rr', label: {vi: 'Round Robin - xoay v�ng', en: 'Round Robin'}},
-  {id: 'priority', label: {vi: 'Priority - theo d? uu ti�n', en: 'Priority'}},
+  {id: 'fcfs', label: {vi: 'FCFS — đến trước chạy trước', en: 'FCFS'}},
+  {id: 'sjf', label: {vi: 'SJF — ngắn nhất trước', en: 'SJF'}},
+  {id: 'srtf', label: {vi: 'SRTF — còn lại ngắn nhất', en: 'SRTF'}},
+  {id: 'rr', label: {vi: 'Round Robin — xoay vòng', en: 'Round Robin'}},
+  {id: 'priority', label: {vi: 'Priority — theo độ ưu tiên', en: 'Priority'}},
 ];
 
 export const isPreemptive = (a: Algorithm) => a === 'srtf' || a === 'rr';
@@ -176,7 +176,7 @@ export function schedule(
         firstRun.set(current, t);
         events.push({
           t,
-          vi: `t=${t}: ${current} ch?y l?n d?u, sau ${t - p.arrival} don v? ch?.`,
+          vi: `t=${t}: ${current} chạy lần đầu, sau ${t - p.arrival} đơn vị chờ.`,
           en: `t=${t}: ${current} runs for the first time, after waiting ${t - p.arrival}.`,
         });
       } else if (previous) {
@@ -184,17 +184,17 @@ export function schedule(
           t,
           vi:
             algorithm === 'srtf'
-              ? `t=${t}: ${current} gi�nh CPU v� c�n ${rem.get(current)} �t hon ${rem.get(previous)} c?a ${previous}.`
-              : `t=${t}: CPU chuy?n sang ${current}.`,
+              ? `t=${t}: ${current} giành CPU vì còn ${rem.get(current)} ít hơn ${rem.get(previous)} của ${previous}.`
+              : `t=${t}: CPU chuyển sang ${current}.`,
           en:
             algorithm === 'srtf'
-              ? `t=${t}: ${current} preempts - ${rem.get(current)} left versus ${rem.get(previous)} for ${previous}.`
+              ? `t=${t}: ${current} preempts — ${rem.get(current)} left versus ${rem.get(previous)} for ${previous}.`
               : `t=${t}: the CPU switches to ${current}.`,
         });
       } else {
         events.push({
           t,
-          vi: `t=${t}: ${current} ch?y ti?p, c�n ${rem.get(current)}.`,
+          vi: `t=${t}: ${current} chạy tiếp, còn ${rem.get(current)}.`,
           en: `t=${t}: ${current} resumes with ${rem.get(current)} left.`,
         });
       }
@@ -210,7 +210,7 @@ export function schedule(
         done += 1;
         events.push({
           t: t + 1,
-          vi: `t=${t + 1}: ${current} ho�n th�nh.`,
+          vi: `t=${t + 1}: ${current} hoàn thành.`,
           en: `t=${t + 1}: ${current} completes.`,
         });
         current = null;
@@ -218,7 +218,7 @@ export function schedule(
       } else if (algorithm === 'rr' && quantumLeft === 0) {
         events.push({
           t: t + 1,
-          vi: `t=${t + 1}: ${current} h?t lu?ng t?, xu?ng cu?i h�ng, c�n ${rem.get(current)}.`,
+          vi: `t=${t + 1}: ${current} hết lượng tử, xuống cuối hàng, còn ${rem.get(current)}.`,
           en: `t=${t + 1}: ${current} exhausts its quantum and moves to the back of the queue with ${rem.get(current)} left.`,
         });
         pendingRequeue = current;

@@ -4,7 +4,7 @@ import {useI18n} from '../../../i18n';
 import {S} from '../i18n/strings';
 
 /** Header rieng cua showcase. Khong tai dung Navbar cua portfolio vi Navbar
- *  chay bang anchor #about, #projects - nhung muc khong ton tai ngoai trang chu. */
+ *  chay bang anchor #about, #projects — nhung muc khong ton tai ngoai trang chu. */
 export default function ShowcaseHeader() {
   const {locale, setLocale} = useI18n();
 

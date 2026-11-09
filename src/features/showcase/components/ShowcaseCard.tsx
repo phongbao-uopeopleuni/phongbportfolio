@@ -6,7 +6,7 @@ import type {ShowcaseProject} from '../types/showcase';
 import StatusBadge from './StatusBadge';
 
 /** The du an. Anh xem truoc nam o khoi RIENG phia tren, chu nam o khoi rieng
- *  phia duoi - khong bao gio de chu noi tren anh, vi panel trong suot dat tren
+ *  phia duoi — khong bao gio de chu noi tren anh, vi panel trong suot dat tren
  *  nen sang chi con 3.37:1 cho chu chinh va 1.54:1 cho chu phu. */
 export default function ShowcaseCard({
   project,
@@ -24,7 +24,7 @@ export default function ShowcaseCard({
       <div className="p-5 flex-1 flex flex-col">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-mono text-xs text-muted">
-            {String(index + 1).padStart(2, '0')} �
+            {String(index + 1).padStart(2, '0')} ·
           </span>
           <span className="font-mono text-xs text-accent">
             [{CATEGORY_LABEL[project.category][locale]}]

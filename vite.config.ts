@@ -7,7 +7,7 @@ import {defineConfig, type Plugin} from 'vite';
 /**
  * GitHub Pages khong co SPA fallback: mot duong dan nhu /showcase se tra 404 that.
  * Copy index.html thanh 404.html de Pages van giao app, nho do link truc tiep va F5 chay dung.
- * Danh doi: Pages tra ma HTTP 404 kem trang nay - nguoi dung khong thay, crawler thi co.
+ * Danh doi: Pages tra ma HTTP 404 kem trang nay — nguoi dung khong thay, crawler thi co.
  */
 function spaFallback(): Plugin {
   return {

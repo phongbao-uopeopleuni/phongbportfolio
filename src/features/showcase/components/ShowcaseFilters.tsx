@@ -25,7 +25,7 @@ export default function ShowcaseFilters({
   setStatus: (s: StatusFilter) => void;
   count: number;
 }) {
-  /* Chi hien nhom loc khi co tu 2 lua chon tro len - mot nhom chi co mot nut
+  /* Chi hien nhom loc khi co tu 2 lua chon tro len — mot nhom chi co mot nut
      thi khong loc duoc gi, chi lam chat giao dien. */
   const showCategory = ACTIVE_CATEGORIES.length > 1;
   const showStatus = ACTIVE_STATUSES.length > 1;

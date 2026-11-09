@@ -11,44 +11,44 @@ import {
 } from './scheduler';
 
 const TXT = {
-  processes: {vi: 'B?ng ti?n tr�nh', en: 'Process table'},
-  algorithm: {vi: 'Thu?t to�n', en: 'Algorithm'},
-  quantum: {vi: 'Lu?ng t?', en: 'Quantum'},
-  id: {vi: 'Ma', en: 'ID'},
-  arrival: {vi: 'D?n', en: 'Arrival'},
-  burst: {vi: 'Ch?y', en: 'Burst'},
-  priority: {vi: 'Uu ti�n', en: 'Priority'},
-  remove: {vi: 'Xo� ti?n tr�nh', en: 'Remove process'},
-  add: {vi: 'Th�m ti?n tr�nh', en: 'Add process'},
-  reset: {vi: 'Kh�i ph?c m?u', en: 'Reset to sample'},
-  timeline: {vi: 'D�ng th?i gian', en: 'Timeline'},
+  processes: {vi: 'Bảng tiến trình', en: 'Process table'},
+  algorithm: {vi: 'Thuật toán', en: 'Algorithm'},
+  quantum: {vi: 'Lượng tử', en: 'Quantum'},
+  id: {vi: 'Mã', en: 'ID'},
+  arrival: {vi: 'Đến', en: 'Arrival'},
+  burst: {vi: 'Chạy', en: 'Burst'},
+  priority: {vi: 'Ưu tiên', en: 'Priority'},
+  remove: {vi: 'Xoá tiến trình', en: 'Remove process'},
+  add: {vi: 'Thêm tiến trình', en: 'Add process'},
+  reset: {vi: 'Khôi phục mẫu', en: 'Reset to sample'},
+  timeline: {vi: 'Dòng thời gian', en: 'Timeline'},
   timelineTable: {
-    vi: 'Xem d�ng th?i gian d?ng b?ng',
+    vi: 'Xem dòng thời gian dạng bảng',
     en: 'View the timeline as a table',
   },
-  idle: {vi: 'CPU r?nh', en: 'CPU idle'},
-  play: {vi: 'Ch?y', en: 'Play'},
-  pause: {vi: 'D?ng', en: 'Pause'},
-  step: {vi: 'M?t nh?p', en: 'Step'},
-  restart: {vi: 'V? d?u', en: 'Restart'},
-  metrics: {vi: 'Ch? s? t?ng ti?n tr�nh', en: 'Per-process metrics'},
-  completion: {vi: 'Ho�n th�nh', en: 'Completion'},
-  turnaround: {vi: 'Quay v�ng', en: 'Turnaround'},
-  waiting: {vi: 'Ch?', en: 'Waiting'},
-  response: {vi: 'D�p ?ng', en: 'Response'},
-  average: {vi: 'Trung b�nh', en: 'Average'},
-  ctxSwitch: {vi: 'L?n chuy?n ng? c?nh', en: 'Context switches'},
-  atTime: {vi: 'Th?i di?m', en: 'Time'},
+  idle: {vi: 'CPU rảnh', en: 'CPU idle'},
+  play: {vi: 'Chạy', en: 'Play'},
+  pause: {vi: 'Dừng', en: 'Pause'},
+  step: {vi: 'Một nhịp', en: 'Step'},
+  restart: {vi: 'Về đầu', en: 'Restart'},
+  metrics: {vi: 'Chỉ số từng tiến trình', en: 'Per-process metrics'},
+  completion: {vi: 'Hoàn thành', en: 'Completion'},
+  turnaround: {vi: 'Quay vòng', en: 'Turnaround'},
+  waiting: {vi: 'Chờ', en: 'Waiting'},
+  response: {vi: 'Đáp ứng', en: 'Response'},
+  average: {vi: 'Trung bình', en: 'Average'},
+  ctxSwitch: {vi: 'Lần chuyển ngữ cảnh', en: 'Context switches'},
+  atTime: {vi: 'Thời điểm', en: 'Time'},
   noEvent: {
-    vi: 'B?m Ch?y ho?c M?t nh?p d? theo doi di?n bi?n.',
+    vi: 'Bấm Chạy hoặc Một nhịp để theo dõi diễn biến.',
     en: 'Press Play or Step to follow what happens.',
   },
   needProcess: {
-    vi: 'Th�m �t nh?t m?t ti?n tr�nh c� th?i gian ch?y l?n hon 0.',
+    vi: 'Thêm ít nhất một tiến trình có thời gian chạy lớn hơn 0.',
     en: 'Add at least one process with a burst above 0.',
   },
   ganttLabel: {
-    vi: 'Bi?u d? Gantt c?a l?ch CPU. To�n b? d? li?u c� trong b?ng b�n du?i.',
+    vi: 'Biểu đồ Gantt của lịch CPU. Toàn bộ dữ liệu có trong bảng bên dưới.',
     en: 'Gantt chart of the CPU schedule. The full data is in the table below.',
   },
 };
@@ -132,7 +132,7 @@ export default function CpuSchedulingLab() {
   const removeProc = (i: number) =>
     setProcs((list) => list.filter((_, idx) => idx !== i));
 
-  /* Su kien gan nhat khong vuot qua nhip hien tai - phan giai thich co dan dat. */
+  /* Su kien gan nhat khong vuot qua nhip hien tai — phan giai thich co dan dat. */
   const currentEvent = [...result.events].filter((e) => e.t <= tick).pop();
   const unit = 100 / Math.max(1, total);
 
@@ -424,7 +424,7 @@ export default function CpuSchedulingLab() {
                     <th scope="row" className="py-2 pr-3 text-left font-normal">
                       {t('average')}
                     </th>
-                    <td className="py-2 pr-3">-</td>
+                    <td className="py-2 pr-3">—</td>
                     <td className="py-2 pr-3">{result.averages.turnaround}</td>
                     <td className="py-2 pr-3">{result.averages.waiting}</td>
                     <td className="py-2">{result.averages.response}</td>
