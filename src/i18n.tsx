@@ -18,19 +18,19 @@ export type Locale = 'vi' | 'en';
 export const defaultLocale: Locale = 'vi';
 
 /**
- * D? �n web ? t?ng 2 c?a m?c "D? �n": ch? text + link, kh�ng c?n ?nh,
- * n�n th�m m?t d? �n m?i ch? t?n th�m m?t object.
+ * Dự án web ở tầng 2 của mục "Dự án": chỉ text + link, không cần ảnh,
+ * nên thêm một dự án mới chỉ tốn thêm một object.
  */
 export type ProjectWork = {
   name: string;
-  /** Nhan ng?n trong ngo?c vu�ng, v� d? "Nh� h�ng � Greenville, NC". */
+  /** Nhãn ngắn trong ngoặc vuông, ví dụ "Nhà hàng · Greenville, NC". */
   type: string;
   role: string;
   stack: string[];
   url: string;
-  /** Cho card chi?m 2 c?t - d�nh cho d? �n d�ng ch� y nh?t. */
+  /** Cho card chiếm 2 cột — dành cho dự án đáng chú ý nhất. */
   highlight?: boolean;
-  /** Dang x�y d?ng: d?i nhan link v� th�m badge. */
+  /** Đang xây dựng: đổi nhãn link và thêm badge. */
   wip?: boolean;
 };
 
@@ -58,7 +58,7 @@ const en = {
     badgeDataIntegrity: 'Assessment & learning data',
     badgeAutomation: 'AI-enhanced workflows',
     badgeToeic: 'TOEIC 700',
-    badgePedagogy: 'Pedagogical practice (TC-CD)',
+    badgePedagogy: 'Pedagogical practice (TC-CĐ)',
     badgeBs: 'Bachelor of Computer Science',
     badgeExcel: 'Excel',
     badgePython: 'Python',
@@ -78,7 +78,7 @@ const en = {
     title:
       'Connecting educational technology, assessment, and learning data for better decisions',
     p1: 'My professional foundation is in training organization, examination operations, and academic data management at FPT Education. Through hands-on work with IAPS9, CMS, LMS9, Language Hub, and Fuge, I focus on training progress, grade accuracy, assessment schedules, and the integrity of learner records.',
-    p2: 'I translate operational needs into practical digital tools using Excel, Python, and AI-assisted workflows. This work supports data standardization, progress monitoring, grade processing, and more consistent training and assessment operations-forming my pathway from Educational Technology & Assessment toward AI-Enhanced Education.',
+    p2: 'I translate operational needs into practical digital tools using Excel, Python, and AI-assisted workflows. This work supports data standardization, progress monitoring, grade processing, and more consistent training and assessment operations—forming my pathway from Educational Technology & Assessment toward AI-Enhanced Education.',
     cards: [
       {
         title: 'Assessment operations',
@@ -193,14 +193,14 @@ const en = {
     worksKicker: 'Other work',
     worksTitle: 'Websites & products shipped',
     worksNote:
-      'Projects built outside of work - from a custom genealogy web app to local business websites in Vietnam and the United States.',
+      'Projects built outside of work — from a custom genealogy web app to local business websites in Vietnam and the United States.',
     worksLive: 'Visit site',
     worksWip: 'Preview build',
     worksWipBadge: 'In progress',
     works: [
       {
-        name: 'Ph�ng Tuy Bi�n Qu?n C�ng online genealogy',
-        type: 'Web app � Nguy?n Phu?c clan',
+        name: 'Phòng Tuy Biên Quận Công online genealogy',
+        type: 'Web app · Nguyễn Phước clan',
         role:
           'Designed and built the whole platform: an interactive family tree across 8 generations, member search, PDF export, statistics, gravesite lookup, member registration, and a clan news and album section. Ancestral anniversary dates are counted down from the lunar calendar, and the lookup flow is reworked for phone-first use.',
         stack: ['Web app', 'Interactive family tree', 'PDF export', 'Cloudflare'],
@@ -208,24 +208,24 @@ const en = {
         highlight: true,
       },
       {
-        name: 'EC Ph? Vietnamese Noodle House',
-        type: 'Restaurant � Greenville, NC',
+        name: 'EC Phở Vietnamese Noodle House',
+        type: 'Restaurant · Greenville, NC',
         role:
           'Menu and storytelling site with Gallery, Blog, and Contact pages, plus schema.org Restaurant structured data for local search.',
         stack: ['React', 'Vite', 'Vercel', 'schema.org SEO'],
         url: 'https://www.ecphonoodlehousenc.com/home-page',
       },
       {
-        name: "Fairy's House Hu?",
-        type: 'Homestay � Hu?, Vietnam',
+        name: "Fairy's House Huế",
+        type: 'Homestay · Huế, Vietnam',
         role:
-          'Bilingual Vietnamese-English homestay site with a live Hu? weather bar, a local travel guide section, and one-tap Zalo, hotline, and directions actions.',
-        stack: ['React', 'Vite', 'VI-EN bilingual', 'Local SEO'],
+          'Bilingual Vietnamese–English homestay site with a live Huế weather bar, a local travel guide section, and one-tap Zalo, hotline, and directions actions.',
+        stack: ['React', 'Vite', 'VI–EN bilingual', 'Local SEO'],
         url: 'https://www.fairyshousehue.com/',
       },
       {
         name: 'Dr. Nguyen Dac Nguyen Clinic',
-        type: 'Fertility & OB-GYN clinic � Hue, Vietnam',
+        type: 'Fertility & OB-GYN clinic · Hue, Vietnam',
         role:
           'Patient-facing clinic website with a doctor profile, care categories, appointment flow, health resources, FAQs, a consultation form, and one-tap Zalo, phone, and Google Maps actions. Currently being finalized on a temporary Vercel domain.',
         stack: ['React', 'Vite', 'Vercel', 'Local SEO'],
@@ -233,20 +233,20 @@ const en = {
         wip: true,
       },
       {
-        name: 'North Carolina Ph?',
-        type: 'Restaurant � Washington, NC',
+        name: 'North Carolina Phở',
+        type: 'Restaurant · Washington, NC',
         role:
-          'Bilingual English-Vietnamese restaurant site. Still being finished on a temporary Vercel domain before the official domain goes live.',
-        stack: ['React', 'Vite', 'Vercel', 'EN-VI bilingual'],
+          'Bilingual English–Vietnamese restaurant site. Still being finished on a temporary Vercel domain before the official domain goes live.',
+        stack: ['React', 'Vite', 'Vercel', 'EN–VI bilingual'],
         url: 'https://ncpho-ten.vercel.app/',
         wip: true,
       },
       {
         name: 'EC Star Nails & Spa',
-        type: 'Beauty salon � Greenville, NC',
+        type: 'Nail salon · Greenville & Washington, NC',
         role:
-          'Service site built on Google Sites: page structure for Services, Gallery, About, and Contact, plus the salon copy itself.',
-        stack: ['Google Sites', 'Content & IA'],
+          'Redesigned and rebuilt a multi-page website for three salon locations in Greenville and Washington, North Carolina. Structured the Home, Services, Gallery, About, and Contact content, with click-to-call, directions, and Google review links for each location.',
+        stack: ['Responsive web', 'Content & IA', 'Local SEO'],
         url: 'https://www.ecstarnailsandspagreenvillenc.com/',
       },
     ] as ProjectWork[],
@@ -261,7 +261,7 @@ const en = {
         title:
           'Concurrent officer for training, examination & IT support',
         organization: 'FPT PolySchool Hue',
-        period: 'Apr 1, 2024 - Apr 30, 2026',
+        period: 'Apr 1, 2024 – Apr 30, 2026',
         bullets: [
           'Planned and delivered teaching, training, and examination activities in compliance with institutional regulations, including faculty assignments, assessment schedules, and multi-cohort records coordination.',
           'Managed learning data, academic results, grade distributions, and periodic reports while safeguarding the accuracy and integrity of student records.',
@@ -273,7 +273,7 @@ const en = {
       {
         title: 'Concurrent Class Advisor & Supervisor',
         organization: 'FPT PolySchool Hue',
-        period: 'Aug 2022 - Mar 2024',
+        period: 'Aug 2022 – Mar 2024',
         bullets: [
           'Planned class advisory workflows and coordinated academic, conduct, and tuition follow-up.',
           'Connected parents, students, and departments for timely student-service resolution.',
@@ -281,8 +281,8 @@ const en = {
       },
       {
         title: 'English Language Instructor',
-        organization: 'AMA English Center - Hue',
-        period: 'Sep 2020 - May 2022',
+        organization: 'AMA English Center – Hue',
+        period: 'Sep 2020 – May 2022',
         bullets: [
           'Delivered English instruction and learner support.',
           'Supported extracurricular activities and interpretation.',
@@ -291,7 +291,7 @@ const en = {
       {
         title: 'Intern',
         organization: 'Granville Medical Center, North Carolina, USA',
-        period: 'Jun 2019 - Dec 2019',
+        period: 'Jun 2019 – Dec 2019',
         bullets: [
           'Verification and data entry for medical records.',
         ],
@@ -299,7 +299,7 @@ const en = {
       {
         title: 'Volunteer',
         organization: 'Vidant Medical Center, North Carolina, USA',
-        period: 'Dec 5, 2017 - Feb 2018; Aug 2018 - Nov 2018',
+        period: 'Dec 5, 2017 – Feb 2018; Aug 2018 – Nov 2018',
         bullets: ['Patient Services department.'],
       },
     ],
@@ -308,7 +308,7 @@ const en = {
         school: 'University of the People, USA',
         blocks: [
           {
-            period: 'Jun 2025 - Nov 2026',
+            period: 'Jun 2025 – Nov 2026',
             description: 'Bachelor of Science in Computer Science (B.S.)',
           },
         ],
@@ -317,12 +317,12 @@ const en = {
         school: 'Pitt Community College, USA',
         blocks: [
           {
-            period: 'Aug 2017 - Dec 2019',
+            period: 'Aug 2017 – Dec 2019',
             description:
-              'Associate in Applied Science (AAS) - Healthcare Management',
+              'Associate in Applied Science (AAS) — Healthcare Management',
           },
           {
-            period: 'Jan 2015 - Dec 2016',
+            period: 'Jan 2015 – Dec 2016',
             description: 'Associate in General Education (AGE)',
           },
         ],
@@ -331,7 +331,7 @@ const en = {
         school: 'East Carolina University, North Carolina, USA',
         blocks: [
           {
-            period: 'Jul 2014 - Dec 2014',
+            period: 'Jul 2014 – Dec 2014',
             description: 'ESL English program',
           },
         ],
@@ -356,31 +356,31 @@ const en = {
       {
         year: '2023',
         items: [
-          'Outstanding employee, PTCD Assurance Board (2023)',
+          'Outstanding employee, PTCĐ Assurance Board (2023)',
           'Staff recognition for outstanding academic performance',
         ],
       },
       {
         year: '2022',
         items: [
-          'Outstanding employee, PTCD Assurance Board (2022)',
+          'Outstanding employee, PTCĐ Assurance Board (2022)',
           'Outstanding instructor, AMA English Center Hue',
         ],
       },
       {
-        year: '2014 - 2021',
+        year: '2014 – 2021',
         items: [
           'East Carolina University Honor Scholarship',
           'Pitt Community College Foundation Scholarship',
           "Dean's List and top program ranking across multiple terms, Pitt Community College",
-          'Fourth place, Volunteers of the Quarter - Granville Health System',
+          'Fourth place, Volunteers of the Quarter — Granville Health System',
         ],
       },
     ],
   },
   album: {
     kicker: 'Work moments',
-    title: 'Album - moments at work',
+    title: 'Album — moments at work',
     note: 'A collection of photos from training operations, examinations, and team activities. Click a photo to enlarge.',
     empty: 'Photos are being updated.',
     closeLabel: 'Close',
@@ -424,7 +424,7 @@ const en = {
   },
   canvaAlbum: {
     kicker: 'Creative work',
-    title: 'Album - Canva publications designed by me',
+    title: 'Album — Canva publications designed by me',
     note:
       'A selection of PC Express internal publications that I planned and designed in Canva for communication, events, and student activities.',
     designAlt: 'PC Express publication designed in Canva',
@@ -437,14 +437,14 @@ const en = {
     title: 'Certificates & credentials',
     items: [
       { label: 'TOEIC 700', sub: 'Business English' },
-      { label: 'Pedagogical training (Vocational-College)', sub: 'Training Professionalism' },
+      { label: 'Pedagogical training (Vocational–College)', sub: 'Training Professionalism' },
       { label: 'Excel Specialist', sub: 'Advanced Data Management' },
       { label: 'IT Fundamentals', sub: 'Systems Administration' },
     ],
   },
   contact: {
     kicker: 'Contact',
-    title: 'Let's connect about educational technology, assessment, learning data, and AI.',
+    title: 'Let’s connect about educational technology, assessment, learning data, and AI.',
     description:
       'I welcome conversations about educational technology, assessment operations, learning-data quality, and practical, responsible uses of AI in education.',
     emailLabel: 'Email',
@@ -470,150 +470,150 @@ const en = {
 const vi: typeof en = {
   nav: {
     brand: 'Portfolio',
-    about: 'Gi?i thi?u',
-    metrics: 'S? li?u',
-    strengths: 'Th? m?nh',
-    workflow: 'H? th?ng EdTech',
-    projects: 'Gi?i ph�p',
-    showcase: 'Ph�ng lab EdTech',
-    timeline: 'H�nh tr�nh',
+    about: 'Giới thiệu',
+    metrics: 'Số liệu',
+    strengths: 'Thế mạnh',
+    workflow: 'Hệ thống EdTech',
+    projects: 'Giải pháp',
+    showcase: 'Phòng lab EdTech',
+    timeline: 'Hành trình',
     album: 'Album',
-    canva: 'Thi?t k?',
-    achievements: 'Th�nh t�ch',
-    certs: 'Ch?ng ch?',
-    contact: 'Li�n h?',
+    canva: 'Thiết kế',
+    achievements: 'Thành tích',
+    certs: 'Chứng chỉ',
+    contact: 'Liên hệ',
   },
   hero: {
-    roleLine1: 'C�n b? T? ch?c & Qu?n ly D�o t?o, Kh?o th� | Educational Technology & Assessment',
+    roleLine1: 'Cán bộ Tổ chức & Quản lý Đào tạo, Khảo thí | Educational Technology & Assessment',
     roleLine2:
-      'Hon 5 nam trong linh v?c gi�o d?c qua c�c vai tr� gi?ng d?y, ch? nhi?m v� v?n h�nh d�o t?o - kh?o th�. N?n t?ng C? nh�n Khoa h?c M�y t�nh gi�p t�i k?t n?i nghi?p v? gi�o d?c v?i h? th?ng, d? li?u v� AI d? chu?n h�a quy tr�nh, c?ng c? t�nh to�n v?n c?a d? li?u d�nh gi� v� c?i thi?n tr?i nghi?m ngu?i h?c. D?nh hu?ng ph�t tri?n c?a t�i l� Educational Technology & Assessment, ti?n t?i c�c gi?i ph�p AI-Enhanced Education thi?t th?c v� c� tr�ch nhi?m.',
-    badgeTrainingOps: 'C�ng ngh? gi�o d?c',
-    badgeDataIntegrity: 'D�nh gi� & d? li?u h?c t?p',
-    badgeAutomation: 'Quy tr�nh tang cu?ng b?i AI',
+      'Hơn 5 năm trong lĩnh vực giáo dục qua các vai trò giảng dạy, chủ nhiệm và vận hành đào tạo – khảo thí. Nền tảng Cử nhân Khoa học Máy tính giúp tôi kết nối nghiệp vụ giáo dục với hệ thống, dữ liệu và AI để chuẩn hóa quy trình, củng cố tính toàn vẹn của dữ liệu đánh giá và cải thiện trải nghiệm người học. Định hướng phát triển của tôi là Educational Technology & Assessment, tiến tới các giải pháp AI-Enhanced Education thiết thực và có trách nhiệm.',
+    badgeTrainingOps: 'Công nghệ giáo dục',
+    badgeDataIntegrity: 'Đánh giá & dữ liệu học tập',
+    badgeAutomation: 'Quy trình tăng cường bởi AI',
     badgeToeic: 'TOEIC 700',
-    badgePedagogy: 'Nghi?p v? su ph?m TC-CD',
-    badgeBs: 'C? nh�n Khoa h?c m�y t�nh',
+    badgePedagogy: 'Nghiệp vụ sư phạm TC-CĐ',
+    badgeBs: 'Cử nhân Khoa học máy tính',
     badgeExcel: 'Excel',
     badgePython: 'Python',
     badgeJava: 'Java',
     badgeMysql: 'MySQL',
-    ctaProjects: 'Xem d? �n',
-    ctaCv: 'T?i CV',
+    ctaProjects: 'Xem dự án',
+    ctaCv: 'Tải CV',
   },
   metrics: {
-    students: 'Ngu?i h?c da h? tr?',
-    dataPoints: 'Di?m d? li?u h?c v? da x? ly',
-    automationTools: 'C�ng c? v?n h�nh da ph�t tri?n',
-    timeOpt: 'Th?i gian th? c�ng du?c gi?m',
+    students: 'Người học đã hỗ trợ',
+    dataPoints: 'Điểm dữ liệu học vụ đã xử lý',
+    automationTools: 'Công cụ vận hành đã phát triển',
+    timeOpt: 'Thời gian thủ công được giảm',
   },
   about: {
-    kicker: 'N?n t?ng chuy�n m�n & d?nh hu?ng',
+    kicker: 'Nền tảng chuyên môn & định hướng',
     title:
-      'K?t n?i c�ng ngh? gi�o d?c, d�nh gi� v� d? li?u h?c t?p d? h? tr? quy?t d?nh t?t hon',
-    p1: 'N?n t?ng chuy�n m�n c?a t�i l� t? ch?c d�o t?o, v?n h�nh kh?o th� v� qu?n ly d? li?u h?c v? t?i FPT Education. Qua kinh nghi?m th?c t? tr�n IAPS9, CMS, LMS9, Language Hub v� Fuge, t�i t?p trung v�o ti?n d? d�o t?o, d? ch�nh x�c di?m s?, l?ch d�nh gi� v� t�nh to�n v?n c?a h? so ngu?i h?c.',
-    p2: 'T�i chuy?n c�c nhu c?u v?n h�nh th�nh c�ng c? s? thi?t th?c b?ng Excel, Python v� quy tr�nh h? tr? b?i AI. C�ng vi?c n�y ph?c v? chu?n h�a d? li?u, theo doi ti?n d?, x? ly di?m v� tang t�nh nh?t qu�n trong d�o t?o - d�nh gi�; d?ng th?i t?o n?n t?ng d? t�i ph�t tri?n t? Educational Technology & Assessment d?n AI-Enhanced Education.',
+      'Kết nối công nghệ giáo dục, đánh giá và dữ liệu học tập để hỗ trợ quyết định tốt hơn',
+    p1: 'Nền tảng chuyên môn của tôi là tổ chức đào tạo, vận hành khảo thí và quản lý dữ liệu học vụ tại FPT Education. Qua kinh nghiệm thực tế trên IAPS9, CMS, LMS9, Language Hub và Fuge, tôi tập trung vào tiến độ đào tạo, độ chính xác điểm số, lịch đánh giá và tính toàn vẹn của hồ sơ người học.',
+    p2: 'Tôi chuyển các nhu cầu vận hành thành công cụ số thiết thực bằng Excel, Python và quy trình hỗ trợ bởi AI. Công việc này phục vụ chuẩn hóa dữ liệu, theo dõi tiến độ, xử lý điểm và tăng tính nhất quán trong đào tạo – đánh giá; đồng thời tạo nền tảng để tôi phát triển từ Educational Technology & Assessment đến AI-Enhanced Education.',
     cards: [
       {
-        title: 'V?n h�nh d�nh gi�',
-        desc: 'Di?u ph?i l?ch d�nh gi�, h? so, ph? di?m v� c�c lu?ng d? li?u kh?o th� d�ng tin c?y.',
+        title: 'Vận hành đánh giá',
+        desc: 'Điều phối lịch đánh giá, hồ sơ, phổ điểm và các luồng dữ liệu khảo thí đáng tin cậy.',
       },
       {
-        title: 'To�n v?n d? li?u h?c t?p',
-        desc: 'Chu?n h�a d? li?u t?t nghi?p, lu?ng di?m v� quy t?c ki?m tra h? so ngu?i h?c.',
+        title: 'Toàn vẹn dữ liệu học tập',
+        desc: 'Chuẩn hóa dữ liệu tốt nghiệp, luồng điểm và quy tắc kiểm tra hồ sơ người học.',
       },
       {
-        title: 'H? th?ng c�ng ngh? gi�o d?c',
-        desc: 'V?n h�nh c�c lu?ng k?t n?i gi?a CMS, LMS9, Language Hub, Fuge v� IAPS9.',
+        title: 'Hệ thống công nghệ giáo dục',
+        desc: 'Vận hành các luồng kết nối giữa CMS, LMS9, Language Hub, Fuge và IAPS9.',
       },
       {
-        title: 'Quy tr�nh tang cu?ng b?i AI',
-        desc: 'Ph�t tri?n c�ng c? thi?t th?c b?ng AI, Excel v� Python d? h? tr? d?i ngu d�o t?o - kh?o th�.',
+        title: 'Quy trình tăng cường bởi AI',
+        desc: 'Phát triển công cụ thiết thực bằng AI, Excel và Python để hỗ trợ đội ngũ đào tạo – khảo thí.',
       },
     ],
   },
   strengths: {
-    kicker: 'Th? m?nh',
-    title: 'C�c nang l?c c?t loi',
+    kicker: 'Thế mạnh',
+    title: 'Các năng lực cốt lõi',
     pillars: [
       {
-        title: 'H? th?ng & d? li?u gi�o d?c',
+        title: 'Hệ thống & dữ liệu giáo dục',
         items: [
           'IAPS9, LMS9, CMS & Language Hub',
-          'Ti?n d? h?c t?p & lu?ng di?m',
+          'Tiến độ học tập & luồng điểm',
           'Python, Java, MySQL & Excel',
-          'Ch?t lu?ng & to�n v?n d? li?u h?c v?',
+          'Chất lượng & toàn vẹn dữ liệu học vụ',
         ],
       },
       {
-        title: 'D�nh gi� & v?n h�nh d�o t?o',
+        title: 'Đánh giá & vận hành đào tạo',
         items: [
-          'L?ch d�nh gi� & di?u ph?i kh?o th�',
-          'H? so h?c v? & ph? di?m',
-          'Ph?i h?p li�n ph�ng ban',
-          'D?m b?o ch?t lu?ng & tu�n th?',
+          'Lịch đánh giá & điều phối khảo thí',
+          'Hồ sơ học vụ & phổ điểm',
+          'Phối hợp liên phòng ban',
+          'Đảm bảo chất lượng & tuân thủ',
         ],
       },
       {
-        title: 'D?nh hu?ng AI-Enhanced Education',
+        title: 'Định hướng AI-Enhanced Education',
         items: [
-          'Thi?t k? quy tr�nh h? tr? b?i AI',
-          'T?o m?u c�ng c? gi�o d?c',
-          'T? d?ng h�a v?i Python & Excel',
-          '?ng d?ng c� tr�ch nhi?m, l?y ngu?i h?c l�m trung t�m',
+          'Thiết kế quy trình hỗ trợ bởi AI',
+          'Tạo mẫu công cụ giáo dục',
+          'Tự động hóa với Python & Excel',
+          'Ứng dụng có trách nhiệm, lấy người học làm trung tâm',
         ],
       },
     ],
   },
   workflow: {
     kicker: '',
-    title: 'C�c h? th?ng c�ng ngh? gi�o d?c v� d�nh gi� da v?n h�nh',
-    nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'Luu tr? QA'],
+    title: 'Các hệ thống công nghệ giáo dục và đánh giá đã vận hành',
+    nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'Lưu trữ QA'],
   },
   projects: {
-    kicker: 'C�ng ngh? gi�o d?c & d�nh gi�',
-    title: 'Gi?i ph�p thi?t th?c t? b�i to�n v?n h�nh gi�o d?c',
-    github: 'Kho ma GitHub',
+    kicker: 'Công nghệ giáo dục & đánh giá',
+    title: 'Giải pháp thiết thực từ bài toán vận hành giáo dục',
+    github: 'Kho mã GitHub',
     githubUrl: 'https://github.com/phongbao-uopeopleuni',
-    problem: 'V?n d?',
-    solution: 'Gi?i ph�p',
-    technology: 'C�ng ngh?',
-    impact: 'K?t qu? / T�c d?ng',
-    screenshotSlot: '?nh t? d? �n th?c t?',
+    problem: 'Vấn đề',
+    solution: 'Giải pháp',
+    technology: 'Công nghệ',
+    impact: 'Kết quả / Tác động',
+    screenshotSlot: 'Ảnh từ dự án thực tế',
     watchVideo: 'Xem video demo',
     list: [
       {
-        title: 'Gi�m s�t ti?n d? CMS',
-        category: 'Ti?n d? h?c t?p & d? li?u',
+        title: 'Giám sát tiến độ CMS',
+        category: 'Tiến độ học tập & dữ liệu',
         problem:
-          'Vi?c ki?m tra ti?n d? CMS th? c�ng t?n nhi?u th?i gian v� d? b? s�t sinh vi�n c?n theo doi.',
+          'Việc kiểm tra tiến độ CMS thủ công tốn nhiều thời gian và dễ bỏ sót sinh viên cần theo dõi.',
         solution:
-          'T? d?ng d?ng b? d? li?u ti?n d? v� d?ng dashboard d? theo doi tr?ng th�i ho�n th�nh, ngo?i l? v� nh?c vi?c.',
-        tags: ['Python', 'API CMS', 'D? li?u h?c t?p'],
-        impact: 'Gi?m kho?ng 60% th?i gian b�o c�o th? c�ng v� gi�p nh?n di?n ngu?i h?c ch?m ti?n d? ro hon.',
+          'Tự động đồng bộ dữ liệu tiến độ và dựng dashboard để theo dõi trạng thái hoàn thành, ngoại lệ và nhắc việc.',
+        tags: ['Python', 'API CMS', 'Dữ liệu học tập'],
+        impact: 'Giảm khoảng 60% thời gian báo cáo thủ công và giúp nhận diện người học chậm tiến độ rõ hơn.',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
-        title: 'Tool l�m th?i kh�a bi?u',
-        category: 'L?p k? ho?ch h?c v?',
+        title: 'Tool làm thời khóa biểu',
+        category: 'Lập kế hoạch học vụ',
         problem:
-          'Tr�ng ca, tr�ng ti?t v� tr�ng gi?ng vi�n kh� ph�t hi?n d?y d? tru?c khi ban h�nh th?i kh�a bi?u.',
+          'Trùng ca, trùng tiết và trùng giảng viên khó phát hiện đầy đủ trước khi ban hành thời khóa biểu.',
         solution:
-          'Thi?t l?p b? quy t?c ki?m tra tr�n Excel d? ph�t hi?n xung d?t s?m v� d�nh d?u d�ng c?n r� so�t.',
-        tags: ['Excel', 'Th?i kh�a bi?u', 'Ki?m tra xung d?t'],
-        impact: 'Ph�t hi?n tr�ng l?ch tru?c khi ban h�nh v� gi?m v�ng ki?m tra th? c�ng l?p l?i.',
+          'Thiết lập bộ quy tắc kiểm tra trên Excel để phát hiện xung đột sớm và đánh dấu dòng cần rà soát.',
+        tags: ['Excel', 'Thời khóa biểu', 'Kiểm tra xung đột'],
+        impact: 'Phát hiện trùng lịch trước khi ban hành và giảm vòng kiểm tra thủ công lặp lại.',
         image:
           '/images/projects/schedule/z7694406689202_599389826dde70b80c94b68e5ed08bda.jpg',
       },
       {
-        title: 'Demo tool th?i kh�a bi?u',
-        category: 'Chuy?n giao & hu?ng d?n s? d?ng',
+        title: 'Demo tool thời khóa biểu',
+        category: 'Chuyển giao & hướng dẫn sử dụng',
         problem:
-          'D?i ngu d�o t?o c?n m?t b?n minh h?a c? th? d? hi?u quy tr�nh ki?m tra c?a c�ng c? TKB.',
+          'Đội ngũ đào tạo cần một bản minh họa cụ thể để hiểu quy trình kiểm tra của công cụ TKB.',
         solution:
-          'Chu?n b? video demo v� lu?ng ?nh minh h?a quy tr�nh ki?m tra xung d?t ca, ti?t, gi?ng vi�n.',
+          'Chuẩn bị video demo và luồng ảnh minh họa quy trình kiểm tra xung đột ca, tiết, giảng viên.',
         tags: ['YouTube', 'Excel', 'TKB'],
-        impact: 'Gi�p gi?i ph�p d? d�nh gi�, d? tr�nh b�y v� d? b�n giao cho d?i ngu d�o t?o.',
+        impact: 'Giúp giải pháp dễ đánh giá, dễ trình bày và dễ bàn giao cho đội ngũ đào tạo.',
         image:
           '/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg',
         gallery: [
@@ -623,203 +623,203 @@ const vi: typeof en = {
         videoUrl: 'https://youtu.be/zRkD5tdxXh4',
       },
     ],
-    worksKicker: 'S?n ph?m kh�c',
-    worksTitle: 'Website & s?n ph?m da ho�n thi?n',
+    worksKicker: 'Sản phẩm khác',
+    worksTitle: 'Website & sản phẩm đã hoàn thiện',
     worksNote:
-      'C�c d? �n l�m ngo�i c�ng vi?c ch�nh - t? web app gia ph? t? ph�t tri?n d?n website cho doanh nghi?p d?a phuong t?i Vi?t Nam v� Hoa K?.',
+      'Các dự án làm ngoài công việc chính — từ web app gia phả tự phát triển đến website cho doanh nghiệp địa phương tại Việt Nam và Hoa Kỳ.',
     worksLive: 'Xem site',
-    worksWip: 'Xem b?n d?ng',
-    worksWipBadge: 'Dang x�y d?ng',
+    worksWip: 'Xem bản dựng',
+    worksWipBadge: 'Đang xây dựng',
     works: [
       {
-        name: 'Gia ph? online Ph�ng Tuy Bi�n Qu?n C�ng',
-        type: 'Web app � Nguy?n Phu?c T?c',
+        name: 'Gia phả online Phòng Tuy Biên Quận Công',
+        type: 'Web app · Nguyễn Phước Tộc',
         role:
-          'Thi?t k? v� ph�t tri?n to�n b? h? th?ng: c�y gia ph? tuong t�c 8 d?i, t�m ki?m th�nh vi�n, xu?t PDF, th?ng k�, tra c?u m? ph?n, dang ky t�i kho?n v� m?c tin t?c - album d�ng h?. Ng�y gi? du?c d?m ngu?c theo l?ch �m, lu?ng tra c?u t?i uu ri�ng cho di?n tho?i.',
-        stack: ['Web app', 'C�y gia ph? tuong t�c', 'Xu?t PDF', 'Cloudflare'],
+          'Thiết kế và phát triển toàn bộ hệ thống: cây gia phả tương tác 8 đời, tìm kiếm thành viên, xuất PDF, thống kê, tra cứu mộ phần, đăng ký tài khoản và mục tin tức – album dòng họ. Ngày giỗ được đếm ngược theo lịch âm, luồng tra cứu tối ưu riêng cho điện thoại.',
+        stack: ['Web app', 'Cây gia phả tương tác', 'Xuất PDF', 'Cloudflare'],
         url: 'https://www.phongtuybienquancong.info/',
         highlight: true,
       },
       {
-        name: 'EC Ph? Vietnamese Noodle House',
-        type: 'Nh� h�ng � Greenville, NC',
+        name: 'EC Phở Vietnamese Noodle House',
+        type: 'Nhà hàng · Greenville, NC',
         role:
-          'Website gi?i thi?u v� th?c don v?i c�c trang Gallery, Blog, Contact; g?n d? li?u c� c?u tr�c schema.org Restaurant ph?c v? t�m ki?m d?a phuong.',
+          'Website giới thiệu và thực đơn với các trang Gallery, Blog, Contact; gắn dữ liệu có cấu trúc schema.org Restaurant phục vụ tìm kiếm địa phương.',
         stack: ['React', 'Vite', 'Vercel', 'SEO schema.org'],
         url: 'https://www.ecphonoodlehousenc.com/home-page',
       },
       {
-        name: "Fairy's House Hu?",
-        type: 'Homestay � Hu?',
+        name: "Fairy's House Huế",
+        type: 'Homestay · Huế',
         role:
-          'Website homestay song ng? Vi?t - Anh, c� thanh th?i ti?t Hu? c?p nh?t tr?c ti?p, chuy�n m?c c?m nang du l?ch v� c�c n�t li�n h? nhanh Zalo, hotline, ch? du?ng.',
-        stack: ['React', 'Vite', 'Song ng? VI-EN', 'SEO local'],
+          'Website homestay song ngữ Việt – Anh, có thanh thời tiết Huế cập nhật trực tiếp, chuyên mục cẩm nang du lịch và các nút liên hệ nhanh Zalo, hotline, chỉ đường.',
+        stack: ['React', 'Vite', 'Song ngữ VI–EN', 'SEO local'],
         url: 'https://www.fairyshousehue.com/',
       },
       {
-        name: 'Ph�ng kh�m TS.BS. D?c Nguy�n',
-        type: 'Hi?m mu?n & S?n Ph? khoa � Hu?',
+        name: 'Phòng khám TS.BS. Đắc Nguyên',
+        type: 'Hiếm muộn & Sản Phụ khoa · Huế',
         role:
-          'Website gi?i thi?u ph�ng kh�m v?i h? so b�c si, nh�m d?ch v?, quy tr�nh d?t l?ch, n?i dung s?c kh?e, FAQ, bi?u m?u tu v?n v� c�c h�nh d?ng nhanh qua Zalo, di?n tho?i, Google Maps. Dang ho�n thi?n tr�n t�n mi?n t?m c?a Vercel.',
+          'Website giới thiệu phòng khám với hồ sơ bác sĩ, nhóm dịch vụ, quy trình đặt lịch, nội dung sức khỏe, FAQ, biểu mẫu tư vấn và các hành động nhanh qua Zalo, điện thoại, Google Maps. Đang hoàn thiện trên tên miền tạm của Vercel.',
         stack: ['React', 'Vite', 'Vercel', 'SEO local'],
         url: 'https://drnguyenclinic.vercel.app/',
         wip: true,
       },
       {
-        name: 'North Carolina Ph?',
-        type: 'Nh� h�ng � Washington, NC',
+        name: 'North Carolina Phở',
+        type: 'Nhà hàng · Washington, NC',
         role:
-          'Website nh� h�ng song ng? Anh - Vi?t. Dang ho�n thi?n tr�n t�n mi?n t?m c?a Vercel tru?c khi tr? v? t�n mi?n ch�nh th?c.',
-        stack: ['React', 'Vite', 'Vercel', 'Song ng? EN-VI'],
+          'Website nhà hàng song ngữ Anh – Việt. Đang hoàn thiện trên tên miền tạm của Vercel trước khi trỏ về tên miền chính thức.',
+        stack: ['React', 'Vite', 'Vercel', 'Song ngữ EN–VI'],
         url: 'https://ncpho-ten.vercel.app/',
         wip: true,
       },
       {
         name: 'EC Star Nails & Spa',
-        type: 'L�m d?p � Greenville, NC',
+        type: 'Tiệm nail · Greenville & Washington, NC',
         role:
-          'Website d?ch v? d?ng tr�n Google Sites: t? ch?c c?u tr�c trang Services, Gallery, About, Contact v� bi�n t?p to�n b? n?i dung gi?i thi?u ti?m.',
-        stack: ['Google Sites', 'N?i dung & c?u tr�c trang'],
+          'Thiết kế lại và xây dựng website đa trang cho ba cơ sở tại Greenville và Washington, North Carolina. Tổ chức nội dung Home, Services, Gallery, About, Contact; tích hợp gọi điện, chỉ đường và liên kết Google Reviews riêng cho từng cơ sở.',
+        stack: ['Web responsive', 'Nội dung & IA', 'SEO local'],
         url: 'https://www.ecstarnailsandspagreenvillenc.com/',
       },
     ] as ProjectWork[],
   },
   timeline: {
-    kicker: 'H�nh tr�nh',
-    title: 'C?t m?c ngh? nghi?p & h?c thu?t',
-    workHeading: 'Qu� tr�nh c�ng t�c',
-    educationHeading: 'Qu� tr�nh h?c t?p',
+    kicker: 'Hành trình',
+    title: 'Cột mốc nghề nghiệp & học thuật',
+    workHeading: 'Quá trình công tác',
+    educationHeading: 'Quá trình học tập',
     work: [
       {
-        title: 'Ki�m nhi?m C�n b? TC & QL D�o t?o/Kh?o th�/CB IT',
-        organization: 'FPT PolySchool Hu?',
-        period: '01/4/2024 - 30/4/2026',
+        title: 'Kiêm nhiệm Cán bộ TC & QL Đào tạo/Khảo thí/CB IT',
+        organization: 'FPT PolySchool Huế',
+        period: '01/4/2024 – 30/4/2026',
         bullets: [
-          'L?p k? ho?ch v� tri?n khai ho?t d?ng gi?ng d?y, d�o t?o, kh?o th� theo d�ng quy ch?; ph�n c�ng gi?ng vi�n, x�y d?ng l?ch d�nh gi� v� di?u ph?i h? so nhi?u kh�a.',
-          'Qu?n ly d? li?u h?c t?p, k?t qu? h?c t?p, ph? di?m v� b�o c�o d?nh k?, b?o d?m t�nh ch�nh x�c v� to�n v?n c?a h? so sinh vi�n.',
-          'V?n h�nh c�c h? th?ng d�o t?o v� thi g?m IAPS9, LMS9, CMS, Udemy, EOS, FLM, Language Hub v� Fuge.',
-          'Ph?i h?p v?i gi?ng vi�n v� c�c ph�ng ban nh?m b?o d?m ch?t lu?ng d�o t?o.',
-          'S? d?ng th�nh th?o Claude, ChatGPT, Codex v� NotebookLM d? x�y d?ng c�ng c?, ?ng d?ng ph?c v? v?n h�nh d�o t?o v� kh?o th�; k?t h?p Excel/Python nh?m gi?m thao t�c b�o c�o v� x? ly di?m th? c�ng.',
+          'Lập kế hoạch và triển khai hoạt động giảng dạy, đào tạo, khảo thí theo đúng quy chế; phân công giảng viên, xây dựng lịch đánh giá và điều phối hồ sơ nhiều khóa.',
+          'Quản lý dữ liệu học tập, kết quả học tập, phổ điểm và báo cáo định kỳ, bảo đảm tính chính xác và toàn vẹn của hồ sơ sinh viên.',
+          'Vận hành các hệ thống đào tạo và thi gồm IAPS9, LMS9, CMS, Udemy, EOS, FLM, Language Hub và Fuge.',
+          'Phối hợp với giảng viên và các phòng ban nhằm bảo đảm chất lượng đào tạo.',
+          'Sử dụng thành thạo Claude, ChatGPT, Codex và NotebookLM để xây dựng công cụ, ứng dụng phục vụ vận hành đào tạo và khảo thí; kết hợp Excel/Python nhằm giảm thao tác báo cáo và xử lý điểm thủ công.',
         ],
       },
       {
-        title: 'Ki�m nhi?m C�n b? Ch? nhi?m v� Gi�m th?',
-        organization: 'FPT PolySchool Hu?',
-        period: '01/8/2022 - 31/3/2024',
+        title: 'Kiêm nhiệm Cán bộ Chủ nhiệm và Giám thị',
+        organization: 'FPT PolySchool Huế',
+        period: '01/8/2022 – 31/3/2024',
         bullets: [
-          'X�y d?ng k? ho?ch ch? nhi?m v� ph?i h?p theo doi h?c t?p, n? n?p, h?c ph� cho sinh vi�n.',
-          'Duy tr� k?t n?i gi?a ph? huynh, sinh vi�n v� c�c b? ph?n d? x? l� v?n d? k?p th?i.',
+          'Xây dựng kế hoạch chủ nhiệm và phối hợp theo dõi học tập, nề nếp, học phí cho sinh viên.',
+          'Duy trì kết nối giữa phụ huynh, sinh viên và các bộ phận để xử lí vấn đề kịp thời.',
         ],
       },
       {
-        title: 'Gi?ng vi�n ngo?i ng? ti?ng Anh',
-        organization: 'Trung t�m Anh ng? AMA - Hu?',
-        period: '09/2020 - 05/2022',
+        title: 'Giảng viên ngoại ngữ tiếng Anh',
+        organization: 'Trung tâm Anh ngữ AMA – Huế',
+        period: '09/2020 – 05/2022',
         bullets: [
-          'Gi?ng d?y ti?ng Anh v� h? tr? ti?n b? h?c vi�n.',
-          'H? tr? ho?t d?ng ngo?i kh�a v� phi�n d?ch.',
+          'Giảng dạy tiếng Anh và hỗ trợ tiến bộ học viên.',
+          'Hỗ trợ hoạt động ngoại khóa và phiên dịch.',
         ],
       },
       {
-        title: 'Th?c t?p sinh',
-        organization: 'Granville Medical Center - ti?u bang North Carolina, Hoa K?',
-        period: '06/2019 - 12/2019',
-        bullets: ['Ki?m tra, x? l� nh?p li?u h? so b?nh �n;'],
+        title: 'Thực tập sinh',
+        organization: 'Granville Medical Center – tiểu bang North Carolina, Hoa Kỳ',
+        period: '06/2019 – 12/2019',
+        bullets: ['Kiểm tra, xử lí nhập liệu hồ sơ bệnh án;'],
       },
       {
-        title: 'T�nh nguy?n vi�n',
-        organization: 'Vidant Medical Center - ti?u bang North Carolina, Hoa K?',
-        period: '05/12/2017 - 02/2018; 08/2018 - 11/2018',
-        bullets: ['C�c ho?t d?ng t?i b? ph?n D?ch v? b?nh nh�n.'],
+        title: 'Tình nguyện viên',
+        organization: 'Vidant Medical Center – tiểu bang North Carolina, Hoa Kỳ',
+        period: '05/12/2017 – 02/2018; 08/2018 – 11/2018',
+        bullets: ['Các hoạt động tại bộ phận Dịch vụ bệnh nhân.'],
       },
     ],
     education: [
       {
-        school: 'University of the People, Hoa K?',
+        school: 'University of the People, Hoa Kỳ',
         blocks: [
           {
-            period: '06/2025 - 11/2026',
-            description: 'C? nh�n Khoa h?c M�y t�nh (B.S.)',
+            period: '06/2025 – 11/2026',
+            description: 'Cử nhân Khoa học Máy tính (B.S.)',
           },
         ],
       },
       {
-        school: 'Pitt Community College, Hoa K?',
+        school: 'Pitt Community College, Hoa Kỳ',
         blocks: [
           {
-            period: '08/2017 - 12/2019',
+            period: '08/2017 – 12/2019',
             description:
-              'Cao d?ng Khoa h?c ?ng d?ng (AAS) - Qu?n ly Cham s�c S?c kh?e',
+              'Cao đẳng Khoa học Ứng dụng (AAS) – Quản lý Chăm sóc Sức khỏe',
           },
           {
-            period: '01/2015 - 12/2016',
-            description: 'Cao d?ng Gi�o d?c D?i cuong (AGE)',
+            period: '01/2015 – 12/2016',
+            description: 'Cao đẳng Giáo dục Đại cương (AGE)',
           },
         ],
       },
       {
         school:
-          'Tru?ng D?i h?c East Carolina University - ti?u bang North Carolina, Hoa K?',
+          'Trường Đại học East Carolina University – tiểu bang North Carolina, Hoa Kỳ',
         blocks: [
           {
-            period: '07/2014 - 12/2014',
-            description: 'Chuong tr�nh ti?ng Anh ESL',
+            period: '07/2014 – 12/2014',
+            description: 'Chương trình tiếng Anh ESL',
           },
         ],
       },
     ],
   },
   achievements: {
-    title: 'Th�nh t�ch d?t du?c',
+    title: 'Thành tích đạt được',
     groups: [
       {
         year: '2025',
         items: [
-          'Gi?i B? ph?n ho�n th�nh xu?t s?c c�ng t�c v?n h�nh',
+          'Giải Bộ phận hoàn thành xuất sắc công tác vận hành',
         ],
       },
       {
         year: '2024',
         items: [
-          'Tri?n khai th�nh c�ng chu?i d? �n d�o t?o v� d?nh hu?ng sinh vi�n',
+          'Triển khai thành công chuỗi dự án đào tạo và định hướng sinh viên',
         ],
       },
       {
         year: '2023',
         items: [
-          'Nh�n vi�n xu?t s?c Ban D?m b?o PTCD nam 2023',
-          'C�n b? c� th�nh t�ch h?c t?p xu?t s?c',
+          'Nhân viên xuất sắc Ban Đảm bảo PTCĐ năm 2023',
+          'Cán bộ có thành tích học tập xuất sắc',
         ],
       },
       {
         year: '2022',
         items: [
-          'Nh�n vi�n xu?t s?c Ban D?m b?o PTCD nam 2022',
-          'Gi?ng vi�n xu?t s?c c?a trung t�m Anh ng? AMA Hu?',
+          'Nhân viên xuất sắc Ban Đảm bảo PTCĐ năm 2022',
+          'Giảng viên xuất sắc của trung tâm Anh ngữ AMA Huế',
         ],
       },
       {
-        year: '2014 - 2021',
+        year: '2014 – 2021',
         items: [
-          'H?c b?ng East Carolina University Honor Scholarship',
-          'H?c b?ng Pitt Community College Foundation Scholarship',
-          "D?t Dean's List v� d?ng d?u ng�nh qua nhi?u h?c k? t?i Pitt Community College",
-          'H?ng 4 gi?i Volunteers of the Quarter - Granville Health System',
+          'Học bổng East Carolina University Honor Scholarship',
+          'Học bổng Pitt Community College Foundation Scholarship',
+          "Đạt Dean's List và đứng đầu ngành qua nhiều học kỳ tại Pitt Community College",
+          'Hạng 4 giải Volunteers of the Quarter — Granville Health System',
         ],
       },
     ],
   },
   album: {
-    kicker: 'Kho?nh kh?c c�ng t�c',
-    title: 'Album - kho?nh kh?c c�ng t�c',
-    note: 'T?p h?p h�nh ?nh trong qu� tr�nh v?n h�nh d�o t?o, kh?o th� v� c�c ho?t d?ng c�ng d?ng nghi?p. Nh?p v�o ?nh d? xem l?n.',
-    empty: 'H�nh ?nh dang du?c c?p nh?t.',
-    closeLabel: 'D�ng',
-    prevLabel: '?nh tru?c',
-    nextLabel: '?nh sau',
-    photoAlt: 'Kho?nh kh?c c�ng t�c',
-    photosLabel: '?nh',
-    tags: ['T?n t�m', 'Nhi?t huy?t', 'Kh�ng ng?ng h?c'],
+    kicker: 'Khoảnh khắc công tác',
+    title: 'Album — khoảnh khắc công tác',
+    note: 'Tập hợp hình ảnh trong quá trình vận hành đào tạo, khảo thí và các hoạt động cùng đồng nghiệp. Nhấp vào ảnh để xem lớn.',
+    empty: 'Hình ảnh đang được cập nhật.',
+    closeLabel: 'Đóng',
+    prevLabel: 'Ảnh trước',
+    nextLabel: 'Ảnh sau',
+    photoAlt: 'Khoảnh khắc công tác',
+    photosLabel: 'ảnh',
+    tags: ['Tận tâm', 'Nhiệt huyết', 'Không ngừng học'],
     photos: [
       { src: '/images/album/images_1.webp', caption: '' },
       { src: '/images/album/images_2.webp', caption: '' },
@@ -854,35 +854,35 @@ const vi: typeof en = {
     ],
   },
   canvaAlbum: {
-    kicker: 'S?n ph?m s�ng t?o',
-    title: 'Album - C�c ?n ph?m t? thi?t k? b?ng Canva',
+    kicker: 'Sản phẩm sáng tạo',
+    title: 'Album — Các ấn phẩm tự thiết kế bằng Canva',
     note:
-      'Tuy?n ch?n c�c ?n ph?m n?i b? PC Express do t�i l�n y tu?ng v� tr?c ti?p thi?t k? tr�n Canva, ph?c v? truy?n th�ng, s? ki?n v� ho?t d?ng sinh vi�n.',
-    designAlt: '?n ph?m PC Express t? thi?t k? b?ng Canva',
-    closeLabel: 'D�ng b?n xem thi?t k?',
-    prevLabel: 'Thi?t k? tru?c',
-    nextLabel: 'Thi?t k? ti?p theo',
-    itemsLabel: '?n ph?m t? thi?t k?',
+      'Tuyển chọn các ấn phẩm nội bộ PC Express do tôi lên ý tưởng và trực tiếp thiết kế trên Canva, phục vụ truyền thông, sự kiện và hoạt động sinh viên.',
+    designAlt: 'Ấn phẩm PC Express tự thiết kế bằng Canva',
+    closeLabel: 'Đóng bản xem thiết kế',
+    prevLabel: 'Thiết kế trước',
+    nextLabel: 'Thiết kế tiếp theo',
+    itemsLabel: 'ấn phẩm tự thiết kế',
   },
   certs: {
-    title: 'Ch?ng ch? & th�nh t�ch',
+    title: 'Chứng chỉ & thành tích',
     items: [
-      { label: 'TOEIC 700', sub: 'Ti?ng Anh thuong m?i' },
-      { label: 'NVSP Trung c?p - Cao d?ng', sub: 'Nang l?c d�o t?o' },
-      { label: 'Th�nh th?o Excel', sub: 'Qu?n ly d? li?u n�ng cao' },
-      { label: 'N?n t?ng CNTT', sub: 'Qu?n tr? h? th?ng' },
+      { label: 'TOEIC 700', sub: 'Tiếng Anh thương mại' },
+      { label: 'NVSP Trung cấp - Cao đẳng', sub: 'Năng lực đào tạo' },
+      { label: 'Thành thạo Excel', sub: 'Quản lý dữ liệu nâng cao' },
+      { label: 'Nền tảng CNTT', sub: 'Quản trị hệ thống' },
     ],
   },
   contact: {
-    kicker: 'Li�n h?',
-    title: 'K?t n?i d? trao d?i v? c�ng ngh? gi�o d?c, d�nh gi�, d? li?u h?c t?p v� AI.',
+    kicker: 'Liên hệ',
+    title: 'Kết nối để trao đổi về công nghệ giáo dục, đánh giá, dữ liệu học tập và AI.',
     description:
-      'T�i s?n s�ng trao d?i v? c�ng ngh? gi�o d?c, v?n h�nh d�nh gi�, ch?t lu?ng d? li?u h?c t?p v� c�ch ?ng d?ng AI thi?t th?c, c� tr�ch nhi?m trong gi�o d?c.',
+      'Tôi sẵn sàng trao đổi về công nghệ giáo dục, vận hành đánh giá, chất lượng dữ liệu học tập và cách ứng dụng AI thiết thực, có trách nhiệm trong giáo dục.',
     emailLabel: 'Email',
     email: 'baophongcmu@gmail.com',
-    phoneLabel: 'S? di?n tho?i',
+    phoneLabel: 'Số điện thoại',
     phone: '077 575 3003',
-    cta: 'K?t n?i v?i t�i',
+    cta: 'Kết nối với tôi',
   },
   footer: {
     links: [

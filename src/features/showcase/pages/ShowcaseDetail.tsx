@@ -22,6 +22,11 @@ export default function ShowcaseDetail() {
 
   if (!project) return <ShowcaseNotFound />;
 
+  const visibleModules =
+    project.slug === 'assessment-data-integrity-lab'
+      ? project.modules.filter((module) => module.kind === 'demo')
+      : project.modules;
+
   return (
     <div className="min-h-screen">
       <ShowcaseHeader />
@@ -45,7 +50,7 @@ export default function ShowcaseDetail() {
             {project.summary[locale]}
           </p>
 
-          {project.modules.map((mod, i) => (
+          {visibleModules.map((mod, i) => (
             <DetailModule key={`${mod.kind}-${i}`} mod={mod} locale={locale} />
           ))}
 

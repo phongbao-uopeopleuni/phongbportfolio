@@ -8,8 +8,17 @@ import type {DetailModule as Mod} from '../types/showcase';
 const CpuSchedulingLab = lazy(
   () => import('../demos/cpu-scheduling/CpuSchedulingLab'),
 );
+const AssessmentIntegrityLab = lazy(
+  () =>
+    import(
+      '../demos/assessment-integrity/AssessmentIntegrityLab'
+    ),
+);
 
-const DEMOS = {'cpu-scheduling': CpuSchedulingLab} as const;
+const DEMOS = {
+  'cpu-scheduling': CpuSchedulingLab,
+  'assessment-integrity': AssessmentIntegrityLab,
+} as const;
 
 export default function DetailModule({
   mod,
@@ -88,7 +97,7 @@ export default function DetailModule({
         {mod.kind === 'demo' && (
           <Suspense
             fallback={
-              <p className="font-mono text-sm text-muted">loading demo.</p>
+              <p className="font-mono text-sm text-muted">loading demo…</p>
             }
           >
             {(() => {
@@ -103,7 +112,7 @@ export default function DetailModule({
             {mod.steps.map((st, i) => (
               <li key={i} className="glass-panel rounded-lg border border-line p-4">
                 <p className="font-mono text-xs text-accent">
-                  {String(i + 1).padStart(2, '0')} � {st.title[locale]}
+                  {String(i + 1).padStart(2, '0')} · {st.title[locale]}
                 </p>
                 <p className="mt-1.5 text-sm leading-relaxed">{st.body[locale]}</p>
               </li>
@@ -124,7 +133,7 @@ export default function DetailModule({
                 {ex.answer && (
                   <details className="mt-3">
                     <summary className="cursor-pointer font-mono text-xs text-muted hover:text-accent">
-                      {locale === 'vi' ? 'Xem d�p �n' : 'Show the answer'}
+                      {locale === 'vi' ? 'Xem đáp án' : 'Show the answer'}
                     </summary>
                     <p className="mt-2 border-l-2 border-accent pl-4 text-sm leading-relaxed">
                       {ex.answer[locale]}
