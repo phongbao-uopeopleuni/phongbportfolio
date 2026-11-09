@@ -35,7 +35,7 @@ import { SHOWCASE_ENABLED } from './features/showcase/enabled';
 import { I18nProvider, useI18n } from './i18n';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
-/** Paths under `public/` - must include Vite `base` (e.g. /phongbportfolio/) for GitHub Pages. */
+/** Paths under `public/` — must include Vite `base` (e.g. /phongbportfolio/) for GitHub Pages. */
 function publicUrl(path: string): string {
   const clean = path.startsWith('/') ? path.slice(1) : path;
   return `${import.meta.env.BASE_URL}${clean}`;
@@ -85,12 +85,12 @@ const SkipLink = () => {
   const { locale } = useI18n();
   return (
     <a href="#home" className="skip-link">
-      {locale === 'vi' ? 'B? qua d?n n?i dung ch�nh' : 'Skip to main content'}
+      {locale === 'vi' ? 'Bỏ qua đến nội dung chính' : 'Skip to main content'}
     </a>
   );
 };
 
-/** Hi?n d?n ph?n t? khi cu?n t?i; delay (ms) t?o hi?u ?ng l?n lu?t. */
+/** Hiện dần phần tử khi cuộn tới; delay (ms) tạo hiệu ứng lần lượt. */
 const Reveal = ({
   children,
   delay = 0,
@@ -130,7 +130,7 @@ const Reveal = ({
   );
 };
 
-/** Con tr? t�y bi?n: ch?m b�m ch�nh x�c + v�ng b�m tr? mu?t. Ch? b?t khi c� chu?t th?t. */
+/** Con trỏ tùy biến: chấm bám chính xác + vòng bám trễ mượt. Chỉ bật khi có chuột thật. */
 const CustomCursor = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -206,7 +206,7 @@ const CustomCursor = () => {
   );
 };
 
-/** M�n h�nh boot d?ng terminal, hi?n m?t l?n m?i phi�n r?i m? d?n. */
+/** Màn hình boot dạng terminal, hiện một lần mỗi phiên rồi mờ dần. */
 const Preloader = () => {
   const [phase, setPhase] = useState<'loading' | 'fadeout' | 'gone'>(() => {
     try {
@@ -221,7 +221,7 @@ const Preloader = () => {
     try {
       sessionStorage.setItem('booted', '1');
     } catch {
-      /* sessionStorage kh�ng kh? d?ng - v?n ch?y b�nh thu?ng */
+      /* sessionStorage không khả dụng — vẫn chạy bình thường */
     }
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const t = setTimeout(() => setPhase('fadeout'), reduce ? 150 : 1500);
@@ -249,7 +249,7 @@ const Preloader = () => {
           <span className="preloader-spinner" />
           <span>
             <span className="text-accent">~/</span>bao-phong
-            <span className="text-muted"> - booting.</span>
+            <span className="text-muted"> — booting…</span>
           </span>
         </p>
         <div className="mt-5 space-y-1.5 text-muted">
@@ -306,7 +306,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll-spy: l�m s�ng m?c nav theo section dang hi?n th? gi?a m�n h�nh
+  // Scroll-spy: làm sáng mục nav theo section đang hiển thị giữa màn hình
   useEffect(() => {
     const sections = document.querySelectorAll('main section[id]');
     if (!sections.length) return;
@@ -410,10 +410,10 @@ const Navbar = () => {
             aria-label={
               isMobileMenuOpen
                 ? locale === 'vi'
-                  ? 'D�ng menu'
+                  ? 'Đóng menu'
                   : 'Close menu'
                 : locale === 'vi'
-                  ? 'M? menu'
+                  ? 'Mở menu'
                   : 'Open menu'
             }
           >
@@ -422,7 +422,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Thanh ti?n d? cu?n trang */}
+      {/* Thanh tiến độ cuộn trang */}
       <div
         className="absolute bottom-0 left-0 h-0.5 bg-accent transition-[width] duration-150 ease-out"
         style={{ width: `${scrollProgress}%` }}
@@ -478,7 +478,7 @@ const Hero = () => {
             <span aria-hidden="true">$ </span>whoami
           </p>
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink leading-[1.05] mb-6 break-words">
-            B?o Phong
+            Bảo Phong
           </h1>
           <p className="text-lg sm:text-xl text-ink font-medium mb-2 leading-snug break-words">
             {t.hero.roleLine1}
@@ -507,8 +507,8 @@ const Hero = () => {
         </div>
 
         <div className="min-w-0 flex justify-center md:justify-end hero-reveal hero-reveal-delay">
-          {/* ?nh profile trong khung "c?a s? terminal" (bundle JPG + fallback public).
-              K�ch thu?c khung co gian theo breakpoint: g?n tr�n mobile, d?y c?t tr�n laptop. */}
+          {/* Ảnh profile trong khung "cửa sổ terminal" (bundle JPG + fallback public).
+              Kích thước khung co giãn theo breakpoint: gọn trên mobile, đầy cột trên laptop. */}
           <div className="w-full max-w-[min(100%,17rem)] sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem] rounded-lg border border-line bg-panel overflow-hidden shadow-2xl shadow-black/40">
             <div className="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 border-b border-line">
               <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-line" aria-hidden="true"></span>
@@ -518,7 +518,7 @@ const Hero = () => {
             </div>
             <img
               src={profileSrc}
-              alt="B?o Phong"
+              alt="Bảo Phong"
               width={800}
               height={800}
               loading="eager"
@@ -624,7 +624,7 @@ const Strengths = () => {
                 delay={i * 90}
                 className="group rounded-lg border border-line bg-panel overflow-hidden hover:border-accent/50 transition-colors"
               >
-                {/* Thanh ti�u d? d?ng tab t�n file */}
+                {/* Thanh tiêu đề dạng tab tên file */}
                 <div className="flex items-center justify-between px-5 py-2.5 border-b border-line font-mono text-xs">
                   <span className="flex items-center gap-2 text-muted">
                     <span
@@ -648,7 +648,7 @@ const Strengths = () => {
                     </h3>
                   </div>
 
-                  {/* Danh s�ch nang l?c v?i c?t s? d�ng nhu editor */}
+                  {/* Danh sách năng lực với cột số dòng như editor */}
                   <ul>
                     {pillar.items.map((item, j) => (
                       <li
@@ -711,7 +711,7 @@ const Workflow = () => {
             </ul>
             <p aria-hidden="true">
               <span className="text-accent">$&nbsp;</span>
-              <span className="cursor-blink text-accent">?</span>
+              <span className="cursor-blink text-accent">▍</span>
             </p>
           </div>
         </div>
@@ -755,7 +755,7 @@ const Projects = () => {
                 key={i}
                 className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center"
               >
-                {/* ?nh: xen k? tr�i/ph?i theo th? t? d? �n */}
+                {/* Ảnh: xen kẽ trái/phải theo thứ tự dự án */}
                 <div className={`min-w-0 ${reversed ? 'md:order-2' : ''}`}>
                   <div className="relative rounded-lg border border-line bg-panel overflow-hidden">
                     <img
@@ -785,7 +785,7 @@ const Projects = () => {
 
                 <div className={`min-w-0 ${reversed ? 'md:order-1' : ''}`}>
                   <p className="font-mono text-sm text-accent mb-3">
-                    <span aria-hidden="true">0{i + 1} � </span>[{project.category}]
+                    <span aria-hidden="true">0{i + 1} · </span>[{project.category}]
                   </p>
                   <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-ink mb-6 leading-tight">
                     {project.title}
@@ -823,7 +823,7 @@ const Projects = () => {
                     ))}
                   </div>
 
-                  {/* T�c d?ng: di?m nh?n ch�nh c?a m?i case study */}
+                  {/* Tác động: điểm nhấn chính của mỗi case study */}
                   <div className="border-l-2 border-accent pl-4 md:pl-5 mt-8">
                     <p className="font-mono text-xs text-muted mb-1">
                       {t.projects.impact}
@@ -850,7 +850,7 @@ const Projects = () => {
           })}
         </div>
 
-        {/* T?ng 2: website da ho�n thi?n - lu?i card, th�m d? �n m?i kh�ng c?n ?nh */}
+        {/* Tầng 2: website đã hoàn thiện — lưới card, thêm dự án mới không cần ảnh */}
         {t.projects.works.length ? (
           <div className="mt-20 md:mt-28 pt-12 md:pt-16 border-t border-line">
             <div className="mb-8 md:mb-10">
@@ -1112,7 +1112,7 @@ const Album = () => {
       </div>
 
       {photos.length ? (
-        // Bang ?nh t? ch?y ngang (marquee) - nh�n d�i d? l?p li?n m?ch
+        // Băng ảnh tự chạy ngang (marquee) — nhân đôi để lặp liền mạch
         <div className="marquee">
           <div className="marquee-track">
             {photos.concat(photos).map((photo, i) => {
@@ -1201,7 +1201,7 @@ const Album = () => {
               </span>
               {' / '}
               {String(photos.length).padStart(2, '0')}
-              {photos[active].caption ? ` � ${photos[active].caption}` : ''}
+              {photos[active].caption ? ` · ${photos[active].caption}` : ''}
             </figcaption>
           </figure>
 
@@ -1362,7 +1362,7 @@ const CanvaAlbum = () => {
               <span className="text-accent">
                 {String(active + 1).padStart(2, '0')}
               </span>{' '}
-              / {String(canvaDesigns.length).padStart(2, '0')} � PC Express
+              / {String(canvaDesigns.length).padStart(2, '0')} · PC Express
             </figcaption>
           </figure>
 
@@ -1450,11 +1450,11 @@ const Contact = () => {
 const Footer = () => {
   const { t } = useI18n();
   const year = new Date().getFullYear();
-  const line = `c ${year} B?o Phong`;
+  const line = `© ${year} Bảo Phong`;
   const [typed, setTyped] = useState('');
   const lineRef = useRef<HTMLParagraphElement>(null);
 
-  /* Go t?ng ky t? khi footer l?t v�o khung nh�n; hi?n th?ng n?u ngu?i d�ng t?t chuy?n d?ng. */
+  /* Gõ từng ký tự khi footer lọt vào khung nhìn; hiện thẳng nếu người dùng tắt chuyển động. */
   useEffect(() => {
     const el = lineRef.current;
     if (!el) return;
@@ -1490,12 +1490,12 @@ const Footer = () => {
     <footer className="border-t border-line py-10">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4 font-mono text-xs md:flex-row md:justify-between">
         <p ref={lineRef} className="text-center md:text-left">
-          {/* D?c m�n h�nh l?y chu?i d?y d?, ph?n go d?n ch? d? nh�n */}
+          {/* Đọc màn hình lấy chuỗi đầy đủ, phần gõ dần chỉ để nhìn */}
           <span className="sr-only">{line}</span>
           <span aria-hidden="true">
             <span className="text-accent">$&nbsp;</span>
             {typed}
-            <span className="cursor-blink text-accent">?</span>
+            <span className="cursor-blink text-accent">▍</span>
           </span>
         </p>
         <div className="flex items-center gap-5">
@@ -1547,7 +1547,7 @@ const ShowcaseRoutes = lazy(() => import('./features/showcase/ShowcaseRoutes'));
 const RouteFallback = () => (
   <div className="min-h-screen flex items-center justify-center font-mono text-sm text-muted">
     <span className="preloader-spinner mr-3" aria-hidden="true" />
-    <span>loading.</span>
+    <span>loading…</span>
   </div>
 );
 
