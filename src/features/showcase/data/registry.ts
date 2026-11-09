@@ -7,6 +7,198 @@ export {SHOWCASE_ENABLED} from '../enabled';
 /** Chi liet ke du an CO THAT va chay duoc. Khong dua du an du dinh vao day. */
 export const PROJECTS: ShowcaseProject[] = [
   {
+    slug: 'assessment-data-integrity-lab',
+    category: 'educational-assessment',
+    status: 'completed',
+    updated: '2026-11-09',
+    title: {
+      vi: 'Mô phỏng vận hành dữ liệu điểm · Khảo thí Huế',
+      en: 'Assessment score operations · Hue, Vietnam',
+    },
+    summary: {
+      vi: 'Mô phỏng cách xử lý lô điểm của 2.000 học sinh: tiếp nhận, chuẩn hóa, kiểm tra toàn bộ dữ liệu, xử lý ngoại lệ, đối soát, báo cáo, khóa và công bố có lưu vết.',
+      en: 'A simulation for processing a 2,000-learner score batch: receive, normalize, validate, resolve exceptions, reconcile, report, lock and issue with an audit trail.',
+    },
+    tech: ['React', 'TypeScript', 'Rule engine', 'Synthetic data'],
+    modules: [
+      {
+        kind: 'overview',
+        purpose: {
+          vi: 'Biến các quy định đánh giá và Học bạ số thành một quy trình có thể thực hành: từ dữ liệu điểm thô đến kiểm tra, đối soát, khóa, ký và phát hành. Lab ưu tiên tính chính xác nghiệp vụ thay vì mô phỏng một phần mềm chính thức của Bộ GD&ĐT.',
+          en: 'Turn assessment and digital-transcript rules into a workflow learners can practise, from raw results to validation, reconciliation, locking, signing and issuance. The lab prioritizes operational accuracy rather than imitating an official MOET application.',
+        },
+        audience: {
+          vi: 'Cán bộ khảo thí, giáo vụ, giáo viên/giảng viên và người học về quản trị dữ liệu giáo dục phổ thông, trung cấp và cao đẳng nghề tại Việt Nam.',
+          en: 'Examination officers, academic administrators, educators and learners studying general- and vocational-education data governance in Vietnam.',
+        },
+        objectives: [
+          {
+            vi: 'Phân biệt đánh giá tiểu học với cách tính điểm THCS/THPT.',
+            en: 'Distinguish primary assessment from lower/upper-secondary calculations.',
+          },
+          {
+            vi: 'Không áp công thức phổ thông cho môn học/mô-đun giáo dục nghề nghiệp.',
+            en: 'Keep vocational module calculations separate from general-education formulas.',
+          },
+          {
+            vi: 'Phát hiện điểm thiếu, sai thang điểm, sai công thức và lệch giữa nhiều hệ thống.',
+            en: 'Detect missing scores, invalid scales, formula errors and cross-system mismatches.',
+          },
+          {
+            vi: 'Hiểu vì sao dữ liệu đã phát hành không được sửa trực tiếp và mọi thay đổi phải lưu vết.',
+            en: 'Understand why issued data cannot be directly edited and why every change needs an audit trail.',
+          },
+          {
+            vi: 'Xử lý Hue-S như lớp tra cứu phụ trợ, không phải nguồn dữ liệu gốc.',
+            en: 'Treat Hue-S as an auxiliary viewing layer rather than the source of record.',
+          },
+        ],
+        prerequisites: [
+          {
+            vi: 'Không yêu cầu kiến thức lập trình; nên biết các khái niệm điểm thường xuyên, giữa kỳ, cuối kỳ và học bạ.',
+            en: 'No programming knowledge is required; familiarity with regular, midterm, final results and transcripts is helpful.',
+          },
+        ],
+      },
+      {
+        kind: 'concepts',
+        items: [
+          {
+            term: {vi: 'Nguồn dữ liệu gốc', en: 'Source of record'},
+            explain: {
+              vi: 'Dữ liệu nghiệp vụ tại trường được đối chiếu với chứng từ chấm trước khi ký và đồng bộ. Hue-S không được dùng để sửa ngược dữ liệu nguồn.',
+              en: 'School operational data is reconciled with marking evidence before signing and synchronization. Hue-S must not write back to the source.',
+            },
+          },
+          {
+            term: {vi: 'Lỗi chặn phát hành', en: 'Blocking issue'},
+            explain: {
+              vi: 'Thiếu điểm bắt buộc, sai thang điểm, sai công thức hoặc lệch nguồn chính khiến lô chưa đủ điều kiện khóa và phát hành.',
+              en: 'A missing required score, invalid scale, formula error or authoritative-system mismatch prevents locking and issuance.',
+            },
+          },
+          {
+            term: {vi: 'Lưu vết', en: 'Audit trail'},
+            explain: {
+              vi: 'Ghi ai thực hiện, thời điểm, lý do và giá trị trước/sau cho mỗi lần kiểm tra hoặc chỉnh sửa.',
+              en: 'Records who acted, when, why, and the before/after values for every audit or correction.',
+            },
+          },
+          {
+            term: {vi: 'Phiên bản quy định', en: 'Policy version'},
+            explain: {
+              vi: 'Quy tắc được gắn ngày hiệu lực để không áp dụng hồi tố sai cho dữ liệu lịch sử.',
+              en: 'Rules are tied to effective dates so historical data is not incorrectly reprocessed.',
+            },
+          },
+        ],
+      },
+      {kind: 'demo', demoId: 'assessment-integrity'},
+      {
+        kind: 'how-it-works',
+        steps: [
+          {
+            title: {vi: 'Trước thi · Chuẩn bị lô', en: 'Before exam · Prepare the batch'},
+            body: {
+              vi: 'Chốt phạm vi Tiểu học–THCS–THPT, lịch, danh sách, điều kiện dự thi, biểu mẫu điểm, người chịu trách nhiệm và mốc khóa dữ liệu.',
+              en: 'Finalize the primary–lower secondary–upper secondary scope, schedule, roster, eligibility, score templates, owners and data-lock milestones.',
+            },
+          },
+          {
+            title: {vi: 'Trong thi · Kiểm soát và bàn giao', en: 'During exam · Control and handover'},
+            body: {
+              vi: 'Theo dõi tình trạng dự thi, biên bản phát sinh, sau đó kiểm đếm, niêm phong và bàn giao bài thi/phiếu trả lời cho bộ phận chấm.',
+              en: 'Track participation and incidents, then count, seal and hand exam scripts/response sheets to the marking function.',
+            },
+          },
+          {
+            title: {vi: 'Sau thi · Xử lý tập điểm', en: 'After exam · Process the score dataset'},
+            body: {
+              vi: 'Kiểm đếm 2.000 dòng kết quả và 10.000 ô điểm dự kiến, sau đó kiểm tra thang điểm, số đầu điểm, công thức, điều kiện, bản ghi trùng và sai lệch hệ thống.',
+              en: 'Count 2,000 result rows and 10,000 expected score cells, then validate scales, required entries, formulas, eligibility, duplicates and system mismatches.',
+            },
+          },
+          {
+            title: {vi: 'Hàng đợi ngoại lệ', en: 'Exception queue'},
+            body: {
+              vi: 'Hệ thống kiểm tra toàn lô nhưng chỉ chuyển học sinh có lỗi vào hàng đợi. Chỉ lỗi có chứng từ đã xác minh mới được sửa; trường hợp cần thẩm quyền vẫn bị chặn.',
+              en: 'The system validates the full batch but routes only affected learners to the queue. Only evidence-backed issues can be corrected; authority-dependent cases remain blocked.',
+            },
+          },
+          {
+            title: {vi: 'Khóa, ký và phát hành', en: 'Lock, sign and issue'},
+            body: {
+              vi: 'Lô chỉ được khóa khi không còn lỗi nghiêm trọng. Sau phát hành, sửa đổi phải đi qua thu hồi và tạo lập lại; nhật ký cũ vẫn được giữ.',
+              en: 'A batch can be locked only with no blocking issue. After issuance, changes require withdrawal and recreation while retaining history.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'practice',
+        exercises: [
+          {
+            prompt: {
+              vi: 'Chọn tiểu học, chạy audit và tìm bản ghi có điểm thập phân. Vì sao không được làm tròn tự động nếu chưa xem chứng từ?',
+              en: 'Select primary, run the audit and find a decimal score. Why should it not be automatically rounded without source evidence?',
+            },
+            answer: {
+              vi: 'Làm tròn có thể thay đổi kết quả thực tế. Quy trình đúng là đối chiếu bài kiểm tra hoặc phiếu điểm gốc, sau đó ghi nhận giá trị đã xác minh và lưu vết thay đổi.',
+              en: 'Rounding may alter the actual result. The correct process verifies the marked test or source sheet, records the confirmed value, and retains the change history.',
+            },
+          },
+          {
+            prompt: {
+              vi: 'Nạp lô đã đối soát, kiểm tra, khóa và phát hành. Sau đó yêu cầu thu hồi để quan sát vòng đời chỉnh sửa bản đã phát hành.',
+              en: 'Load the verified batch, audit, lock and issue it. Then request withdrawal to observe the lifecycle for correcting an issued record.',
+            },
+          },
+        ],
+      },
+      {
+        kind: 'tech',
+        stack: ['React 19', 'TypeScript', 'Deterministic synthetic data', 'Node test runner'],
+        architecture: {
+          vi: 'Bộ quy tắc và bộ sinh dữ liệu nằm ngoài React dưới dạng hàm thuần, có kiểm thử độc lập. Giao diện giữ trạng thái trong bộ nhớ trình duyệt; không có backend, tài khoản, dữ liệu thật hay quyết định tự động bằng AI.',
+          en: 'The rule engine and data generator are pure functions outside React with independent tests. The interface keeps state in browser memory; there is no backend, account, real data or AI-based decision-making.',
+        },
+      },
+      {
+        kind: 'references',
+        links: [
+          {
+            label: 'Thông tư 27/2020/TT-BGDĐT',
+            href: 'https://vanban.chinhphu.vn/?docid=201006&pageid=27160',
+          },
+          {
+            label: 'Thông tư 22/2021/TT-BGDĐT',
+            href: 'https://vanban.chinhphu.vn/?docid=203926&pageid=27160',
+          },
+          {
+            label: 'Nghị định 88/2026/NĐ-CP',
+            href: 'https://vanban.chinhphu.vn/?classid=1&docid=217356&pageid=27160',
+          },
+          {
+            label: 'Thông tư 70/2026/TT-BGDĐT',
+            href: 'https://vanban.chinhphu.vn/?docid=219275&orggroupid=4&pageid=27160',
+          },
+          {
+            label: 'Thông tư 04/2022/TT-BLĐTBXH · GDNN đến 09/11/2026',
+            href: 'https://vanban.chinhphu.vn/?docid=205592&pageid=27160',
+          },
+          {
+            label: 'Thông tư 79/2026/TT-BGDĐT · GDNN từ 10/11/2026',
+            href: 'https://vanban.chinhphu.vn/?docid=219646&orggroupid=4&pageid=27160',
+          },
+          {
+            label: 'Thông tư 89/2026/TT-BGDĐT · hiệu lực 01/12/2026',
+            href: 'https://vanban.chinhphu.vn/?docid=220070&pageid=27160&typegroupid=6',
+          },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'cpu-scheduling-visualizer',
     category: 'operating-systems',
     status: 'completed',

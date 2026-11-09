@@ -40,9 +40,9 @@ const en = {
     about: 'About',
     metrics: 'Metrics',
     strengths: 'Strengths',
-    workflow: 'Systems',
-    projects: 'Projects',
-    showcase: 'Showcases',
+    workflow: 'EdTech systems',
+    projects: 'Solutions',
+    showcase: 'EdTech lab',
     timeline: 'Journey',
     album: 'Album',
     canva: 'Designs',
@@ -51,12 +51,12 @@ const en = {
     contact: 'Contact',
   },
   hero: {
-    roleLine1: 'Officer for Training Organization and Examination Management',
+    roleLine1: 'Training & Examination Officer | Educational Technology & Assessment',
     roleLine2:
-      'With more than five years in education, I have grown through roles in teaching, homeroom management, and training and examination operations. My Bachelor of Computer Science background enables me to apply technology and data to training management, from standardizing processes to improving learning effectiveness and the learner experience. I hope to contribute and grow with an organization over the long term.',
-    badgeTrainingOps: 'Training operations',
-    badgeDataIntegrity: 'Data integrity',
-    badgeAutomation: 'Automation systems',
+      'With more than five years in education, I have grown through teaching, homeroom management, and training and examination operations. My B.S. in Computer Science helps me connect education practice with systems, data, and AI to standardize workflows, strengthen the integrity of assessment data, and improve the learner experience. My development direction is Educational Technology & Assessment, advancing toward practical and responsible AI-Enhanced Education.',
+    badgeTrainingOps: 'Educational technology',
+    badgeDataIntegrity: 'Assessment & learning data',
+    badgeAutomation: 'AI-enhanced workflows',
     badgeToeic: 'TOEIC 700',
     badgePedagogy: 'Pedagogical practice (TC-CĐ)',
     badgeBs: 'Bachelor of Computer Science',
@@ -68,33 +68,33 @@ const en = {
     ctaCv: 'Download CV',
   },
   metrics: {
-    students: 'Students Managed',
-    dataPoints: 'Data Points Processed',
-    automationTools: 'Automation Tools',
-    timeOpt: 'Time Optimization',
+    students: 'Learners Supported',
+    dataPoints: 'Academic Data Points Processed',
+    automationTools: 'Operational Tools Developed',
+    timeOpt: 'Manual Time Reduced',
   },
   about: {
-    kicker: 'A short introduction about me',
+    kicker: 'Professional foundation & direction',
     title:
-      'Connecting training operations, examinations, and academic data into an efficient system',
-    p1: 'I specialize in organizing training, examinations, and academic data management at FPT Education, with hands-on experience on IAPS9, CMS, LMS9, Language Hub, and Fuge. My focus is ensuring training progress, grade accuracy, exam schedules, and the integrity of student records.',
-    p2: 'Alongside day-to-day operations, I develop support tools with Excel, Python, and AI-assisted logic to standardize graduation data, monitor CMS progress, optimize grade entry, and reduce manual work across training and examination workflows.',
+      'Connecting educational technology, assessment, and learning data for better decisions',
+    p1: 'My professional foundation is in training organization, examination operations, and academic data management at FPT Education. Through hands-on work with IAPS9, CMS, LMS9, Language Hub, and Fuge, I focus on training progress, grade accuracy, assessment schedules, and the integrity of learner records.',
+    p2: 'I translate operational needs into practical digital tools using Excel, Python, and AI-assisted workflows. This work supports data standardization, progress monitoring, grade processing, and more consistent training and assessment operations—forming my pathway from Educational Technology & Assessment toward AI-Enhanced Education.',
     cards: [
       {
-        title: 'Examination operations',
-        desc: 'Managing exam schedules, records, grade distributions, and accurate archival workflows for examination data.',
+        title: 'Assessment operations',
+        desc: 'Coordinating assessment schedules, records, grade distributions, and reliable examination-data workflows.',
       },
       {
-        title: 'Data standardization',
-        desc: 'Graduation data processing, Fuge grade entry, and validation of student data accuracy.',
+        title: 'Learning data integrity',
+        desc: 'Standardizing graduation data, grade pipelines, and validation rules for accurate learner records.',
       },
       {
-        title: 'System integration',
-        desc: 'End-to-end workflows connecting CMS, LMS9, Language Hub, Fuge, and IAPS9.',
+        title: 'Educational technology systems',
+        desc: 'Operating connected workflows across CMS, LMS9, Language Hub, Fuge, and IAPS9.',
       },
       {
-        title: 'Process automation',
-        desc: 'CMS check tools, large-scale Excel processing, and Python scripts supporting academic operations.',
+        title: 'AI-enhanced workflows',
+        desc: 'Developing practical tools with AI, Excel, and Python to support training and assessment teams.',
       },
     ],
   },
@@ -103,42 +103,42 @@ const en = {
     title: 'Core competencies',
     pillars: [
       {
-        title: 'Systems & data',
+        title: 'Educational systems & data',
         items: [
           'IAPS9, LMS9, CMS & Language Hub',
-          'Fuge integration & grade pipelines',
+          'Learning progress & grade pipelines',
           'Python, Java, MySQL & Excel',
-          'Academic data integrity',
+          'Academic data quality & integrity',
         ],
       },
       {
-        title: 'Education operations',
+        title: 'Assessment & training operations',
         items: [
-          'Training & exam schedules',
-          'Exam coordination',
-          'CMS administration',
-          'Quality assurance',
+          'Assessment schedules & coordination',
+          'Academic records & grade distributions',
+          'Cross-functional coordination',
+          'Quality assurance & compliance',
         ],
       },
       {
-        title: 'Growth & innovation',
+        title: 'Pathway to AI-Enhanced Education',
         items: [
-          'AI-assisted tools',
-          'Automation & Python',
-          'Pedagogical practice',
-          'Continuous learning',
+          'AI-assisted workflow design',
+          'Educational tool prototyping',
+          'Automation with Python & Excel',
+          'Responsible, learner-centered adoption',
         ],
       },
     ],
   },
   workflow: {
     kicker: '',
-    title: 'Systems administered and managed',
+    title: 'Educational technology and assessment systems operated',
     nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'QA Archive'],
   },
   projects: {
-    kicker: 'Featured projects',
-    title: 'Case studies & solutions',
+    kicker: 'Educational technology & assessment',
+    title: 'Practical solutions grounded in real education operations',
     github: 'GitHub repositories',
     githubUrl: 'https://github.com/phongbao-uopeopleuni',
     problem: 'Problem',
@@ -150,19 +150,19 @@ const en = {
     list: [
       {
         title: 'CMS progress monitoring',
-        category: 'Efficiency tool',
+        category: 'Learning progress & data',
         problem:
           'Manual CMS progress checks took significant time and made it easy to miss delayed learners.',
         solution:
           'Automated progress synchronization and dashboard views for completion status, exceptions, and follow-up.',
-        tags: ['Python', 'CMS API', 'Automation'],
-        impact: 'Reduced manual reporting time by ~60% with a live synchronized dashboard.',
+        tags: ['Python', 'CMS API', 'Learning data'],
+        impact: 'Reduced manual reporting time by ~60% while making delayed learners easier to identify.',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
         title: 'Timetable builder tool',
-        category: 'Scheduling',
+        category: 'Academic planning',
         problem:
           'Overlapping shifts, periods, and instructor assignments were difficult to catch before publishing schedules.',
         solution:
@@ -174,7 +174,7 @@ const en = {
       },
       {
         title: 'Timetable tool demo',
-        category: 'Video & screenshots',
+        category: 'Knowledge transfer & training',
         problem:
           'Training teams needed a concrete walkthrough to understand how the timetable checks work.',
         solution:
@@ -243,10 +243,10 @@ const en = {
       },
       {
         name: 'EC Star Nails & Spa',
-        type: 'Beauty salon · Greenville, NC',
+        type: 'Nail salon · Greenville & Washington, NC',
         role:
-          'Service site built on Google Sites: page structure for Services, Gallery, About, and Contact, plus the salon copy itself.',
-        stack: ['Google Sites', 'Content & IA'],
+          'Redesigned and rebuilt a multi-page website for three salon locations in Greenville and Washington, North Carolina. Structured the Home, Services, Gallery, About, and Contact content, with click-to-call, directions, and Google review links for each location.',
+        stack: ['Responsive web', 'Content & IA', 'Local SEO'],
         url: 'https://www.ecstarnailsandspagreenvillenc.com/',
       },
     ] as ProjectWork[],
@@ -344,7 +344,7 @@ const en = {
       {
         year: '2025',
         items: [
-          'Department Award for Excellence in Operational Completion',
+          'Department Award for Excellence in Operations',
         ],
       },
       {
@@ -357,7 +357,7 @@ const en = {
         year: '2023',
         items: [
           'Outstanding employee, PTCĐ Assurance Board (2023)',
-          'Staff with outstanding academic performance of the year',
+          'Staff recognition for outstanding academic performance',
         ],
       },
       {
@@ -372,8 +372,8 @@ const en = {
         items: [
           'East Carolina University Honor Scholarship',
           'Pitt Community College Foundation Scholarship',
-          "Dean's List — top of program by term, Pitt Community College",
-          '4th Winner, Volunteers of the Quarter — Granville Health System',
+          "Dean's List and top program ranking across multiple terms, Pitt Community College",
+          'Fourth place, Volunteers of the Quarter — Granville Health System',
         ],
       },
     ],
@@ -444,9 +444,9 @@ const en = {
   },
   contact: {
     kicker: 'Contact',
-    title: 'Let’s connect about training operations, data integrity, and automation.',
+    title: 'Let’s connect about educational technology, assessment, learning data, and AI.',
     description:
-      'Feel free to reach out directly by email or phone — I’m happy to discuss training operations, academic data, and automation.',
+      'I welcome conversations about educational technology, assessment operations, learning-data quality, and practical, responsible uses of AI in education.',
     emailLabel: 'Email',
     email: 'baophongcmu@gmail.com',
     phoneLabel: 'Phone',
@@ -473,9 +473,9 @@ const vi: typeof en = {
     about: 'Giới thiệu',
     metrics: 'Số liệu',
     strengths: 'Thế mạnh',
-    workflow: 'Hệ thống',
-    projects: 'Dự án',
-    showcase: 'Dự án giáo dục',
+    workflow: 'Hệ thống EdTech',
+    projects: 'Giải pháp',
+    showcase: 'Phòng lab EdTech',
     timeline: 'Hành trình',
     album: 'Album',
     canva: 'Thiết kế',
@@ -484,12 +484,12 @@ const vi: typeof en = {
     contact: 'Liên hệ',
   },
   hero: {
-    roleLine1: 'Cán bộ Tổ chức và Quản lí Đào tạo, Khảo thí.',
+    roleLine1: 'Cán bộ Tổ chức & Quản lý Đào tạo, Khảo thí | Educational Technology & Assessment',
     roleLine2:
-      'Hơn 5 năm gắn bó với lĩnh vực giáo dục, trưởng thành qua các vai trò giảng dạy, chủ nhiệm và tổ chức đào tạo – khảo thí. Với nền tảng Cử nhân Khoa học Máy tính là lợi thế để ứng dụng công nghệ và dữ liệu vào công tác quản lý đào tạo, từ chuẩn hóa quy trình đến nâng cao hiệu quả học tập và trải nghiệm của học viên. Mong muốn được đồng hành và đóng góp lâu dài cùng tổ chức.',
-    badgeTrainingOps: 'Vận hành đào tạo',
-    badgeDataIntegrity: 'Toàn vẹn dữ liệu',
-    badgeAutomation: 'Tự động hóa hệ thống',
+      'Hơn 5 năm trong lĩnh vực giáo dục qua các vai trò giảng dạy, chủ nhiệm và vận hành đào tạo – khảo thí. Nền tảng Cử nhân Khoa học Máy tính giúp tôi kết nối nghiệp vụ giáo dục với hệ thống, dữ liệu và AI để chuẩn hóa quy trình, củng cố tính toàn vẹn của dữ liệu đánh giá và cải thiện trải nghiệm người học. Định hướng phát triển của tôi là Educational Technology & Assessment, tiến tới các giải pháp AI-Enhanced Education thiết thực và có trách nhiệm.',
+    badgeTrainingOps: 'Công nghệ giáo dục',
+    badgeDataIntegrity: 'Đánh giá & dữ liệu học tập',
+    badgeAutomation: 'Quy trình tăng cường bởi AI',
     badgeToeic: 'TOEIC 700',
     badgePedagogy: 'Nghiệp vụ sư phạm TC-CĐ',
     badgeBs: 'Cử nhân Khoa học máy tính',
@@ -501,33 +501,33 @@ const vi: typeof en = {
     ctaCv: 'Tải CV',
   },
   metrics: {
-    students: 'Sinh viên đã quản lý',
-    dataPoints: 'Điểm dữ liệu xử lý',
-    automationTools: 'Công cụ tự động',
-    timeOpt: 'Tối ưu thời gian',
+    students: 'Người học đã hỗ trợ',
+    dataPoints: 'Điểm dữ liệu học vụ đã xử lý',
+    automationTools: 'Công cụ vận hành đã phát triển',
+    timeOpt: 'Thời gian thủ công được giảm',
   },
   about: {
-    kicker: 'Giới thiệu ngắn về bản thân tôi',
+    kicker: 'Nền tảng chuyên môn & định hướng',
     title:
-      'Kết nối vận hành đào tạo, khảo thí và dữ liệu học vụ thành hệ thống hiệu quả',
-    p1: 'Tôi chuyên sâu trong công tác tổ chức đào tạo, khảo thí và quản lý dữ liệu học vụ tại FPT Education, với kinh nghiệm thực tế trên IAPS9, CMS, LMS9, Language Hub và Fuge. Trọng tâm công việc là đảm bảo tiến độ đào tạo, độ chính xác điểm số, lịch thi và tính toàn vẹn của hồ sơ sinh viên.',
-    p2: 'Song song với nghiệp vụ vận hành, tôi phát triển các công cụ hỗ trợ bằng Excel, Python và AI-assisted logic để chuẩn hóa dữ liệu tốt nghiệp, kiểm tra tiến độ CMS, tối ưu nhập điểm và giảm thao tác thủ công.',
+      'Kết nối công nghệ giáo dục, đánh giá và dữ liệu học tập để hỗ trợ quyết định tốt hơn',
+    p1: 'Nền tảng chuyên môn của tôi là tổ chức đào tạo, vận hành khảo thí và quản lý dữ liệu học vụ tại FPT Education. Qua kinh nghiệm thực tế trên IAPS9, CMS, LMS9, Language Hub và Fuge, tôi tập trung vào tiến độ đào tạo, độ chính xác điểm số, lịch đánh giá và tính toàn vẹn của hồ sơ người học.',
+    p2: 'Tôi chuyển các nhu cầu vận hành thành công cụ số thiết thực bằng Excel, Python và quy trình hỗ trợ bởi AI. Công việc này phục vụ chuẩn hóa dữ liệu, theo dõi tiến độ, xử lý điểm và tăng tính nhất quán trong đào tạo – đánh giá; đồng thời tạo nền tảng để tôi phát triển từ Educational Technology & Assessment đến AI-Enhanced Education.',
     cards: [
       {
-        title: 'Vận hành khảo thí',
-        desc: 'Quản lý lịch thi, hồ sơ, phổ điểm và quy trình lưu trữ dữ liệu khảo thí chính xác.',
+        title: 'Vận hành đánh giá',
+        desc: 'Điều phối lịch đánh giá, hồ sơ, phổ điểm và các luồng dữ liệu khảo thí đáng tin cậy.',
       },
       {
-        title: 'Chuẩn hóa dữ liệu',
-        desc: 'Xử lý dữ liệu tốt nghiệp, nhập điểm Fuge và kiểm tra tính đúng đắn của dữ liệu sinh viên.',
+        title: 'Toàn vẹn dữ liệu học tập',
+        desc: 'Chuẩn hóa dữ liệu tốt nghiệp, luồng điểm và quy tắc kiểm tra hồ sơ người học.',
       },
       {
-        title: 'Tích hợp hệ thống',
-        desc: 'Kết nối luồng nghiệp vụ giữa CMS, LMS9, Language Hub, Fuge và IAPS9 xuyên suốt.',
+        title: 'Hệ thống công nghệ giáo dục',
+        desc: 'Vận hành các luồng kết nối giữa CMS, LMS9, Language Hub, Fuge và IAPS9.',
       },
       {
-        title: 'Tự động hóa quy trình',
-        desc: 'Xây dựng tool kiểm tra CMS, xử lý Excel dữ liệu lớn và Python scripts hỗ trợ học vụ.',
+        title: 'Quy trình tăng cường bởi AI',
+        desc: 'Phát triển công cụ thiết thực bằng AI, Excel và Python để hỗ trợ đội ngũ đào tạo – khảo thí.',
       },
     ],
   },
@@ -536,42 +536,42 @@ const vi: typeof en = {
     title: 'Các năng lực cốt lõi',
     pillars: [
       {
-        title: 'Hệ thống & dữ liệu',
+        title: 'Hệ thống & dữ liệu giáo dục',
         items: [
           'IAPS9, LMS9, CMS & Language Hub',
-          'Tích hợp Fuge & luồng điểm',
+          'Tiến độ học tập & luồng điểm',
           'Python, Java, MySQL & Excel',
-          'Toàn vẹn dữ liệu học vụ',
+          'Chất lượng & toàn vẹn dữ liệu học vụ',
         ],
       },
       {
-        title: 'Vận hành giáo dục',
+        title: 'Đánh giá & vận hành đào tạo',
         items: [
-          'Lịch đào tạo & khảo thí',
-          'Phối hợp khảo thí',
-          'Quản trị CMS',
-          'Đảm bảo chất lượng',
+          'Lịch đánh giá & điều phối khảo thí',
+          'Hồ sơ học vụ & phổ điểm',
+          'Phối hợp liên phòng ban',
+          'Đảm bảo chất lượng & tuân thủ',
         ],
       },
       {
-        title: 'Phát triển & đổi mới',
+        title: 'Định hướng AI-Enhanced Education',
         items: [
-          'Công cụ hỗ trợ AI',
-          'Tự động hóa & Python',
-          'Nghiệp vụ sư phạm',
-          'Học tập liên tục',
+          'Thiết kế quy trình hỗ trợ bởi AI',
+          'Tạo mẫu công cụ giáo dục',
+          'Tự động hóa với Python & Excel',
+          'Ứng dụng có trách nhiệm, lấy người học làm trung tâm',
         ],
       },
     ],
   },
   workflow: {
     kicker: '',
-    title: 'Các hệ thống đã quản trị và xử lí',
+    title: 'Các hệ thống công nghệ giáo dục và đánh giá đã vận hành',
     nodes: ['CMS', 'LMS9', 'Fuge', 'IAPS9', 'Moodle', 'Lưu trữ QA'],
   },
   projects: {
-    kicker: 'Dự án nổi bật',
-    title: 'Case study & giải pháp',
+    kicker: 'Công nghệ giáo dục & đánh giá',
+    title: 'Giải pháp thiết thực từ bài toán vận hành giáo dục',
     github: 'Kho mã GitHub',
     githubUrl: 'https://github.com/phongbao-uopeopleuni',
     problem: 'Vấn đề',
@@ -583,19 +583,19 @@ const vi: typeof en = {
     list: [
       {
         title: 'Giám sát tiến độ CMS',
-        category: 'Công cụ hiệu quả',
+        category: 'Tiến độ học tập & dữ liệu',
         problem:
           'Việc kiểm tra tiến độ CMS thủ công tốn nhiều thời gian và dễ bỏ sót sinh viên cần theo dõi.',
         solution:
           'Tự động đồng bộ dữ liệu tiến độ và dựng dashboard để theo dõi trạng thái hoàn thành, ngoại lệ và nhắc việc.',
-        tags: ['Python', 'API CMS', 'Tự động hóa'],
-        impact: 'Giảm khoảng 60% thời gian báo cáo thủ công nhờ dashboard đồng bộ trực tiếp.',
+        tags: ['Python', 'API CMS', 'Dữ liệu học tập'],
+        impact: 'Giảm khoảng 60% thời gian báo cáo thủ công và giúp nhận diện người học chậm tiến độ rõ hơn.',
         image:
           '/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg',
       },
       {
         title: 'Tool làm thời khóa biểu',
-        category: 'Lập lịch',
+        category: 'Lập kế hoạch học vụ',
         problem:
           'Trùng ca, trùng tiết và trùng giảng viên khó phát hiện đầy đủ trước khi ban hành thời khóa biểu.',
         solution:
@@ -607,7 +607,7 @@ const vi: typeof en = {
       },
       {
         title: 'Demo tool thời khóa biểu',
-        category: 'Video & hình ảnh',
+        category: 'Chuyển giao & hướng dẫn sử dụng',
         problem:
           'Đội ngũ đào tạo cần một bản minh họa cụ thể để hiểu quy trình kiểm tra của công cụ TKB.',
         solution:
@@ -676,10 +676,10 @@ const vi: typeof en = {
       },
       {
         name: 'EC Star Nails & Spa',
-        type: 'Làm đẹp · Greenville, NC',
+        type: 'Tiệm nail · Greenville & Washington, NC',
         role:
-          'Website dịch vụ dựng trên Google Sites: tổ chức cấu trúc trang Services, Gallery, About, Contact và biên tập toàn bộ nội dung giới thiệu tiệm.',
-        stack: ['Google Sites', 'Nội dung & cấu trúc trang'],
+          'Thiết kế lại và xây dựng website đa trang cho ba cơ sở tại Greenville và Washington, North Carolina. Tổ chức nội dung Home, Services, Gallery, About, Contact; tích hợp gọi điện, chỉ đường và liên kết Google Reviews riêng cho từng cơ sở.',
+        stack: ['Web responsive', 'Nội dung & IA', 'SEO local'],
         url: 'https://www.ecstarnailsandspagreenvillenc.com/',
       },
     ] as ProjectWork[],
@@ -775,20 +775,20 @@ const vi: typeof en = {
       {
         year: '2025',
         items: [
-          'Đạt giải Bộ phận hoàn thành xuất sắc vận hành',
+          'Giải Bộ phận hoàn thành xuất sắc công tác vận hành',
         ],
       },
       {
         year: '2024',
         items: [
-          'Triển khai thành công chuỗi dự án Đào tạo, định hướng Sinh viên',
+          'Triển khai thành công chuỗi dự án đào tạo và định hướng sinh viên',
         ],
       },
       {
         year: '2023',
         items: [
           'Nhân viên xuất sắc Ban Đảm bảo PTCĐ năm 2023',
-          'Cán bộ có thành tích học tập xuất sắc năm',
+          'Cán bộ có thành tích học tập xuất sắc',
         ],
       },
       {
@@ -803,8 +803,8 @@ const vi: typeof en = {
         items: [
           'Học bổng East Carolina University Honor Scholarship',
           'Học bổng Pitt Community College Foundation Scholarship',
-          "Thủ khoa ngành các học kỳ tại Pitt Community College Dean's List",
-          'The 4th Winner Volunteers of the Quarter of Granville Health System',
+          "Đạt Dean's List và đứng đầu ngành qua nhiều học kỳ tại Pitt Community College",
+          'Hạng 4 giải Volunteers of the Quarter — Granville Health System',
         ],
       },
     ],
@@ -875,9 +875,9 @@ const vi: typeof en = {
   },
   contact: {
     kicker: 'Liên hệ',
-    title: 'Kết nối để trao đổi về vận hành đào tạo, dữ liệu học vụ và tự động hóa.',
+    title: 'Kết nối để trao đổi về công nghệ giáo dục, đánh giá, dữ liệu học tập và AI.',
     description:
-      'Bạn có thể liên hệ trực tiếp qua email hoặc điện thoại — rất sẵn lòng trao đổi về vận hành đào tạo, dữ liệu học vụ và tự động hóa.',
+      'Tôi sẵn sàng trao đổi về công nghệ giáo dục, vận hành đánh giá, chất lượng dữ liệu học tập và cách ứng dụng AI thiết thực, có trách nhiệm trong giáo dục.',
     emailLabel: 'Email',
     email: 'baophongcmu@gmail.com',
     phoneLabel: 'Số điện thoại',

@@ -601,9 +601,9 @@ const Metrics = () => {
 const Strengths = () => {
   const { t } = useI18n();
   const pillarMeta = [
-    { icon: <Database size={20} key="db" />, file: 'systems.data' },
-    { icon: <BookOpen size={20} key="book" />, file: 'operations.edu' },
-    { icon: <Brain size={20} key="brain" />, file: 'innovation.dev' },
+    { icon: <Database size={20} key="db" />, file: 'edtech.systems' },
+    { icon: <BookOpen size={20} key="book" />, file: 'assessment.ops' },
+    { icon: <Brain size={20} key="brain" />, file: 'ai-education.lab' },
   ];
   const total = String(t.strengths.pillars.length).padStart(2, '0');
 

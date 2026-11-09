@@ -3,16 +3,16 @@ import type {L} from '../types/showcase';
 /** Chuoi rieng cua showcase. Tach khoi src/i18n.tsx theo yeu cau
  *  "giu du lieu showcase tach biet voi du lieu nghe nghiep". */
 export const S = {
-  navLabel: {vi: 'Dự án giáo dục', en: 'Educational showcases'},
+  navLabel: {vi: 'Phòng lab EdTech', en: 'EdTech lab'},
   backToPortfolio: {vi: 'Về portfolio', en: 'Back to portfolio'},
-  kicker: {vi: 'Dự án giáo dục tương tác', en: 'Educational showcases'},
+  kicker: {vi: 'Phòng lab công nghệ giáo dục', en: 'Educational technology lab'},
   title: {
-    vi: 'Học công nghệ bằng cách tương tác với nó',
-    en: 'Learning technology by interacting with it',
+    vi: 'Từ khái niệm kỹ thuật đến trải nghiệm học tập tương tác',
+    en: 'From technical concepts to interactive learning experiences',
   },
   intro: {
-    vi: 'Khu vực này tập hợp các công cụ học tập và thử nghiệm kỹ thuật tôi tự xây dựng. Mục tiêu là biến những khái niệm trừu tượng thành thứ có thể bấm vào, chạy thử và quan sát trực tiếp. Phần này tách riêng khỏi hồ sơ nghề nghiệp ở trang chủ.',
-    en: 'This area collects the learning tools and technical experiments I build. The goal is to turn abstract concepts into something you can click, run and watch directly. It is kept separate from the professional profile on the home page.',
+    vi: 'Khu vực này ghi lại cách tôi chuyển các khái niệm khoa học máy tính thành công cụ học tập có thể tương tác, kết nối thiết kế phần mềm với sư phạm và đánh giá. Đây là nền tảng thực hành cho định hướng Educational Technology & Assessment, tiến tới AI-Enhanced Education; mỗi dự án đều nêu rõ trạng thái và phạm vi thực tế.',
+    en: 'This area documents how I turn computer science concepts into interactive learning tools, connecting software design with pedagogy and assessment. It is the practical foundation for my direction in Educational Technology & Assessment and, over time, AI-Enhanced Education; each project clearly states its actual status and scope.',
   },
   filterAll: {vi: 'Tất cả', en: 'All'},
   filterCategory: {vi: 'Lĩnh vực', en: 'Subject'},

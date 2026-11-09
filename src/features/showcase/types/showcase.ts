@@ -4,6 +4,7 @@
 export type L = { vi: string; en: string };
 
 export type ShowcaseCategory =
+  | 'educational-assessment'
   | 'computer-science'
   | 'operating-systems'
   | 'databases-sql'
@@ -16,7 +17,7 @@ export type ShowcaseCategory =
 export type ShowcaseStatus = 'completed' | 'prototype' | 'in-progress';
 
 /** Id cua demo tuong tac duoc nhung vao trang chi tiet. */
-export type DemoId = 'cpu-scheduling';
+export type DemoId = 'cpu-scheduling' | 'assessment-integrity';
 
 /** Cac khoi noi dung o trang chi tiet. Union co nhan: trang chi dung
  *  nhung khoi ma du an that su co, khong ep du an nao phai co du moi muc. */

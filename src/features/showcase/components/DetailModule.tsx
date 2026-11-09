@@ -8,8 +8,17 @@ import type {DetailModule as Mod} from '../types/showcase';
 const CpuSchedulingLab = lazy(
   () => import('../demos/cpu-scheduling/CpuSchedulingLab'),
 );
+const AssessmentIntegrityLab = lazy(
+  () =>
+    import(
+      '../demos/assessment-integrity/AssessmentIntegrityLab'
+    ),
+);
 
-const DEMOS = {'cpu-scheduling': CpuSchedulingLab} as const;
+const DEMOS = {
+  'cpu-scheduling': CpuSchedulingLab,
+  'assessment-integrity': AssessmentIntegrityLab,
+} as const;
 
 export default function DetailModule({
   mod,
