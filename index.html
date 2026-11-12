@@ -3,12 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      /* Dat theme TRUOC khi ve lan dau de khong nhay sang roi moi toi.
+         Bao try/catch vi localStorage co the bi chan o che do rieng tu. */
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark =
+            saved === 'dark' ||
+            (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {
+          /* khong doc duoc localStorage — giu giao dien sang mac dinh */
+        }
+      })();
+    </script>
     <title>Bảo Phong — Educational Technology &amp; Assessment</title>
     <meta
       name="description"
       content="Bảo Phong — Cán bộ Tổ chức và Quản lý Đào tạo, Khảo thí; định hướng Educational Technology &amp; Assessment, tiến tới AI-Enhanced Education."
     />
-    <meta name="theme-color" content="#0b0e14" />
+    <meta name="theme-color" content="#f2f3f5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1013" media="(prefers-color-scheme: dark)" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Bảo Phong — Educational Technology &amp; Assessment" />
     <meta

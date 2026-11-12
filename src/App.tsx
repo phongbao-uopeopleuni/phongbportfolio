@@ -4,1558 +4,893 @@
  */
 
 import {
-  Menu,
-  X,
-  ChevronRight,
-  Mail,
-  School,
-  Database,
-  Settings,
-  TrendingUp,
-  Activity,
-  Cpu,
-  Clock,
-  BookOpen,
-  Brain,
-  UploadCloud,
-  Archive,
-  Phone,
-  Zap,
-  Download,
-  ArrowUpRight,
-  Briefcase,
-  GraduationCap,
-  ChevronLeft,
-  ImageIcon,
-} from 'lucide-react';
-import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
-import type { ReactNode } from 'react';
-import { Routes, Route, Navigate, Link } from 'react-router-dom';
-import { SHOWCASE_ENABLED } from './features/showcase/enabled';
-import { I18nProvider, useI18n } from './i18n';
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import {Menu, Moon, Sun, X} from 'lucide-react';
+import {Link, Navigate, Route, Routes, useLocation} from 'react-router-dom';
+import {I18nProvider, useI18n} from './i18n';
+import {SHOWCASE_ENABLED} from './features/showcase/enabled';
+import Lightbox from './components/Lightbox';
 import heroProfileBundled from './assets/hero/profile.jpg?url';
 
-/** Paths under `public/` — must include Vite `base` (e.g. /phongbportfolio/) for GitHub Pages. */
-function publicUrl(path: string): string {
+/** Duong dan trong public/ phai kem Vite base, neu khong se vo tren GitHub Pages. */
+export function publicUrl(path: string): string {
   const clean = path.startsWith('/') ? path.slice(1) : path;
   return `${import.meta.env.BASE_URL}${clean}`;
 }
 
+const cvUrl = publicUrl(`/${encodeURIComponent('1. PhongBCV_Updated.pdf')}`);
 const heroProfileFallback = publicUrl(
   `/images/hero/${encodeURIComponent('pic 1.jpg')}`,
 );
 
-/** Current CV file served from public/. */
-const cvUrl = publicUrl(`/${encodeURIComponent('1. PhongBCV_Updated.pdf')}`);
+const canvaDesigns = Array.from({length: 13}, (_, index) => ({
+  number: index + 1,
+  src: `/images/projects/canvathietke/${index + 1}.webp`,
+}));
 
-const canvaDesigns = Array.from({length: 13}, (_, index) => {
-  const number = index + 1;
-  return {
-    number,
-    src: `/images/projects/canvathietke/${number}.webp`,
-  };
-});
+/* ------------------------------------------------------------------ */
+/* Nen tang dung chung                                                  */
+/* ------------------------------------------------------------------ */
 
-// --- Shared pieces ---
+/** 1120px noi dung + 16px le hai ben. */
+const WRAP = 'mx-auto w-full max-w-[1152px] px-4';
 
-/** Section eyebrow rendered as a code comment; the real title is an h2. */
-const SectionHeading = ({
-  kicker,
-  title,
-  align = 'left',
+const MonoLabel = ({
+  children,
+  className = '',
 }: {
-  kicker?: string;
-  title: string;
-  align?: 'left' | 'center';
+  children: ReactNode;
+  className?: string;
 }) => (
-  <div className={`mb-12 md:mb-16 ${align === 'center' ? 'text-center' : ''}`}>
-    {kicker ? (
-      <p className="font-mono text-sm text-accent mb-3">
-        <span aria-hidden="true">{'// '}</span>
-        {kicker}
-      </p>
-    ) : null}
-    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
-      {title}
-    </h2>
-  </div>
+  <p
+    className={`font-mono text-xs font-medium uppercase tracking-[0.12em] text-muted ${className}`}
+  >
+    {children}
+  </p>
 );
 
-const SkipLink = () => {
-  const { locale } = useI18n();
+const Tags = ({items}: {items: string[]}) => (
+  <ul className="flex list-none flex-wrap gap-1.5">
+    {items.map((tag) => (
+      <li
+        key={tag}
+        className="rounded-full bg-surface px-2.5 py-[3px] font-mono text-[11px] font-medium uppercase tracking-[0.06em] text-muted"
+      >
+        {tag}
+      </li>
+    ))}
+  </ul>
+);
+
+/** Theme sang/toi. Gia tri ban dau do script trong index.html dat truoc khi ve. */
+function useTheme() {
+  const [dark, setDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') === 'dark',
+  );
+
+  const toggle = useCallback(() => {
+    setDark((prev) => {
+      const next = !prev;
+      const root = document.documentElement;
+      if (next) root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+      try {
+        localStorage.setItem('theme', next ? 'dark' : 'light');
+      } catch {
+        /* localStorage bi chan — van doi duoc theme trong phien nay */
+      }
+      return next;
+    });
+  }, []);
+
+  return {dark, toggle};
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                               */
+/* ------------------------------------------------------------------ */
+
+const SECTION_IDS = ['projects', 'works', 'timeline', 'contact'] as const;
+
+const Header = () => {
+  const {locale, setLocale, t} = useI18n();
+  const {dark, toggle} = useTheme();
+  const {pathname} = useLocation();
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('');
+
+  const onHome = pathname === '/';
+
+  /* Lam sang muc nav theo phan dang xem. Chi chay o trang chu. */
+  useEffect(() => {
+    if (!onHome) {
+      setActive('');
+      return;
+    }
+    const nodes = SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (n): n is HTMLElement => Boolean(n),
+    );
+    if (nodes.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      {rootMargin: '-45% 0px -50% 0px'},
+    );
+    nodes.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, [onHome]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  const items = [
+    {id: 'projects', label: t.nav.projects},
+    {id: 'works', label: t.nav.works},
+    {id: 'timeline', label: t.nav.timeline},
+    {id: 'contact', label: t.nav.contact},
+  ];
+
+  /* Tu /album, lien ket phai quay ve trang chu kem hash. */
+  const hrefFor = (id: string) => (onHome ? `#${id}` : `/#${id}`);
+
+  const langBtn = (on: boolean) =>
+    `px-1 font-mono text-xs ${on ? 'font-medium text-ink' : 'text-muted hover:text-ink'}`;
+
+  const sheetLink =
+    'block rounded-xl px-4 py-3 font-medium text-ink no-underline hover:bg-surface';
+
   return (
-    <a href="#home" className="skip-link">
-      {locale === 'vi' ? 'Bỏ qua đến nội dung chính' : 'Skip to main content'}
+    <header className="sticky top-4 z-50">
+      <div className={WRAP}>
+        <div className="header-bar relative grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-4 rounded-full border border-line pl-6 pr-3 max-md:grid-cols-[1fr_auto] max-md:pl-5 max-md:pr-2">
+          <Link
+            to="/"
+            className="flex min-h-11 flex-col justify-center justify-self-start leading-tight no-underline"
+          >
+            <span className="text-base font-semibold tracking-[-0.01em] text-ink">
+              {t.nav.brand}
+            </span>
+            <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted max-[419px]:hidden">
+              {t.nav.brandLabel}
+            </span>
+          </Link>
+
+          <nav className="flex gap-1 rounded-full bg-surface p-1 max-md:hidden">
+            {items.map((item) =>
+              onHome ? (
+                <a
+                  key={item.id}
+                  href={hrefFor(item.id)}
+                  aria-current={active === item.id ? 'true' : undefined}
+                  className={`rounded-full px-4 py-2 text-sm font-medium no-underline transition-colors max-lg:px-3 ${
+                    active === item.id
+                      ? 'bg-raised text-ink shadow-card'
+                      : 'text-muted hover:text-ink'
+                  }`}
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.id}
+                  to={hrefFor(item.id)}
+                  className="rounded-full px-4 py-2 text-sm font-medium text-muted no-underline transition-colors hover:text-ink max-lg:px-3"
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </nav>
+
+          <div className="flex items-center gap-2 justify-self-end">
+            <p className="px-2 font-mono text-xs text-muted">
+              <button
+                type="button"
+                onClick={() => setLocale('vi')}
+                className={langBtn(locale === 'vi')}
+                aria-pressed={locale === 'vi'}
+              >
+                VI
+              </button>
+              <span aria-hidden="true"> / </span>
+              <button
+                type="button"
+                onClick={() => setLocale('en')}
+                className={langBtn(locale === 'en')}
+                aria-pressed={locale === 'en'}
+              >
+                EN
+              </button>
+            </p>
+
+            <button
+              type="button"
+              onClick={toggle}
+              aria-label={dark ? t.nav.themeToLight : t.nav.themeToDark}
+              className="grid h-11 w-11 place-items-center rounded-full border border-line bg-raised text-ink"
+            >
+              {dark ? (
+                <Sun size={18} aria-hidden="true" />
+              ) : (
+                <Moon size={18} aria-hidden="true" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="mobile-sheet"
+              aria-label={open ? t.nav.menuClose : t.nav.menuOpen}
+              className="hidden h-11 w-11 place-items-center rounded-full border border-line bg-raised text-ink max-md:grid"
+            >
+              {open ? (
+                <X size={18} aria-hidden="true" />
+              ) : (
+                <Menu size={18} aria-hidden="true" />
+              )}
+            </button>
+          </div>
+
+          {open ? (
+            <div
+              id="mobile-sheet"
+              className="absolute inset-x-0 top-[72px] rounded-card border border-line bg-raised p-2 shadow-card"
+            >
+              {items.map((item) =>
+                onHome ? (
+                  <a
+                    key={item.id}
+                    href={hrefFor(item.id)}
+                    onClick={() => setOpen(false)}
+                    className={sheetLink}
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.id}
+                    to={hrefFor(item.id)}
+                    onClick={() => setOpen(false)}
+                    className={sheetLink}
+                  >
+                    {item.label}
+                  </Link>
+                ),
+              )}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Khung section dung chung cho 01-04                                   */
+/* ------------------------------------------------------------------ */
+
+const CARD =
+  'rounded-section border border-line bg-panel p-12 max-lg:p-10 max-md:rounded-card max-md:p-5';
+const ITEM = 'rounded-card border border-line bg-raised shadow-card';
+
+const PillLink = ({
+  children,
+  href,
+  to,
+}: {
+  children: ReactNode;
+  href?: string;
+  to?: string;
+}) => {
+  const cls =
+    'inline-flex min-h-11 flex-none items-center whitespace-nowrap rounded-full border border-line bg-raised px-[18px] font-mono text-xs font-medium uppercase tracking-[0.12em] text-ink no-underline hover:border-muted';
+  return to ? (
+    <Link to={to} className={cls}>
+      {children}
+    </Link>
+  ) : (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {children}
     </a>
   );
 };
 
-/** Hiện dần phần tử khi cuộn tới; delay (ms) tạo hiệu ứng lần lượt. */
-const Reveal = ({
+const Section = ({
+  id,
+  index,
+  label,
+  title,
+  desc,
+  pill,
   children,
-  delay = 0,
-  className = '',
 }: {
+  id: string;
+  index: string;
+  label: string;
+  title: string;
+  desc: string;
+  pill?: ReactNode;
   children: ReactNode;
-  delay?: number;
-  className?: string;
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`reveal ${isVisible ? 'is-visible' : ''} ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-    >
-      {children}
-    </div>
-  );
-};
-
-/** Con trỏ tùy biến: chấm bám chính xác + vòng bám trễ mượt. Chỉ bật khi có chuột thật. */
-const CustomCursor = () => {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!fine || reduce) return;
-
-    const dot = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
-
-    setEnabled(true);
-    document.body.classList.add('cursor-none');
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
-    let raf = 0;
-
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-      const interactive = (e.target as Element)?.closest?.(
-        'a, button, [role="button"], input, textarea, select, label',
-      );
-      ring.classList.toggle('is-hovering', Boolean(interactive));
-    };
-    const onDown = () => ring.classList.add('is-clicking');
-    const onUp = () => ring.classList.remove('is-clicking');
-    const onLeave = () => {
-      dot.style.opacity = '0';
-      ring.style.opacity = '0';
-    };
-    const onEnter = () => {
-      dot.style.opacity = '1';
-      ring.style.opacity = '0.6';
-    };
-
-    const loop = () => {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
-      raf = requestAnimationFrame(loop);
-    };
-    loop();
-
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mousedown', onDown);
-    window.addEventListener('mouseup', onUp);
-    document.addEventListener('mouseleave', onLeave);
-    document.addEventListener('mouseenter', onEnter);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mousedown', onDown);
-      window.removeEventListener('mouseup', onUp);
-      document.removeEventListener('mouseleave', onLeave);
-      document.removeEventListener('mouseenter', onEnter);
-      document.body.classList.remove('cursor-none');
-    };
-  }, []);
-
-  return (
-    <div aria-hidden="true" style={{ display: enabled ? undefined : 'none' }}>
-      <div ref={ringRef} className="cursor-ring" />
-      <div ref={dotRef} className="cursor-dot" />
-    </div>
-  );
-};
-
-/** Màn hình boot dạng terminal, hiện một lần mỗi phiên rồi mờ dần. */
-const Preloader = () => {
-  const [phase, setPhase] = useState<'loading' | 'fadeout' | 'gone'>(() => {
-    try {
-      return sessionStorage.getItem('booted') ? 'gone' : 'loading';
-    } catch {
-      return 'loading';
-    }
-  });
-
-  useEffect(() => {
-    if (phase === 'gone') return;
-    try {
-      sessionStorage.setItem('booted', '1');
-    } catch {
-      /* sessionStorage không khả dụng — vẫn chạy bình thường */
-    }
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = setTimeout(() => setPhase('fadeout'), reduce ? 150 : 1500);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (phase !== 'fadeout') return;
-    const t = setTimeout(() => setPhase('gone'), 500);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  if (phase === 'gone') return null;
-
-  return (
-    <div
-      aria-hidden="true"
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-surface px-6 transition-opacity duration-500 ${
-        phase === 'fadeout' ? 'opacity-0 pointer-events-none' : 'opacity-100'
-      }`}
-    >
-      <div className="w-[min(90vw,26rem)] font-mono text-sm">
-        <p className="flex items-center gap-3 text-ink">
-          <span className="preloader-spinner" />
-          <span>
-            <span className="text-accent">~/</span>bao-phong
-            <span className="text-muted"> — booting…</span>
-          </span>
-        </p>
-        <div className="mt-5 space-y-1.5 text-muted">
-          <p>
-            <span className="text-accent">$</span> loading assets
-          </p>
-          <p>
-            <span className="text-accent">$</span> mounting components
-          </p>
-          <p>
-            <span className="text-accent">$</span> ready
-            <span className="cursor-blink text-accent"> _</span>
-          </p>
-        </div>
-        <div className="mt-5 h-1 rounded-full bg-line overflow-hidden">
-          <div className="h-full rounded-full bg-accent preloader-bar" />
-        </div>
+}) => (
+  <section
+    id={id}
+    aria-labelledby={`h-${id}`}
+    className={`${CARD} mt-8 max-md:mt-6`}
+  >
+    <div className="mb-8 flex items-end justify-between gap-6 max-md:flex-col max-md:items-start">
+      <div className="min-w-0">
+        <p className="font-mono text-sm text-muted">{index}</p>
+        <MonoLabel className="mt-2">{label}</MonoLabel>
+        <h2
+          id={`h-${id}`}
+          className="my-1.5 text-[clamp(28px,3.5vw,40px)] font-bold leading-[1.15] tracking-[-0.015em]"
+        >
+          {title}
+        </h2>
+        <p className="max-w-[60ch] text-muted">{desc}</p>
       </div>
+      {pill}
     </div>
-  );
-};
+    {children}
+  </section>
+);
 
-// --- Components ---
+/* ------------------------------------------------------------------ */
+/* Hero                                                                 */
+/* ------------------------------------------------------------------ */
 
-const Navbar = () => {
-  const { locale, setLocale, t } = useI18n();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeId, setActiveId] = useState('home');
-
-  const navItems = [
-    { href: '#about', label: t.nav.about },
-    { href: '#metrics', label: t.nav.metrics },
-    { href: '#strengths', label: t.nav.strengths },
-    { href: '#workflow', label: t.nav.workflow },
-    { href: '#projects', label: t.nav.projects },
-    { href: '#timeline', label: t.nav.timeline },
-    { href: '#achievements', label: t.nav.achievements },
-    { href: '#album', label: t.nav.album },
-    { href: '#canva-album', label: t.nav.canva },
-    { href: '#contact', label: t.nav.contact },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - doc.clientHeight;
-      setScrollProgress(max > 0 ? (window.scrollY / max) * 100 : 0);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Scroll-spy: làm sáng mục nav theo section đang hiển thị giữa màn hình
-  useEffect(() => {
-    const sections = document.querySelectorAll('main section[id]');
-    if (!sections.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isMobileMenuOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsMobileMenuOpen(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [isMobileMenuOpen]);
-
-  const langBtn = (active: boolean) =>
-    `px-2.5 py-1.5 font-mono text-xs transition-colors ${
-      active
-        ? 'text-accent underline underline-offset-4 decoration-2'
-        : 'text-muted hover:text-ink'
-    }`;
-
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
-        isScrolled
-          ? 'bg-surface/90 backdrop-blur-md border-line h-16'
-          : 'bg-transparent border-transparent h-20'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
-        <a href="#home" className="font-mono text-sm text-ink font-semibold">
-          <span className="text-accent">~/</span>bao-phong
-          <span className="cursor-blink text-accent" aria-hidden="true">
-            _
-          </span>
-        </a>
-
-        <div className="hidden xl:flex items-center gap-5 font-mono text-[13px]">
-          {navItems.map((item) => {
-            const isActive = item.href === `#${activeId}`;
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? 'true' : undefined}
-                className={`transition-colors ${
-                  isActive ? 'text-accent' : 'text-muted hover:text-accent'
-                }`}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center gap-3">
-          {SHOWCASE_ENABLED && (
-            <Link
-              to="/showcase"
-              className="hidden sm:inline rounded-md border border-line px-3 py-1.5 font-mono text-xs text-accent transition-colors hover:border-accent"
-            >
-              /showcase
-            </Link>
-          )}
-          <div className="flex items-center border border-line rounded-md px-1">
-            <button
-              type="button"
-              className={langBtn(locale === 'vi')}
-              onClick={() => setLocale('vi')}
-              aria-pressed={locale === 'vi'}
-            >
-              vi
-            </button>
-            <span className="text-line" aria-hidden="true">
-              /
-            </span>
-            <button
-              type="button"
-              className={langBtn(locale === 'en')}
-              onClick={() => setLocale('en')}
-              aria-pressed={locale === 'en'}
-            >
-              en
-            </button>
-          </div>
-          <button
-            type="button"
-            className="xl:hidden p-2 text-ink hover:text-accent transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-expanded={isMobileMenuOpen}
-            aria-label={
-              isMobileMenuOpen
-                ? locale === 'vi'
-                  ? 'Đóng menu'
-                  : 'Close menu'
-                : locale === 'vi'
-                  ? 'Mở menu'
-                  : 'Open menu'
-            }
-          >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Thanh tiến độ cuộn trang */}
-      <div
-        className="absolute bottom-0 left-0 h-0.5 bg-accent transition-[width] duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-        aria-hidden="true"
-      />
-
-      {isMobileMenuOpen && (
-        <div className="xl:hidden absolute top-full left-0 right-0 bg-panel border-y border-line p-6 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="font-mono text-sm text-muted hover:text-accent transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <span className="text-accent" aria-hidden="true">
-                {'> '}
-              </span>
-              {item.label}
-            </a>
-          ))}
-          {SHOWCASE_ENABLED && (
-            <Link
-              to="/showcase"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-2 border-t border-line pt-4 font-mono text-sm text-accent"
-            >
-              <span aria-hidden="true">{'/ '}</span>
-              {t.nav.showcase}
-            </Link>
-          )}
-        </div>
-      )}
-    </nav>
-  );
-};
+const TEXT_LINK =
+  'border-b border-line pb-px text-ink no-underline hover:border-ink';
 
 const Hero = () => {
-  const { t } = useI18n();
-  const [profileSrc, setProfileSrc] = useState(heroProfileBundled);
-  const onProfileError = useCallback(() => {
-    setProfileSrc((current) =>
-      current === heroProfileFallback ? current : heroProfileFallback,
-    );
-  }, []);
+  const {t} = useI18n();
+  const [src, setSrc] = useState(heroProfileBundled);
 
-  return (
-    <section id="home" className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-6 overflow-hidden">
-      <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div className="max-w-6xl mx-auto grid md:grid-cols-[7fr_5fr] gap-10 md:gap-12 items-center">
-        <div className="min-w-0 hero-reveal">
-          <p className="font-mono text-sm text-accent mb-5">
-            <span aria-hidden="true">$ </span>whoami
-          </p>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-ink leading-[1.05] mb-6 break-words">
-            Bảo Phong
-          </h1>
-          <p className="text-lg sm:text-xl text-ink font-medium mb-2 leading-snug break-words">
-            {t.hero.roleLine1}
-          </p>
-          <p className="max-w-3xl text-base sm:text-lg text-muted mb-10 leading-relaxed break-words">
-            {t.hero.roleLine2}
-          </p>
-
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="#projects"
-              className="px-6 py-3 bg-accent text-accent-ink rounded-md font-semibold text-sm hover:brightness-110 transition-[filter] inline-flex items-center gap-2"
-            >
-              {t.hero.ctaProjects}
-              <ChevronRight size={16} className="shrink-0" />
-            </a>
-            <a
-              href={cvUrl}
-              download
-              className="px-6 py-3 border border-line text-ink rounded-md font-semibold text-sm hover:border-accent hover:text-accent transition-colors inline-flex items-center gap-2"
-            >
-              <Download size={16} className="shrink-0" />
-              {t.hero.ctaCv}
-            </a>
-          </div>
-        </div>
-
-        <div className="min-w-0 flex justify-center md:justify-end hero-reveal hero-reveal-delay">
-          {/* Ảnh profile trong khung "cửa sổ terminal" (bundle JPG + fallback public).
-              Kích thước khung co giãn theo breakpoint: gọn trên mobile, đầy cột trên laptop. */}
-          <div className="w-full max-w-[min(100%,17rem)] sm:max-w-[20rem] md:max-w-[22rem] lg:max-w-[24rem] rounded-lg border border-line bg-panel overflow-hidden shadow-2xl shadow-black/40">
-            <div className="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 border-b border-line">
-              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-line" aria-hidden="true"></span>
-              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-line" aria-hidden="true"></span>
-              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-accent/60" aria-hidden="true"></span>
-              <span className="ml-2 font-mono text-xs text-muted">profile.jpg</span>
-            </div>
-            <img
-              src={profileSrc}
-              alt="Bảo Phong"
-              width={800}
-              height={800}
-              loading="eager"
-              decoding="async"
-              onError={onProfileError}
-              className="block w-full aspect-[4/5] sm:aspect-square object-cover object-[center_32%]"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const About = () => {
-  const { t } = useI18n();
-
-  return (
-    <section id="about" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-[5fr_7fr] gap-10 md:gap-12 lg:gap-16">
-        <div className="min-w-0">
-          <SectionHeading kicker={t.about.kicker} title={t.about.title} />
-          <div className="space-y-4 text-base leading-relaxed -mt-6 md:-mt-8">
-            <p>{t.about.p1}</p>
-            <p>{t.about.p2}</p>
-          </div>
-        </div>
-        <div className="min-w-0 rounded-lg border border-line bg-panel p-6 md:p-8 lg:p-10 flex flex-col justify-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-            {t.about.cards.map((item, i) => (
-              <div key={i} className="space-y-2">
-                <h3 className="font-semibold text-ink text-base">
-                  <span className="font-mono text-accent text-sm mr-2" aria-hidden="true">
-                    0{i + 1}.
-                  </span>
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Metrics = () => {
-  const { t } = useI18n();
-  const metrics = [
-    { label: t.metrics.students, value: '300+', icon: <TrendingUp size={18} /> },
-    { label: t.metrics.dataPoints, value: '5000+', icon: <Activity size={18} /> },
-    { label: t.metrics.automationTools, value: '3+', icon: <Cpu size={18} /> },
-    { label: t.metrics.timeOpt, value: '70%', icon: <Clock size={18} /> },
+  const stats = [
+    {value: t.hero.statStudents, label: t.metrics.students},
+    {value: t.hero.statData, label: t.metrics.dataPoints},
+    {value: t.hero.statTime, label: t.metrics.timeOpt},
   ];
 
   return (
-    <section id="metrics" className="px-6 border-t border-line bg-panel/50">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-        {metrics.map((metric, i) => (
-          <Reveal
-            key={i}
-            delay={i * 160}
-            className="reveal-left reveal-slow py-10 md:py-12 px-6 border-line border-b sm:border-b-0 last:border-b-0 md:border-r md:first:border-l"
+    <section
+      id="home"
+      aria-labelledby="hero-title"
+      className="mt-8 grid grid-cols-[7fr_5fr] items-center gap-12 rounded-section border border-line bg-panel p-16 max-lg:gap-8 max-lg:p-10 max-md:grid-cols-1 max-md:rounded-card max-md:px-5 max-md:py-6"
+    >
+      <div className="min-w-0">
+        <MonoLabel>{t.hero.eyebrow}</MonoLabel>
+        <h1
+          id="hero-title"
+          className="mb-5 mt-4 text-[clamp(40px,6vw,64px)] font-bold leading-[1.05] tracking-[-0.02em]"
+        >
+          {t.hero.h1}
+        </h1>
+        <p className="max-w-[34em] text-xl leading-[1.5] text-muted max-md:text-lg">
+          {t.hero.lead}
+        </p>
+
+        <div className="mb-5 mt-8 flex flex-wrap gap-3">
+          <a
+            href="#projects"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-ink no-underline hover:brightness-110"
           >
-            <span className="text-accent block mb-3">{metric.icon}</span>
-            <p className="font-mono text-3xl lg:text-4xl font-bold text-ink mb-1">
-              {metric.value}
-            </p>
-            <p className="font-mono text-xs uppercase tracking-wider">
-              {metric.label}
-            </p>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-const Strengths = () => {
-  const { t } = useI18n();
-  const pillarMeta = [
-    { icon: <Database size={20} key="db" />, file: 'edtech.systems' },
-    { icon: <BookOpen size={20} key="book" />, file: 'assessment.ops' },
-    { icon: <Brain size={20} key="brain" />, file: 'ai-education.lab' },
-  ];
-  const total = String(t.strengths.pillars.length).padStart(2, '0');
-
-  return (
-    <section id="strengths" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          kicker={t.strengths.kicker}
-          title={t.strengths.title}
-          align="center"
-        />
-        <div className="grid md:grid-cols-3 gap-5">
-          {t.strengths.pillars.map((pillar, i) => {
-            const meta = pillarMeta[i];
-            return (
-              <Reveal
-                key={i}
-                delay={i * 90}
-                className="group rounded-lg border border-line bg-panel overflow-hidden hover:border-accent/50 transition-colors"
-              >
-                {/* Thanh tiêu đề dạng tab tên file */}
-                <div className="flex items-center justify-between px-5 py-2.5 border-b border-line font-mono text-xs">
-                  <span className="flex items-center gap-2 text-muted">
-                    <span
-                      className="w-2 h-2 rounded-full bg-accent/70"
-                      aria-hidden="true"
-                    />
-                    {meta.file}
-                  </span>
-                  <span className="text-muted/50" aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')} / {total}
-                  </span>
-                </div>
-
-                <div className="p-5 md:p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <span className="w-10 h-10 rounded-md border border-line flex items-center justify-center text-accent shrink-0 group-hover:border-accent/50 transition-colors">
-                      {meta.icon}
-                    </span>
-                    <h3 className="text-lg font-semibold text-ink leading-tight">
-                      {pillar.title}
-                    </h3>
-                  </div>
-
-                  {/* Danh sách năng lực với cột số dòng như editor */}
-                  <ul>
-                    {pillar.items.map((item, j) => (
-                      <li
-                        key={j}
-                        className="grid grid-cols-[1.75rem_1fr] gap-3 py-1"
-                      >
-                        <span className="font-mono text-xs text-accent/60 text-right tabular-nums select-none border-r border-line pr-2 leading-6">
-                          {String(j + 1).padStart(2, '0')}
-                        </span>
-                        <span className="text-sm text-muted leading-6">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            );
-          })}
+            {t.hero.ctaProjects}
+          </a>
+          <a
+            href={cvUrl}
+            download
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-line bg-raised px-6 text-[15px] font-semibold text-ink no-underline hover:border-muted"
+          >
+            {t.hero.ctaCv}
+          </a>
         </div>
-      </div>
-    </section>
-  );
-};
 
-const Workflow = () => {
-  const { t } = useI18n();
-  const nodeIcons = [
-    <UploadCloud size={16} key="upload" />,
-    <School size={16} key="school" />,
-    <Activity size={16} key="activity" />,
-    <Settings size={16} key="settings" />,
-    <BookOpen size={16} key="book" />,
-    <Archive size={16} key="archive" />,
-  ];
-
-  return (
-    <section id="workflow" className="py-16 md:py-24 px-6 border-t border-line bg-panel/50">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading kicker={t.workflow.kicker} title={t.workflow.title} align="center" />
-        <div className="max-w-2xl mx-auto rounded-lg border border-line bg-surface overflow-hidden shadow-2xl shadow-black/40">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-line">
-            <span className="w-3 h-3 rounded-full bg-line" aria-hidden="true"></span>
-            <span className="w-3 h-3 rounded-full bg-line" aria-hidden="true"></span>
-            <span className="w-3 h-3 rounded-full bg-accent/60" aria-hidden="true"></span>
-            <span className="ml-2 font-mono text-xs text-muted">systems.sh</span>
-          </div>
-          <div className="p-6 md:p-8 font-mono text-sm">
-            <p className="mb-6">
-              <span className="text-accent" aria-hidden="true">
-                $&nbsp;
-              </span>
-              <span className="text-ink">ls</span> ./systems
-            </p>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4 list-none mb-7">
-              {t.workflow.nodes.map((label, i) => (
-                <li key={i} className="flex items-center gap-2.5 text-ink min-w-0">
-                  <span className="text-accent shrink-0">{nodeIcons[i]}</span>
-                  <span className="truncate">{label}</span>
-                </li>
-              ))}
-            </ul>
-            <p aria-hidden="true">
-              <span className="text-accent">$&nbsp;</span>
-              <span className="cursor-blink text-accent">▍</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Projects = () => {
-  const { t } = useI18n();
-
-  return (
-    <section id="projects" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-end mb-12 md:mb-16 flex-wrap gap-4">
-          <div>
-            <p className="font-mono text-sm text-accent mb-3">
-              <span aria-hidden="true">{'// '}</span>
-              {t.projects.kicker}
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
-              {t.projects.title}
-            </h2>
-          </div>
+        <p className="text-sm text-muted">
           <a
             href={t.projects.githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-sm text-accent inline-flex items-center gap-1.5 hover:underline underline-offset-4"
+            className={TEXT_LINK}
           >
-            {t.projects.github}
-            <ArrowUpRight size={16} className="shrink-0" />
+            GitHub ↗
           </a>
-        </div>
-
-        <div className="flex flex-col gap-16 md:gap-24">
-          {t.projects.list.map((project, i) => {
-            const reversed = i % 2 === 1;
-            return (
-              <article
-                key={i}
-                className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center"
-              >
-                {/* Ảnh: xen kẽ trái/phải theo thứ tự dự án */}
-                <div className={`min-w-0 ${reversed ? 'md:order-2' : ''}`}>
-                  <div className="relative rounded-lg border border-line bg-panel overflow-hidden">
-                    <img
-                      src={publicUrl(project.image)}
-                      alt={project.title}
-                      loading="lazy"
-                      className="w-full aspect-video object-cover"
-                    />
-                    <div className="absolute left-3 top-3 rounded border border-line bg-surface/90 px-2 py-0.5 font-mono text-[11px] text-muted">
-                      {t.projects.screenshotSlot}
-                    </div>
-                  </div>
-                  {'gallery' in project && project.gallery?.length ? (
-                    <div className="grid grid-cols-3 gap-3 mt-3">
-                      {project.gallery.map((src, g) => (
-                        <img
-                          key={g}
-                          src={publicUrl(src)}
-                          alt=""
-                          loading="lazy"
-                          className="w-full aspect-video rounded border border-line object-cover"
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-
-                <div className={`min-w-0 ${reversed ? 'md:order-1' : ''}`}>
-                  <p className="font-mono text-sm text-accent mb-3">
-                    <span aria-hidden="true">0{i + 1} · </span>[{project.category}]
-                  </p>
-                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-ink mb-6 leading-tight">
-                    {project.title}
-                  </h3>
-
-                  <div className="space-y-5 text-sm leading-relaxed">
-                    <div>
-                      <p className="font-mono text-xs text-ink mb-1.5">
-                        <span className="text-accent" aria-hidden="true">
-                          {'> '}
-                        </span>
-                        {t.projects.problem}
-                      </p>
-                      <p>{project.problem}</p>
-                    </div>
-                    <div>
-                      <p className="font-mono text-xs text-ink mb-1.5">
-                        <span className="text-accent" aria-hidden="true">
-                          {'> '}
-                        </span>
-                        {t.projects.solution}
-                      </p>
-                      <p>{project.solution}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 mt-6">
-                    {project.tags.map((tag, j) => (
-                      <span
-                        key={j}
-                        className="px-2.5 py-0.5 rounded border border-line font-mono text-xs"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Tác động: điểm nhấn chính của mỗi case study */}
-                  <div className="border-l-2 border-accent pl-4 md:pl-5 mt-8">
-                    <p className="font-mono text-xs text-muted mb-1">
-                      {t.projects.impact}
-                    </p>
-                    <p className="text-base md:text-lg font-semibold text-ink leading-snug">
-                      {project.impact}
-                    </p>
-                  </div>
-
-                  {'videoUrl' in project && project.videoUrl ? (
-                    <a
-                      href={project.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-8 px-5 py-2.5 rounded-md border border-line font-mono text-sm text-accent hover:border-accent transition-colors"
-                    >
-                      {t.projects.watchVideo}
-                      <ArrowUpRight size={15} className="shrink-0" />
-                    </a>
-                  ) : null}
-                </div>
-              </article>
-            );
-          })}
-        </div>
-
-        {/* Tầng 2: website đã hoàn thiện — lưới card, thêm dự án mới không cần ảnh */}
-        {t.projects.works.length ? (
-          <div className="mt-20 md:mt-28 pt-12 md:pt-16 border-t border-line">
-            <div className="mb-8 md:mb-10">
-              <p className="font-mono text-sm text-accent mb-3">
-                <span aria-hidden="true">{'// '}</span>
-                {t.projects.worksKicker}
-              </p>
-              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-ink">
-                {t.projects.worksTitle}
-              </h3>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
-                {t.projects.worksNote}
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {t.projects.works.map((work, i) => (
-                <a
-                  key={i}
-                  href={work.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex min-w-0 flex-col rounded-lg border border-line bg-panel p-5 transition-colors hover:border-accent ${
-                    work.highlight ? 'sm:col-span-2' : ''
-                  }`}
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-mono text-xs text-muted">[{work.type}]</p>
-                    {work.wip ? (
-                      <span className="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] text-accent">
-                        {t.projects.worksWipBadge}
-                      </span>
-                    ) : null}
-                  </div>
-
-                  <p className="mt-2.5 text-base font-semibold leading-snug text-ink">
-                    {work.name}
-                  </p>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed">{work.role}</p>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {work.stack.map((item, j) => (
-                      <span
-                        key={j}
-                        className="rounded border border-line px-2 py-0.5 font-mono text-[11px]"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-accent">
-                    {work.wip ? t.projects.worksWip : t.projects.worksLive}
-                    <ArrowUpRight size={14} className="shrink-0" />
-                  </span>
-                </a>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </section>
-  );
-};
-
-const Timeline = () => {
-  const { t } = useI18n();
-
-  return (
-    <section id="timeline" className="py-16 md:py-24 px-6 border-t border-line bg-panel/50">
-      <div className="max-w-5xl mx-auto">
-        <SectionHeading kicker={t.timeline.kicker} title={t.timeline.title} align="center" />
-
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-12 xl:gap-16 items-start">
-          <div className="min-w-0">
-            <h3 className="flex items-center gap-2.5 font-mono text-sm text-accent mb-7">
-              <Briefcase size={15} className="shrink-0" aria-hidden="true" />
-              {t.timeline.workHeading}
-            </h3>
-            <div className="border-l border-line pl-6 md:pl-7 flex flex-col gap-5">
-              {t.timeline.work.map((job, i) => (
-                <Reveal key={i} delay={i * 70} className="relative">
-                  <span
-                    className="absolute -left-[1.84rem] md:-left-[2.09rem] top-7 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-surface"
-                    aria-hidden="true"
-                  />
-                  <div className="rounded-lg border border-line bg-surface p-5 md:p-6 hover:border-accent/50 transition-colors">
-                    <p className="text-base font-semibold text-ink leading-snug">{job.title}</p>
-                    <p className="text-sm mt-1">{job.organization}</p>
-                    {job.period ? (
-                      <p className="mt-2.5">
-                        <span className="inline-block rounded border border-line px-2 py-0.5 font-mono text-xs text-accent">
-                          {job.period}
-                        </span>
-                      </p>
-                    ) : null}
-                    <ul className="mt-3.5 space-y-2 text-sm leading-relaxed">
-                      {job.bullets.map((line, j) => (
-                        <li key={j} className="flex gap-2.5">
-                          <span className="font-mono text-accent shrink-0" aria-hidden="true">
-                            -
-                          </span>
-                          <span>{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-
-          <div className="min-w-0">
-            <h3 className="flex items-center gap-2.5 font-mono text-sm text-accent mb-7">
-              <GraduationCap size={16} className="shrink-0" aria-hidden="true" />
-              {t.timeline.educationHeading}
-            </h3>
-            <div className="border-l border-line pl-6 md:pl-7 flex flex-col gap-5">
-              {t.timeline.education.map((school, i) => (
-                <Reveal key={i} delay={i * 70} className="relative">
-                  <span
-                    className="absolute -left-[1.84rem] md:-left-[2.09rem] top-7 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-surface"
-                    aria-hidden="true"
-                  />
-                  <div className="rounded-lg border border-line bg-surface p-5 md:p-6 hover:border-accent/50 transition-colors">
-                    <p className="text-base font-semibold text-ink leading-snug">{school.school}</p>
-                    <div className="mt-3.5 space-y-3.5">
-                      {school.blocks.map((block, j) => (
-                        <div key={j} className="text-sm leading-relaxed">
-                          <span className="inline-block rounded border border-line px-2 py-0.5 font-mono text-xs text-accent">
-                            {block.period}
-                          </span>
-                          <span className="block mt-1.5 text-ink">{block.description}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Achievements = () => {
-  const { t } = useI18n();
-
-  return (
-    <section id="achievements" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-3xl mx-auto">
-        <SectionHeading title={t.achievements.title} align="center" />
-        <div className="rounded-lg border border-line bg-panel p-6 md:p-10">
-          <p className="font-mono text-xs text-muted mb-8">
-            <span className="text-accent" aria-hidden="true">
-              $&nbsp;
-            </span>
-            git log --achievements
-          </p>
-          <div className="flex flex-col">
-            {t.achievements.groups.map((group, i) => {
-              const isLast = i === t.achievements.groups.length - 1;
-              return (
-                <Reveal
-                  key={i}
-                  delay={i * 80}
-                  className="grid grid-cols-[4rem_1fr] md:grid-cols-[6.5rem_1fr] gap-4 md:gap-8"
-                >
-                  <div className="pt-px text-right">
-                    <span className="font-mono text-sm font-bold text-accent">
-                      {group.year}
-                    </span>
-                  </div>
-                  <div
-                    className={`relative border-l border-line pl-5 md:pl-7 ${isLast ? 'pb-1' : 'pb-8'}`}
-                  >
-                    <span
-                      className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-panel"
-                      aria-hidden="true"
-                    />
-                    <ul className="space-y-2.5 text-base leading-relaxed text-ink">
-                      {group.items.map((item, j) => (
-                        <li key={j} className="flex gap-2.5">
-                          <span className="font-mono text-accent shrink-0" aria-hidden="true">
-                            -
-                          </span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Album = () => {
-  const { t } = useI18n();
-  const photos = t.album.photos;
-  const [active, setActive] = useState<number | null>(null);
-
-  const close = useCallback(() => setActive(null), []);
-  const go = useCallback(
-    (dir: number) =>
-      setActive((a) =>
-        a === null ? a : (a + dir + photos.length) % photos.length,
-      ),
-    [photos.length],
-  );
-
-  useEffect(() => {
-    if (active === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-      else if (e.key === 'ArrowRight') go(1);
-      else if (e.key === 'ArrowLeft') go(-1);
-    };
-    window.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [active, close, go]);
-
-  return (
-    <section id="album" className="py-16 md:py-24 border-t border-line overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 text-center">
-        <p className="font-mono text-sm text-accent mb-4 flex flex-wrap items-center justify-center gap-x-2">
-          <span aria-hidden="true">$</span>
-          <span>
-            open <span className="text-ink">~/album</span> --slideshow
-          </span>
-          <span className="cursor-blink text-accent" aria-hidden="true">
-            _
-          </span>
-        </p>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink">
-          {t.album.title}
-        </h2>
-        <div className="mt-6 mb-10 flex flex-wrap items-center justify-center gap-2 font-mono text-xs text-muted">
-          {t.album.tags.map((tag, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1"
-            >
-              <Zap size={12} className="text-accent" aria-hidden="true" />
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {photos.length ? (
-        // Băng ảnh tự chạy ngang (marquee) — nhân đôi để lặp liền mạch
-        <div className="marquee">
-          <div className="marquee-track">
-            {photos.concat(photos).map((photo, i) => {
-              const real = i % photos.length;
-              const isClone = i >= photos.length;
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActive(real)}
-                  aria-hidden={isClone ? 'true' : undefined}
-                  tabIndex={isClone ? -1 : undefined}
-                  aria-label={photo.caption || t.album.photoAlt}
-                  className="marquee-item group relative block h-44 md:h-56 mr-3 md:mr-4 shrink-0 rounded-lg border border-line overflow-hidden bg-panel hover:border-accent/50 transition-colors"
-                >
-                  <img
-                    src={publicUrl(photo.src)}
-                    alt={isClone ? '' : photo.caption || t.album.photoAlt}
-                    loading="lazy"
-                    className="h-full w-auto max-w-none object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {photo.caption ? (
-                    <span className="absolute inset-x-0 bottom-0 p-3 pt-8 bg-gradient-to-t from-surface/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span className="block font-mono text-xs text-ink text-left leading-snug">
-                        {photo.caption}
-                      </span>
-                    </span>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="rounded-lg border border-dashed border-line bg-panel/40 py-16 flex flex-col items-center gap-3 text-muted">
-            <ImageIcon size={28} className="text-accent" aria-hidden="true" />
-            <p className="font-mono text-sm">{t.album.empty}</p>
-          </div>
-        </div>
-      )}
-
-      {active !== null ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={photos[active].caption || t.album.photoAlt}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-surface/95 backdrop-blur-sm p-4 md:p-8"
-          onClick={close}
-        >
-          <button
-            type="button"
-            onClick={close}
-            aria-label={t.album.closeLabel}
-            className="absolute top-4 right-4 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
-          >
-            <X size={20} />
-          </button>
-
-          {photos.length > 1 ? (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                go(-1);
-              }}
-              aria-label={t.album.prevLabel}
-              className="absolute left-3 md:left-6 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
-            >
-              <ChevronLeft size={22} />
-            </button>
-          ) : null}
-
-          <figure
-            className="max-w-4xl w-full flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={publicUrl(photos[active].src)}
-              alt={photos[active].caption || t.album.photoAlt}
-              className="max-h-[78vh] w-auto max-w-full rounded-lg border border-line object-contain"
-            />
-            <figcaption className="mt-4 font-mono text-sm text-muted text-center">
-              <span className="text-accent" aria-hidden="true">
-                {String(active + 1).padStart(2, '0')}
-              </span>
-              {' / '}
-              {String(photos.length).padStart(2, '0')}
-              {photos[active].caption ? ` · ${photos[active].caption}` : ''}
-            </figcaption>
-          </figure>
-
-          {photos.length > 1 ? (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                go(1);
-              }}
-              aria-label={t.album.nextLabel}
-              className="absolute right-3 md:right-6 p-2 rounded-md border border-line text-ink hover:border-accent hover:text-accent transition-colors"
-            >
-              <ChevronRight size={22} />
-            </button>
-          ) : null}
-        </div>
-      ) : null}
-    </section>
-  );
-};
-
-const CanvaAlbum = () => {
-  const {t} = useI18n();
-  const [active, setActive] = useState<number | null>(null);
-
-  const close = useCallback(() => setActive(null), []);
-  const go = useCallback(
-    (direction: number) =>
-      setActive((current) =>
-        current === null
-          ? current
-          : (current + direction + canvaDesigns.length) % canvaDesigns.length,
-      ),
-    [],
-  );
-
-  useEffect(() => {
-    if (active === null) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') close();
-      else if (event.key === 'ArrowRight') go(1);
-      else if (event.key === 'ArrowLeft') go(-1);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [active, close, go]);
-
-  return (
-    <section
-      id="canva-album"
-      className="py-16 md:py-24 px-6 border-t border-line bg-panel/30"
-    >
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-[1fr_auto] md:items-end gap-5 mb-10 md:mb-12">
-          <div className="max-w-3xl">
-            <p className="font-mono text-sm text-accent mb-3">
-              <span aria-hidden="true">{'// '}</span>
-              {t.canvaAlbum.kicker}
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink leading-tight">
-              {t.canvaAlbum.title}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-muted">
-              {t.canvaAlbum.note}
-            </p>
-          </div>
-          <p className="w-fit rounded-md border border-line bg-surface px-3 py-2 font-mono text-xs text-muted">
-            <span className="text-accent font-semibold">
-              {String(canvaDesigns.length).padStart(2, '0')}
-            </span>{' '}
-            {t.canvaAlbum.itemsLabel}
-          </p>
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {canvaDesigns.map((design, index) => {
-            const number = String(design.number).padStart(2, '0');
-            const label = `${t.canvaAlbum.designAlt} ${number}`;
-            return (
-              <Reveal key={design.number} delay={(index % 6) * 55}>
-                <button
-                  type="button"
-                  onClick={() => setActive(index)}
-                  aria-label={label}
-                  className="group block w-full overflow-hidden rounded-lg border border-line bg-surface text-left transition-colors hover:border-accent/60"
-                >
-                  <span className="relative block aspect-[4/3] overflow-hidden bg-panel">
-                    <img
-                      src={publicUrl(design.src)}
-                      alt={label}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-                    />
-                    <span className="absolute inset-0 bg-accent/0 transition-colors group-hover:bg-accent/5" />
-                    <span className="absolute left-3 top-3 rounded border border-accent/40 bg-surface/90 px-2 py-1 font-mono text-xs font-semibold text-accent backdrop-blur-sm">
-                      {number}
-                    </span>
-                  </span>
-                  <span className="flex items-center justify-between gap-3 px-4 py-3">
-                    <span className="font-mono text-sm text-ink">PC Express</span>
-                    <span className="inline-flex items-center gap-1 font-mono text-xs text-muted transition-colors group-hover:text-accent">
-                      Canva
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </span>
-                  </span>
-                </button>
-              </Reveal>
-            );
-          })}
-        </div>
-      </div>
-
-      {active !== null ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${t.canvaAlbum.designAlt} ${String(canvaDesigns[active].number).padStart(2, '0')}`}
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-surface/95 p-4 backdrop-blur-sm md:p-8"
-          onClick={close}
-        >
-          <button
-            type="button"
-            onClick={close}
-            aria-label={t.canvaAlbum.closeLabel}
-            className="absolute right-4 top-4 rounded-md border border-line p-2 text-ink transition-colors hover:border-accent hover:text-accent"
-          >
-            <X size={20} />
-          </button>
-
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              go(-1);
-            }}
-            aria-label={t.canvaAlbum.prevLabel}
-            className="absolute left-3 rounded-md border border-line bg-surface/80 p-2 text-ink transition-colors hover:border-accent hover:text-accent md:left-6"
-          >
-            <ChevronLeft size={22} />
-          </button>
-
-          <figure
-            className="flex w-full max-w-6xl flex-col items-center"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <img
-              src={publicUrl(canvaDesigns[active].src)}
-              alt={`${t.canvaAlbum.designAlt} ${String(canvaDesigns[active].number).padStart(2, '0')}`}
-              className="max-h-[82vh] max-w-full rounded-lg border border-line object-contain"
-            />
-            <figcaption className="mt-4 font-mono text-sm text-muted">
-              <span className="text-accent">
-                {String(active + 1).padStart(2, '0')}
-              </span>{' '}
-              / {String(canvaDesigns.length).padStart(2, '0')} · PC Express
-            </figcaption>
-          </figure>
-
-          <button
-            type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              go(1);
-            }}
-            aria-label={t.canvaAlbum.nextLabel}
-            className="absolute right-3 rounded-md border border-line bg-surface/80 p-2 text-ink transition-colors hover:border-accent hover:text-accent md:right-6"
-          >
-            <ChevronRight size={22} />
-          </button>
-        </div>
-      ) : null}
-    </section>
-  );
-};
-
-const Contact = () => {
-  const { t } = useI18n();
-  const contactItems = [
-    {
-      label: t.contact.emailLabel,
-      value: t.contact.email,
-      href: `mailto:${t.contact.email}`,
-      icon: <Mail size={18} />,
-    },
-    {
-      label: t.contact.phoneLabel,
-      value: t.contact.phone,
-      href: `tel:${t.contact.phone.replace(/\s/g, '')}`,
-      icon: <Phone size={18} />,
-    },
-  ];
-
-  return (
-    <section id="contact" className="py-16 md:py-24 px-6 border-t border-line">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-start">
-        <div className="min-w-0">
-          <p className="font-mono text-sm text-accent mb-3">
-            <span aria-hidden="true">{'// '}</span>
-            {t.contact.kicker}
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-ink mb-6 leading-tight break-words">
-            {t.contact.title}
-          </h2>
-          <p className="text-base leading-relaxed mb-8 break-words">
-            {t.contact.description}
-          </p>
+          {' · '}
+          <a href={`mailto:${t.contact.email}`} className={TEXT_LINK}>
+            Email
+          </a>
+          {' · '}
           <a
-            href={`mailto:${t.contact.email}`}
-            className="inline-flex max-w-full items-center gap-2 px-6 py-3 rounded-md bg-accent text-accent-ink font-semibold text-sm hover:brightness-110 transition-[filter]"
+            href={t.footer.links[1].href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={TEXT_LINK}
           >
-            <Mail size={16} className="shrink-0" />
-            {t.contact.cta}
+            Facebook ↗
           </a>
-        </div>
+        </p>
 
-        <div className="grid gap-4 min-w-0">
-          {contactItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="group flex min-w-0 items-center gap-4 rounded-lg border border-line bg-panel p-5 hover:border-accent/50 transition-colors"
-            >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-line text-accent">
-                {item.icon}
+        <ul className="mt-8 grid list-none grid-cols-3 gap-4 border-t border-line pt-6">
+          {stats.map((s) => (
+            <li key={s.label}>
+              <span className="block text-[28px] font-bold leading-tight tracking-[-0.02em] text-ink max-md:text-[22px]">
+                {s.value}
               </span>
-              <span className="min-w-0">
-                <span className="block font-mono text-xs text-muted">{item.label}</span>
-                <span className="block break-words font-mono text-sm font-semibold text-ink group-hover:text-accent transition-colors">
-                  {item.value}
-                </span>
+              <span className="mt-1 block font-mono text-[11px] uppercase leading-[1.4] tracking-[0.08em] text-muted max-md:text-[10.5px] max-md:tracking-[0.04em]">
+                {s.label}
               </span>
-            </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
+
+      <figure className="m-0 w-full max-w-[380px] justify-self-end max-md:max-w-[260px] max-md:justify-self-start">
+        <img
+          src={src}
+          alt={t.hero.portraitAlt}
+          onError={() =>
+            setSrc((c) => (c === heroProfileFallback ? c : heroProfileFallback))
+          }
+          className="aspect-[4/5] w-full rounded-card bg-surface object-cover"
+        />
+      </figure>
     </section>
   );
 };
+
+/* ------------------------------------------------------------------ */
+/* 01 Du an                                                             */
+/* ------------------------------------------------------------------ */
+
+const ProjectsSection = () => {
+  const {t} = useI18n();
+  const cls = `grid grid-cols-[40%_1fr] gap-8 p-4 text-ink no-underline max-md:grid-cols-1 max-md:gap-4 max-md:p-3 ${ITEM}`;
+
+  return (
+    <Section
+      id="projects"
+      index={t.projects.index}
+      label={t.projects.label}
+      title={t.projects.title}
+      desc={t.projects.desc}
+      pill={<PillLink href={t.projects.githubUrl}>{t.projects.pill}</PillLink>}
+    >
+      <div className="grid gap-4">
+        {t.projects.cards.map((card) => {
+          const body = (
+            <>
+              <div className="overflow-hidden rounded-media bg-surface">
+                <img
+                  src={publicUrl(card.image)}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[16/10] h-full w-full object-cover object-left-top"
+                />
+              </div>
+              <div className="flex flex-col gap-2.5 py-3 pl-0 pr-4 max-md:px-2 max-md:pb-2 max-md:pt-0">
+                <MonoLabel>{card.category}</MonoLabel>
+                <h3 className="text-xl font-semibold leading-[1.3] tracking-[-0.01em]">
+                  {card.title}
+                </h3>
+                <p className="text-muted">{card.desc}</p>
+                {'result' in card && card.result ? (
+                  <p className="text-[15px]">
+                    <span className="mr-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-muted">
+                      {t.projects.resultLabel}
+                    </span>
+                    {card.result}
+                  </p>
+                ) : null}
+                <Tags items={card.tags} />
+                {'link' in card && card.link ? (
+                  <p className="mt-auto pt-1 text-[15px] font-semibold text-ink">
+                    {card.link}
+                  </p>
+                ) : null}
+              </div>
+            </>
+          );
+
+          if ('to' in card && card.to) {
+            return (
+              <Link key={card.title} to={card.to} className={`${cls} lift`}>
+                {body}
+              </Link>
+            );
+          }
+          if ('href' in card && card.href) {
+            return (
+              <a
+                key={card.title}
+                href={card.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${cls} lift`}
+              >
+                {body}
+              </a>
+            );
+          }
+          return (
+            <article key={card.title} className={cls}>
+              {body}
+            </article>
+          );
+        })}
+      </div>
+    </Section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 02 Website & san pham khac                                           */
+/* ------------------------------------------------------------------ */
+
+const WorksSection = () => {
+  const {t} = useI18n();
+  const [design, setDesign] = useState<number | null>(null);
+  const opener = useRef<HTMLButtonElement | null>(null);
+
+  /* Bo qua du an con dung ten mien tam; se hien lai khi co ten mien that. */
+  const works = t.projects.works.filter((w) => !w.wip);
+  const thumbs = [1, 5, 9];
+
+  const items = canvaDesigns.map((d) => ({
+    src: publicUrl(d.src),
+    alt: `${t.canvaAlbum.designAlt} ${String(d.number).padStart(2, '0')}`,
+  }));
+
+  return (
+    <Section
+      id="works"
+      index={t.projects.worksIndex}
+      label={`// ${t.projects.worksKicker}`}
+      title={t.projects.worksTitle}
+      desc={t.projects.worksNote}
+    >
+      <div className="grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-md:grid-cols-1">
+        {works.map((w) => (
+          <a
+            key={w.url}
+            href={w.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`lift flex flex-col gap-2.5 p-6 text-ink no-underline ${ITEM} ${
+              w.highlight ? 'col-span-2 max-md:col-span-1' : ''
+            }`}
+          >
+            <MonoLabel>{w.type}</MonoLabel>
+            <h3 className="text-xl font-semibold leading-[1.3] tracking-[-0.01em]">
+              {w.name}
+            </h3>
+            <p className="text-muted">{w.role}</p>
+            <Tags items={w.stack} />
+            <p className="mt-auto pt-1 text-[15px] font-semibold">
+              {t.projects.worksLive} ↗
+            </p>
+          </a>
+        ))}
+
+        <button
+          type="button"
+          ref={opener}
+          onClick={() => setDesign(0)}
+          className={`lift flex flex-col gap-2.5 p-6 text-left text-ink ${ITEM}`}
+        >
+          <MonoLabel>{t.projects.canvaCategory}</MonoLabel>
+          <h3 className="text-xl font-semibold leading-[1.3] tracking-[-0.01em]">
+            {t.projects.canvaTitle}
+          </h3>
+          <p className="text-muted">{t.projects.canvaDesc}</p>
+          <div className="mt-1 grid grid-cols-3 gap-1.5">
+            {thumbs.map((n) => (
+              <img
+                key={n}
+                src={publicUrl(`/images/projects/canvathietke/${n}.webp`)}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/3] w-full rounded-lg object-cover"
+              />
+            ))}
+          </div>
+          <p className="mt-auto pt-1 text-[15px] font-semibold">
+            {t.projects.canvaLink}
+          </p>
+        </button>
+      </div>
+
+      <Lightbox
+        items={items}
+        index={design}
+        onClose={() => {
+          setDesign(null);
+          opener.current?.focus();
+        }}
+        onStep={(d) =>
+          setDesign((c) =>
+            c === null ? c : (c + d + items.length) % items.length,
+          )
+        }
+        labels={{
+          prev: t.canvaAlbum.prevLabel,
+          next: t.canvaAlbum.nextLabel,
+          close: t.canvaAlbum.closeLabel,
+        }}
+      />
+    </Section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 03 Kinh nghiem & hoc van                                             */
+/* ------------------------------------------------------------------ */
+
+const ExperienceSection = () => {
+  const {t} = useI18n();
+
+  return (
+    <Section
+      id="timeline"
+      index={t.timeline.index}
+      label={t.timeline.label}
+      title={t.timeline.title}
+      desc={t.timeline.desc}
+      pill={<PillLink to="/album">{t.timeline.pill}</PillLink>}
+    >
+      <ul className="list-none">
+        {t.timeline.work.map((job) => (
+          <li
+            key={job.period}
+            className="grid grid-cols-[168px_1fr] gap-6 border-t border-line py-5 first:border-t-0 max-md:grid-cols-1 max-md:gap-1"
+          >
+            <p className="pt-[3px] font-mono text-[13px] text-muted">
+              {job.period}
+            </p>
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold leading-[1.35]">
+                {job.title}
+              </h3>
+              <p className="text-[15px] text-muted">{job.organization}</p>
+              {job.bullets.length > 0 ? (
+                <ul className="mt-2.5 list-disc pl-[18px] text-[15px] marker:text-muted">
+                  {job.bullets.map((b, i) => (
+                    <li key={i} className={i ? 'mt-1.5' : ''}>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-10 grid grid-cols-2 gap-10 border-t border-line pt-8 max-md:grid-cols-1">
+        <div>
+          <h3 className="mb-1 text-lg font-semibold">
+            {t.timeline.educationHeading}
+          </h3>
+          <ul className="list-none">
+            {t.timeline.education.map((e) => (
+              <li
+                key={e.period}
+                className="grid grid-cols-[120px_1fr] gap-4 border-t border-line py-3.5 first:border-t-0 max-md:grid-cols-1 max-md:gap-1"
+              >
+                <p className="pt-[3px] font-mono text-[13px] text-muted">
+                  {e.period}
+                </p>
+                <div className="min-w-0">
+                  <h4 className="text-base font-semibold leading-[1.35]">
+                    {e.title}
+                  </h4>
+                  <p className="text-[15px] text-muted">{e.organization}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="mb-1 text-lg font-semibold">
+            {t.timeline.awardsHeading}
+          </h3>
+          <ul className="list-none">
+            {t.timeline.awards.map((a) => (
+              <li
+                key={a.label}
+                className="grid grid-cols-[120px_1fr] gap-4 border-t border-line py-3.5 text-[15px] first:border-t-0 max-md:grid-cols-[96px_1fr]"
+              >
+                <span className="font-mono text-[13px] text-muted">
+                  {a.label}
+                </span>
+                <span>{a.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 04 Lien he                                                           */
+/* ------------------------------------------------------------------ */
+
+const ContactSection = () => {
+  const {t} = useI18n();
+
+  return (
+    <Section
+      id="contact"
+      index={t.contact.index}
+      label={t.contact.label}
+      title={t.contact.title}
+      desc={t.contact.description}
+    >
+      <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
+        {t.contact.cards.map((c) => (
+          <div key={c.title} className={`flex flex-col gap-2.5 p-7 ${ITEM}`}>
+            <MonoLabel>{c.label}</MonoLabel>
+            <h3 className="text-[22px] font-semibold leading-[1.3] tracking-[-0.01em]">
+              {c.title}
+            </h3>
+            <p className="text-muted">{c.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+        <a
+          href={`mailto:${t.contact.email}`}
+          className="inline-flex min-h-12 items-center justify-center rounded-full bg-accent px-6 text-[15px] font-semibold text-accent-ink no-underline hover:brightness-110"
+        >
+          {t.contact.emailBtn}
+        </a>
+        <a
+          href={`tel:${t.contact.phone.replace(/\s/g, '')}`}
+          className={TEXT_LINK}
+        >
+          {t.contact.phone}
+        </a>
+        <a
+          href={t.projects.githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={TEXT_LINK}
+        >
+          {t.contact.github}
+        </a>
+      </div>
+    </Section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                               */
+/* ------------------------------------------------------------------ */
 
 const Footer = () => {
-  const { t } = useI18n();
+  const {t} = useI18n();
   const year = new Date().getFullYear();
-  const line = `© ${year} Bảo Phong`;
-  const [typed, setTyped] = useState('');
-  const lineRef = useRef<HTMLParagraphElement>(null);
-
-  /* Gõ từng ký tự khi footer lọt vào khung nhìn; hiện thẳng nếu người dùng tắt chuyển động. */
-  useEffect(() => {
-    const el = lineRef.current;
-    if (!el) return;
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setTyped(line);
-      return;
-    }
-
-    let timer: number | undefined;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        let i = 0;
-        timer = window.setInterval(() => {
-          i += 1;
-          setTyped(line.slice(0, i));
-          if (i >= line.length) window.clearInterval(timer);
-        }, 55);
-      },
-      { threshold: 0.4 },
-    );
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      window.clearInterval(timer);
-    };
-  }, [line]);
 
   return (
-    <footer className="border-t border-line py-10">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-4 font-mono text-xs md:flex-row md:justify-between">
-        <p ref={lineRef} className="text-center md:text-left">
-          {/* Đọc màn hình lấy chuỗi đầy đủ, phần gõ dần chỉ để nhìn */}
-          <span className="sr-only">{line}</span>
-          <span aria-hidden="true">
-            <span className="text-accent">$&nbsp;</span>
-            {typed}
-            <span className="cursor-blink text-accent">▍</span>
-          </span>
-        </p>
-        <div className="flex items-center gap-5">
-          {t.footer.links.map((link) => (
+    <div className={WRAP}>
+      <footer className="mt-12 flex flex-wrap justify-between gap-4 border-t border-line pb-10 pt-6 text-sm text-muted">
+        <p>© {year} Bảo Phong</p>
+        <p className="flex flex-wrap gap-x-4 gap-y-2">
+          <Link to="/album" className={TEXT_LINK}>
+            {t.nav.album}
+          </Link>
+          {t.footer.links.map((l) => (
             <a
-              key={link.label}
-              href={link.href}
+              key={l.label}
+              href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-accent"
+              className={TEXT_LINK}
             >
-              {link.label}
+              {l.label} ↗
             </a>
           ))}
-        </div>
-      </div>
-    </footer>
+          <a href={`mailto:${t.contact.email}`} className={TEXT_LINK}>
+            Email
+          </a>
+        </p>
+      </footer>
+    </div>
   );
 };
 
-function AppContent() {
-  return (
-    <div className="min-h-screen">
-      <Preloader />
-      <CustomCursor />
-      <SkipLink />
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Metrics />
-        <Strengths />
-        <Workflow />
-        <Projects />
-        <Timeline />
-        <Achievements />
-        <Album />
-        <CanvaAlbum />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
-  );
-}
+/* ------------------------------------------------------------------ */
+/* Trang                                                                */
+/* ------------------------------------------------------------------ */
 
-/* Showcase nap rieng: nguoi vao trang chu khong tai code cua no. */
+const HomePage = () => {
+  const {hash} = useLocation();
+
+  /* Den tu /album kem hash: cuon toi dung muc sau khi trang da dung xong. */
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({block: 'start'});
+  }, [hash]);
+
+  return (
+    <main id="main" className={`${WRAP} pt-8`}>
+      <Hero />
+      <ProjectsSection />
+      <WorksSection />
+      <ExperienceSection />
+      <ContactSection />
+    </main>
+  );
+};
+
+const AlbumPage = lazy(() => import('./pages/AlbumPage'));
 const ShowcaseRoutes = lazy(() => import('./features/showcase/ShowcaseRoutes'));
 
 const RouteFallback = () => (
-  <div className="min-h-screen flex items-center justify-center font-mono text-sm text-muted">
-    <span className="preloader-spinner mr-3" aria-hidden="true" />
-    <span>loading…</span>
+  <div className="grid min-h-[60vh] place-items-center font-mono text-sm text-muted">
+    loading…
   </div>
 );
+
+const Shell = ({children}: {children: ReactNode}) => {
+  const {locale} = useI18n();
+  return (
+    <div className="min-h-screen">
+      <a href="#main" className="skip-link">
+        {locale === 'vi' ? 'Bỏ qua đến nội dung chính' : 'Skip to main content'}
+      </a>
+      <Header />
+      {children}
+      <Footer />
+    </div>
+  );
+};
 
 export default function App() {
   return (
     <I18nProvider>
       <Routes>
-        <Route path="/" element={<AppContent />} />
+        <Route
+          path="/"
+          element={
+            <Shell>
+              <HomePage />
+            </Shell>
+          }
+        />
+        <Route
+          path="/album"
+          element={
+            <Shell>
+              <Suspense fallback={<RouteFallback />}>
+                <AlbumPage />
+              </Suspense>
+            </Shell>
+          }
+        />
         <Route
           path="/showcase/*"
           element={
@@ -1568,7 +903,6 @@ export default function App() {
             )
           }
         />
-        {/* Duong dan la: dua ve portfolio thay vi hien trang trong */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </I18nProvider>

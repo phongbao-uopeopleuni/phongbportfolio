@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảo Phong — Portfolio redesign reference</title>
+<!-- Approved visual reference for the redesign. Static prototype: the #/album hash stands in for the real /album route.
+     Open this file from docs/redesign/ inside the repo so the relative image and font paths resolve. -->
+<style>
+/* Fonts: the repo's own self-hosted Inter + JetBrains Mono subsets (Latin + Vietnamese). */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('../../src/assets/fonts/inter-vietnamese.woff2') format('woff2'); unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('../../src/assets/fonts/inter-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('../../src/assets/fonts/jetbrains-mono-vietnamese.woff2') format('woff2'); unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url('../../src/assets/fonts/jetbrains-mono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  --bg: #F2F3F5;
+  --surface: #FAFAFB;
+  --surface-raised: #FFFFFF;
+  --border: #E3E5E8;
+  --text: #111317;
+  --text-muted: #5A6270;
+  --accent: #C2410C;
+  --accent-ink: #FFFFFF;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --radius-section: 28px;
+  --radius-card: 20px;
+  --radius-media: 14px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / .04), 0 8px 24px rgb(0 0 0 / .04);
+  --container: 1120px;
+  --gutter: 16px;
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #0E1013;
+  --surface: #16191D;
+  --surface-raised: #1E2227;
+  --border: #2A2F36;
+  --text: #F1F3F5;
+  --text-muted: #A0A8B3;
+  --accent: #FB923C;
+  --accent-ink: #111317;
+  --shadow-card: none;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 104px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+h1, h2, h3, p { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+.wrap { max-width: calc(var(--container) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
+.skip {
+  position: absolute; left: 16px; top: -48px; z-index: 100;
+  background: var(--surface-raised); padding: 10px 16px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border); text-decoration: none; font-weight: 600;
+}
+.skip:focus { top: 16px; }
+.mono-label {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted);
+}
+
+/* ---------- Header ---------- */
+.site-header { position: sticky; top: 16px; z-index: 50; }
+.bar {
+  position: relative;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+  height: 64px; padding: 0 12px 0 24px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: var(--radius-pill);
+}
+.brand { display: flex; flex-direction: column; justify-content: center; min-height: 44px; text-decoration: none; line-height: 1.2; justify-self: start; }
+.brand-name { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+.brand-sub { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.nav { display: flex; gap: 4px; padding: 4px; border-radius: var(--radius-pill); background: var(--bg); }
+.nav a {
+  padding: 8px 16px; border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 500; color: var(--text-muted); text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.nav a:hover { color: var(--text); }
+.nav a[aria-current="true"] { background: var(--surface-raised); color: var(--text); box-shadow: var(--shadow-card); }
+.tools { display: flex; align-items: center; gap: 8px; justify-self: end; }
+.lang { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); padding: 0 8px; }
+.lang b { color: var(--text); font-weight: 500; }
+.lang button { all: unset; color: var(--text-muted); cursor: not-allowed; }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--border); background: var(--surface-raised);
+  color: var(--text); cursor: pointer;
+}
+.icon-btn svg { width: 18px; height: 18px; }
+.menu-btn { display: none; }
+.sheet {
+  position: absolute; left: 0; right: 0; top: 72px;
+  background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card); padding: 8px;
+}
+.sheet a { display: block; padding: 12px 16px; border-radius: 12px; text-decoration: none; font-weight: 500; }
+.sheet a:hover { background: var(--bg); }
+
+/* ---------- Cards & section template ---------- */
+main.wrap { padding-top: 32px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-section); padding: 48px;
+}
+.card + .card { margin-top: 32px; }
+.sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 32px; }
+.sec-index { font-family: var(--font-mono); font-size: 14px; color: var(--text-muted); }
+.sec-head .mono-label { margin-top: 8px; }
+.sec-head h2 { font-size: clamp(28px, 3.5vw, 40px); font-weight: 700; letter-spacing: -.015em; line-height: 1.15; margin: 6px 0 8px; }
+.sec-desc { color: var(--text-muted); max-width: 60ch; }
+.pill-link {
+  flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .12em;
+  border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-raised);
+  text-decoration: none; white-space: nowrap;
+}
+.pill-link:hover { border-color: var(--text-muted); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 24px; border-radius: var(--radius-pill);
+  font-size: 15px; font-weight: 600; text-decoration: none; transition: filter .2s, border-color .2s;
+}
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-secondary { background: var(--surface-raised); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--text-muted); }
+.text-links { font-size: 14px; color: var(--text-muted); }
+.text-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 1px; }
+.text-links a:hover { border-color: var(--text); }
+
+/* ---------- Hero ---------- */
+.hero { display: grid; grid-template-columns: 7fr 5fr; gap: 48px; align-items: center; padding: 64px; }
+.hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; margin: 16px 0 20px; }
+.lead { font-size: 20px; line-height: 1.5; color: var(--text-muted); max-width: 34em; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 20px; }
+.stats { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+.stats .num { display: block; font-size: 28px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+.stats .lbl { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); line-height: 1.4; margin-top: 4px; }
+.hero-photo { margin: 0; justify-self: end; width: 100%; max-width: 380px; }
+.hero-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-card); background: var(--bg); }
+
+/* ---------- Shared card bits ---------- */
+.item {
+  background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card); color: inherit; text-decoration: none;
+  transition: transform .2s, border-color .2s;
+}
+a.item:hover { transform: translateY(-2px); border-color: var(--text-muted); }
+a.item:hover .cta { text-decoration: underline; text-underline-offset: 3px; }
+.meta { font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: var(--text-muted); }
+.item h3 { font-size: 20px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; }
+.desc { color: var(--text-muted); }
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.tags li {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em;
+  padding: 3px 10px; border-radius: var(--radius-pill); background: var(--bg); color: var(--text-muted);
+}
+.cta { font-size: 15px; font-weight: 600; margin-top: auto; padding-top: 4px; }
+.badge { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; padding: 2px 8px; border: 1px solid var(--border); border-radius: var(--radius-pill); margin-left: 8px; vertical-align: 2px; }
+
+/* ---------- 01 Wide cards ---------- */
+.wide-list { display: grid; gap: 16px; }
+.wide { display: grid; grid-template-columns: 40% 1fr; gap: 32px; padding: 16px; }
+.wide .media { border-radius: var(--radius-media); overflow: hidden; background: var(--bg); aspect-ratio: 16 / 10; }
+.wide .media img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.wide .body { display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 12px 0; }
+.result { font-size: 15px; }
+.result span { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin-right: 6px; }
+
+/* ---------- 02 Grid ---------- */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.tile { display: flex; flex-direction: column; gap: 10px; padding: 24px; }
+.tile.span2 { grid-column: span 2; }
+.thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+.thumbs img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
+
+/* ---------- 03 Timeline ---------- */
+.sub { margin-bottom: 4px; }
+.timeline { list-style: none; }
+.timeline > li { display: grid; grid-template-columns: 168px 1fr; gap: 24px; padding: 20px 0; border-top: 1px solid var(--border); }
+.timeline > li:first-child { border-top: 0; }
+.when { font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); padding-top: 3px; }
+.timeline h3 { font-size: 18px; font-weight: 600; line-height: 1.35; }
+.org { color: var(--text-muted); font-size: 15px; }
+.bullets { margin-top: 10px; padding-left: 18px; font-size: 15px; }
+.bullets li + li { margin-top: 6px; }
+.bullets li::marker { color: var(--text-muted); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+.compact > li { grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; }
+.compact h3 { font-size: 16px; }
+.awards { list-style: none; }
+.awards li { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border); font-size: 15px; }
+.awards li:first-child { border-top: 0; }
+
+/* ---------- 04 Contact ---------- */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.contact-grid .item { padding: 28px; display: flex; flex-direction: column; gap: 10px; }
+.contact-grid h3 { font-size: 22px; }
+.contact-actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 24px; margin-top: 32px; }
+
+/* ---------- Album page ---------- */
+.back { margin: 8px 0 16px; font-size: 14px; }
+.back a { color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); }
+.back a:hover { color: var(--text); border-color: var(--text); }
+.page-title { font-size: clamp(32px, 4.5vw, 48px); font-weight: 700; letter-spacing: -.02em; line-height: 1.1; margin: 6px 0 8px; }
+.count { flex: none; }
+.album-grid { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.ph { display: block; width: 100%; padding: 0; border: 0; border-radius: var(--radius-media); overflow: hidden; background: var(--bg); cursor: zoom-in; }
+.ph img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .3s; }
+.ph:hover img { transform: scale(1.03); }
+.lightbox { padding: 0; border: 0; background: transparent; max-width: min(1100px, calc(100vw - 32px)); width: 100%; }
+.lightbox::backdrop { background: rgb(0 0 0 / .82); }
+.lb-inner { background: var(--surface-raised); color: var(--text); border-radius: var(--radius-card); padding: 12px; }
+.lb-inner img { width: 100%; max-height: calc(100vh - 180px); object-fit: contain; border-radius: var(--radius-media); background: var(--bg); }
+.lb-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 4px 4px; }
+.lb-cap { font-size: 15px; margin-top: 2px; }
+.lb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-sm { min-height: 44px; padding: 0 18px; font-size: 14px; cursor: pointer; font-family: inherit; color: var(--text); }
+
+/* ---------- Footer ---------- */
+.site-footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding: 24px 0 40px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-muted); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .card { padding: 40px; }
+  .hero { padding: 40px; gap: 32px; }
+  .grid3 { grid-template-columns: repeat(2, 1fr); }
+  .album-grid { grid-template-columns: repeat(3, 1fr); }
+  .nav a { padding: 8px 12px; }
+}
+@media (max-width: 767px) {
+  html { scroll-padding-top: 96px; }
+  .bar { grid-template-columns: 1fr auto; padding: 0 8px 0 20px; }
+  .nav { display: none; }
+  .menu-btn { display: inline-grid; }
+  .card { padding: 20px; border-radius: var(--radius-card); }
+  .card + .card { margin-top: 24px; }
+  .hero { grid-template-columns: 1fr; padding: 24px 20px; }
+  .hero-photo { justify-self: start; max-width: 260px; }
+  .lead { font-size: 18px; }
+  .stats .num { font-size: 22px; }
+  .stats .lbl { font-size: 10.5px; letter-spacing: .04em; }
+  .sec-head { flex-direction: column; align-items: flex-start; }
+  .wide { grid-template-columns: 1fr; gap: 16px; padding: 12px; }
+  .wide .body { padding: 0 8px 8px; }
+  .grid3, .contact-grid, .two-col { grid-template-columns: 1fr; }
+  .album-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .lb-actions { width: 100%; }
+  .lb-actions .btn-sm { flex: 1; padding: 0 8px; }
+  .tile.span2 { grid-column: auto; }
+  .timeline > li, .compact > li { grid-template-columns: 1fr; gap: 4px; }
+  .awards li { grid-template-columns: 96px 1fr; }
+}
+@media (max-width: 419px) {
+  .brand-sub { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+  a.item:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua đến nội dung</a>
+
+<header class="site-header wrap">
+  <div class="bar">
+    <a class="brand" href="#top">
+      <span class="brand-name">Bảo Phong</span>
+      <span class="brand-sub">EdTech &amp; Assessment</span>
+    </a>
+    <nav class="nav" aria-label="Chính">
+      <a href="#du-an" data-target="du-an">Dự án</a>
+      <a href="#san-pham" data-target="san-pham">Website</a>
+      <a href="#hanh-trinh" data-target="hanh-trinh">Kinh nghiệm</a>
+      <a href="#lien-he" data-target="lien-he">Liên hệ</a>
+    </nav>
+    <div class="tools">
+      <span class="lang"><b>VI</b> / <button type="button" disabled title="Bản thiết kế này chỉ có tiếng Việt">EN</button></span>
+      <button class="icon-btn" id="theme-btn" type="button" aria-label="Chuyển sang giao diện tối">
+        <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="sheet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <div class="sheet" id="sheet" hidden>
+      <a href="#du-an">Dự án</a>
+      <a href="#san-pham">Website</a>
+      <a href="#hanh-trinh">Kinh nghiệm</a>
+      <a href="#lien-he">Liên hệ</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+<div id="page-home">
+
+  <!-- Hero -->
+  <section class="card hero" id="top" aria-labelledby="hero-title">
+    <div>
+      <p class="mono-label">Educational Technology &amp; Assessment · Huế</p>
+      <h1 id="hero-title">Xin chào, tôi là Bảo Phong</h1>
+      <p class="lead">Hơn 5 năm giảng dạy và vận hành đào tạo – khảo thí. Tôi kết nối nghiệp vụ giáo dục với hệ thống, dữ liệu và AI để chuẩn hóa quy trình và giữ dữ liệu đánh giá chính xác.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#du-an">Xem dự án →</a>
+        <a class="btn btn-secondary" href="https://phongbao-uopeopleuni.github.io/phongbportfolio/1.%20PhongBCV_Updated.pdf" target="_blank" rel="noopener">Tải CV</a>
+      </div>
+      <p class="text-links">
+        <a href="https://github.com/phongbao-uopeopleuni" target="_blank" rel="noopener">GitHub ↗</a> ·
+        <a href="mailto:baophongcmu@gmail.com">Email</a> ·
+        <a href="https://www.facebook.com/pbao280/" target="_blank" rel="noopener">Facebook ↗</a>
+      </p>
+      <ul class="stats">
+        <li><span class="num">300+</span><span class="lbl">Người học đã hỗ trợ</span></li>
+        <li><span class="num">5.000+</span><span class="lbl">Điểm dữ liệu học vụ đã xử lý</span></li>
+        <li><span class="num">70%</span><span class="lbl">Thời gian thủ công được giảm</span></li>
+      </ul>
+    </div>
+    <figure class="hero-photo">
+      <img src="../../src/assets/hero/profile.jpg" alt="Chân dung Bảo Phong" width="640" height="800">
+    </figure>
+  </section>
+
+  <!-- 01 Dự án -->
+  <section class="card" id="du-an" aria-labelledby="h-du-an">
+    <div class="sec-head">
+      <div>
+        <p class="sec-index">01</p>
+        <p class="mono-label">// Dự án</p>
+        <h2 id="h-du-an">Giải pháp từ bài toán vận hành giáo dục</h2>
+        <p class="sec-desc">Công cụ tôi xây cho công việc đào tạo – khảo thí thực tế, và hai lab tương tác mô phỏng lại quy trình đó.</p>
+      </div>
+      <a class="pill-link" href="https://github.com/phongbao-uopeopleuni" target="_blank" rel="noopener">Kho mã GitHub ↗</a>
+    </div>
+
+    <div class="wide-list">
+      <article class="item wide">
+        <div class="media"><img src="../../public/images/projects/cms/z7694280097276_ba533de986669a9779589c89bc17a528.jpg" alt="Giao diện công cụ kiểm tra dữ liệu tiến độ CMS" width="900" height="514"></div>
+        <div class="body">
+          <p class="meta">Tiến độ học tập &amp; dữ liệu</p>
+          <h3>Giám sát tiến độ CMS</h3>
+          <p class="desc">Kiểm tra tiến độ thủ công tốn thời gian và dễ bỏ sót sinh viên. Công cụ tự đồng bộ dữ liệu và dựng dashboard theo dõi hoàn thành, ngoại lệ, nhắc việc.</p>
+          <p class="result"><span>Kết quả</span>Giảm khoảng 70% thời gian báo cáo thủ công.</p>
+          <ul class="tags"><li>Python</li><li>API CMS</li><li>Dữ liệu học tập</li></ul>
+        </div>
+      </article>
+
+      <a class="item wide" href="https://youtu.be/zRkD5tdxXh4" target="_blank" rel="noopener">
+        <div class="media"><img src="../../public/images/projects/tkb/z7810881838440_d98bbeac46cafd98bc5709fbba40760d.jpg" alt="Giao diện Tool TKB, module tự động tạo lịch" width="900" height="617"></div>
+        <div class="body">
+          <p class="meta">Lập kế hoạch học vụ</p>
+          <h3>Công cụ làm thời khóa biểu</h3>
+          <p class="desc">Bộ quy tắc trên Excel phát hiện trùng ca, trùng tiết và trùng giảng viên trước khi ban hành, kèm video hướng dẫn để bàn giao cho đội đào tạo.</p>
+          <p class="result"><span>Kết quả</span>Bắt được trùng lịch trước khi ban hành, bớt vòng kiểm tra thủ công lặp lại.</p>
+          <ul class="tags"><li>Excel</li><li>Kiểm tra xung đột</li></ul>
+          <span class="cta">Xem video demo ↗</span>
+        </div>
+      </a>
+
+      <a class="item wide" href="https://phongbao-uopeopleuni.github.io/phongbportfolio/showcase/assessment-data-integrity-lab" target="_blank" rel="noopener">
+        <div class="media"><img src="../../public/images/projects/labs/assessment-data-integrity-lab.webp" alt="Lab mô phỏng: pipeline sáu bước xử lý một lô điểm" width="900" height="504"></div>
+        <div class="body">
+          <p class="meta">Lab tương tác · Khảo thí</p>
+          <h3>Mô phỏng vận hành dữ liệu điểm</h3>
+          <p class="desc">Xử lý lô điểm của 2.000 học sinh: tiếp nhận, chuẩn hóa, kiểm tra, xử lý ngoại lệ, đối soát, khóa và công bố có lưu vết.</p>
+          <ul class="tags"><li>React</li><li>TypeScript</li><li>Rule engine</li></ul>
+          <span class="cta">Thử lab ↗</span>
+        </div>
+      </a>
+
+      <a class="item wide" href="https://phongbao-uopeopleuni.github.io/phongbportfolio/showcase/cpu-scheduling-visualizer" target="_blank" rel="noopener">
+        <div class="media"><img src="../../public/images/projects/labs/cpu-scheduling-visualizer.webp" alt="Lab mô phỏng: dòng thời gian lập lịch CPU và bảng chỉ số" width="900" height="545"></div>
+        <div class="body">
+          <p class="meta">Lab tương tác · Hệ điều hành</p>
+          <h3>Trình mô phỏng lập lịch CPU</h3>
+          <p class="desc">Nhập bảng tiến trình, chọn FCFS, SJF, SRTF, Round Robin hoặc Priority, rồi xem CPU chia thời gian theo từng nhịp cùng các chỉ số hiệu năng.</p>
+          <ul class="tags"><li>React</li><li>TypeScript</li><li>SVG</li></ul>
+          <span class="cta">Thử lab ↗</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 02 Website & sản phẩm -->
+  <section class="card" id="san-pham" aria-labelledby="h-san-pham">
+    <div class="sec-head">
+      <div>
+        <p class="sec-index">02</p>
+        <p class="mono-label">// Sản phẩm khác</p>
+        <h2 id="h-san-pham">Website &amp; sản phẩm đã hoàn thiện</h2>
+        <p class="sec-desc">Làm ngoài công việc chính: từ web app gia phả tự phát triển đến website cho doanh nghiệp địa phương tại Việt Nam và Hoa Kỳ.</p>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <a class="item tile span2" href="https://www.phongtuybienquancong.info/" target="_blank" rel="noopener">
+        <p class="meta">Web app · Nguyễn Phước Tộc</p>
+        <h3>Gia phả online Phòng Tuy Biên Quận Công</h3>
+        <p class="desc">Thiết kế và phát triển toàn bộ hệ thống: cây gia phả tương tác 8 đời, tìm kiếm thành viên, xuất PDF, thống kê, tra cứu mộ phần, đăng ký tài khoản, tin tức – album dòng họ. Ngày giỗ đếm ngược theo lịch âm; luồng tra cứu tối ưu cho điện thoại.</p>
+        <ul class="tags"><li>Web app</li><li>Cây gia phả tương tác</li><li>Xuất PDF</li><li>Cloudflare</li></ul>
+        <span class="cta">Xem site ↗</span>
+      </a>
+      <a class="item tile" href="https://www.ecphonoodlehousenc.com/home-page" target="_blank" rel="noopener">
+        <p class="meta">Nhà hàng · Greenville, NC</p>
+        <h3>EC Phở Vietnamese Noodle House</h3>
+        <p class="desc">Website giới thiệu và thực đơn với Gallery, Blog, Contact; dữ liệu có cấu trúc schema.org cho tìm kiếm địa phương.</p>
+        <ul class="tags"><li>React</li><li>Vite</li><li>SEO</li></ul>
+        <span class="cta">Xem site ↗</span>
+      </a>
+      <a class="item tile" href="https://www.fairyshousehue.com/" target="_blank" rel="noopener">
+        <p class="meta">Homestay · Huế</p>
+        <h3>Fairy's House Huế</h3>
+        <p class="desc">Website song ngữ Việt – Anh, có thanh thời tiết Huế trực tiếp, cẩm nang du lịch và nút liên hệ nhanh Zalo, hotline, chỉ đường.</p>
+        <ul class="tags"><li>React</li><li>Song ngữ</li><li>SEO local</li></ul>
+        <span class="cta">Xem site ↗</span>
+      </a>
+      <a class="item tile" href="https://www.ecstarnailsandspagreenvillenc.com/" target="_blank" rel="noopener">
+        <p class="meta">Tiệm nail · Greenville &amp; Washington, NC</p>
+        <h3>EC Star Nails &amp; Spa</h3>
+        <p class="desc">Thiết kế lại website đa trang cho ba cơ sở, với gọi điện, chỉ đường và Google Reviews riêng cho từng cơ sở.</p>
+        <ul class="tags"><li>Responsive</li><li>Nội dung &amp; IA</li><li>SEO local</li></ul>
+        <span class="cta">Xem site ↗</span>
+      </a>
+      <a class="item tile" href="https://phongbao-uopeopleuni.github.io/phongbportfolio/#canva-album" target="_blank" rel="noopener">
+        <p class="meta">Thiết kế · Canva</p>
+        <h3>13 ấn phẩm PC Express</h3>
+        <p class="desc">Ấn phẩm nội bộ cho truyền thông, sự kiện và hoạt động sinh viên, tự lên ý tưởng và thiết kế.</p>
+        <div class="thumbs">
+          <img src="../../public/images/projects/canvathietke/1.webp" alt="" width="320" height="240">
+          <img src="../../public/images/projects/canvathietke/5.webp" alt="" width="320" height="240">
+          <img src="../../public/images/projects/canvathietke/9.webp" alt="" width="320" height="240">
+        </div>
+        <span class="cta">Xem bộ sưu tập ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 03 Hành trình -->
+  <section class="card" id="hanh-trinh" aria-labelledby="h-hanh-trinh">
+    <div class="sec-head">
+      <div>
+        <p class="sec-index">03</p>
+        <p class="mono-label">// Hành trình</p>
+        <h2 id="h-hanh-trinh">Kinh nghiệm &amp; học vấn</h2>
+        <p class="sec-desc">Từ giảng dạy tiếng Anh đến vận hành đào tạo – khảo thí, song song với bằng Khoa học Máy tính.</p>
+      </div>
+      <a class="pill-link" href="#/album">Album công tác →</a>
+    </div>
+
+    <ol class="timeline">
+      <li>
+        <p class="when">04/2024 – 04/2026</p>
+        <div>
+          <h3>Cán bộ Tổ chức &amp; Quản lý Đào tạo, Khảo thí, kiêm IT</h3>
+          <p class="org">FPT PolySchool Huế</p>
+          <ul class="bullets">
+            <li>Lập lịch đánh giá, phân công giảng viên và điều phối hồ sơ nhiều khóa theo đúng quy chế.</li>
+            <li>Quản lý dữ liệu học tập, phổ điểm và báo cáo định kỳ; bảo đảm toàn vẹn hồ sơ sinh viên.</li>
+            <li>Vận hành IAPS9, LMS9, CMS, Udemy, EOS, FLM, Language Hub, Fuge; xây công cụ bằng Claude, ChatGPT, Codex, NotebookLM kết hợp Excel/Python.</li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <p class="when">08/2022 – 03/2024</p>
+        <div>
+          <h3>Cán bộ Chủ nhiệm &amp; Giám thị</h3>
+          <p class="org">FPT PolySchool Huế</p>
+          <ul class="bullets"><li>Theo dõi học tập, nề nếp, học phí; kết nối phụ huynh, sinh viên và các bộ phận.</li></ul>
+        </div>
+      </li>
+      <li>
+        <p class="when">09/2020 – 05/2022</p>
+        <div>
+          <h3>Giảng viên tiếng Anh</h3>
+          <p class="org">Trung tâm Anh ngữ AMA – Huế</p>
+          <ul class="bullets"><li>Giảng dạy, hỗ trợ ngoại khóa và phiên dịch.</li></ul>
+        </div>
+      </li>
+      <li>
+        <p class="when">2017 – 2019</p>
+        <div>
+          <h3>Thực tập sinh &amp; tình nguyện viên y tế</h3>
+          <p class="org">Granville Medical Center, Vidant Medical Center · North Carolina, Hoa Kỳ</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="two-col">
+      <div>
+        <h3 class="mono-label sub">Học vấn</h3>
+        <ol class="timeline compact">
+          <li>
+            <p class="when">2025 – 2026</p>
+            <div><h3>Cử nhân Khoa học Máy tính (B.S.)</h3><p class="org">University of the People, Hoa Kỳ</p></div>
+          </li>
+          <li>
+            <p class="when">2015 – 2019</p>
+            <div><h3>Cao đẳng AAS Quản lý Chăm sóc Sức khỏe; AGE</h3><p class="org">Pitt Community College, Hoa Kỳ</p></div>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <h3 class="mono-label sub">Thành tích &amp; chứng chỉ</h3>
+        <ul class="awards">
+          <li><span class="when">2025</span><span>Giải Bộ phận hoàn thành xuất sắc công tác vận hành</span></li>
+          <li><span class="when">2022, 2023</span><span>Nhân viên xuất sắc, Ban Đảm bảo PTCĐ</span></li>
+          <li><span class="when">2022</span><span>Giảng viên xuất sắc, Trung tâm Anh ngữ AMA Huế</span></li>
+          <li><span class="when">2014 – 2021</span><span>Học bổng ECU Honor và Pitt CC Foundation; Dean's List nhiều học kỳ</span></li>
+          <li><span class="when">Chứng chỉ</span><span>TOEIC 700 · Nghiệp vụ sư phạm Trung cấp – Cao đẳng</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Liên hệ -->
+  <section class="card" id="lien-he" aria-labelledby="h-lien-he">
+    <div class="sec-head">
+      <div>
+        <p class="sec-index">04</p>
+        <p class="mono-label">// Liên hệ</p>
+        <h2 id="h-lien-he">Kết nối với tôi</h2>
+        <p class="sec-desc">Tôi sẵn sàng trao đổi về công nghệ giáo dục, vận hành đánh giá, chất lượng dữ liệu học tập và cách ứng dụng AI có trách nhiệm.</p>
+      </div>
+    </div>
+    <div class="contact-grid">
+      <div class="item">
+        <p class="meta">Cơ hội công việc</p>
+        <h3>Đơn vị cần chuẩn hóa dữ liệu đào tạo – khảo thí?</h3>
+        <p class="desc">Tôi có kinh nghiệm vận hành lịch đánh giá, luồng điểm và các hệ thống LMS, cùng công cụ có AI hỗ trợ để giảm việc thủ công.</p>
+      </div>
+      <div class="item">
+        <p class="meta">Hợp tác dự án</p>
+        <h3>Cần một website hay công cụ nhỏ?</h3>
+        <p class="desc">Tôi đã làm website song ngữ, tối ưu tìm kiếm địa phương cho nhà hàng, homestay và phòng khám tại Việt Nam và Hoa Kỳ.</p>
+      </div>
+    </div>
+    <div class="contact-actions">
+      <a class="btn btn-primary" href="mailto:baophongcmu@gmail.com">Gửi email</a>
+      <p class="text-links"><a href="tel:+84775753003">077 575 3003</a> · <a href="https://github.com/phongbao-uopeopleuni" target="_blank" rel="noopener">GitHub ↗</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- Album page (/album in the real site) -->
+<div id="page-album" hidden>
+  <p class="back"><a href="#top">Về trang chủ</a></p>
+  <section class="card" aria-labelledby="h-album">
+    <div class="sec-head">
+      <div>
+        <p class="mono-label">// Album công tác</p>
+        <h1 id="h-album" class="page-title">Khoảnh khắc công tác</h1>
+        <p class="sec-desc">Tập hợp hình ảnh trong quá trình vận hành đào tạo, khảo thí và các hoạt động cùng đồng nghiệp. Nhấp vào ảnh để xem lớn.</p>
+      </div>
+      <p class="mono-label count">30 ảnh</p>
+    </div>
+    <ul class="album-grid">
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 1 trên 30"><img src="../../public/images/album/images_1.webp" alt="Khoảnh khắc công tác, ảnh 1" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 2 trên 30"><img src="../../public/images/album/images_2.webp" alt="Khoảnh khắc công tác, ảnh 2" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 3 trên 30"><img src="../../public/images/album/images_3.webp" alt="Khoảnh khắc công tác, ảnh 3" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 4 trên 30"><img src="../../public/images/album/images_4.webp" alt="Khoảnh khắc công tác, ảnh 4" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 5 trên 30"><img src="../../public/images/album/images_5.webp" alt="Khoảnh khắc công tác, ảnh 5" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 6 trên 30"><img src="../../public/images/album/images_6.webp" alt="Khoảnh khắc công tác, ảnh 6" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 7 trên 30"><img src="../../public/images/album/images_7.webp" alt="Khoảnh khắc công tác, ảnh 7" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 8 trên 30"><img src="../../public/images/album/images_8.webp" alt="Khoảnh khắc công tác, ảnh 8" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 9 trên 30"><img src="../../public/images/album/images_9.webp" alt="Khoảnh khắc công tác, ảnh 9" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 10 trên 30"><img src="../../public/images/album/images_10.webp" alt="Khoảnh khắc công tác, ảnh 10" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 11 trên 30"><img src="../../public/images/album/images_11.webp" alt="Khoảnh khắc công tác, ảnh 11" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 12 trên 30"><img src="../../public/images/album/images_12.webp" alt="Khoảnh khắc công tác, ảnh 12" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 13 trên 30"><img src="../../public/images/album/images_13.webp" alt="Khoảnh khắc công tác, ảnh 13" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 14 trên 30"><img src="../../public/images/album/images_14.webp" alt="Khoảnh khắc công tác, ảnh 14" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 15 trên 30"><img src="../../public/images/album/images_15.webp" alt="Khoảnh khắc công tác, ảnh 15" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 16 trên 30"><img src="../../public/images/album/images_16.webp" alt="Khoảnh khắc công tác, ảnh 16" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 17 trên 30"><img src="../../public/images/album/images_17.webp" alt="Khoảnh khắc công tác, ảnh 17" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 18 trên 30"><img src="../../public/images/album/images_18.webp" alt="Khoảnh khắc công tác, ảnh 18" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 19 trên 30"><img src="../../public/images/album/images_19.webp" alt="Khoảnh khắc công tác, ảnh 19" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 20 trên 30"><img src="../../public/images/album/images_20.webp" alt="Khoảnh khắc công tác, ảnh 20" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 21 trên 30"><img src="../../public/images/album/images_21.webp" alt="Khoảnh khắc công tác, ảnh 21" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 22 trên 30"><img src="../../public/images/album/images_22.webp" alt="Khoảnh khắc công tác, ảnh 22" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 23 trên 30"><img src="../../public/images/album/images_23.webp" alt="Khoảnh khắc công tác, ảnh 23" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 24 trên 30"><img src="../../public/images/album/images_24.webp" alt="Khoảnh khắc công tác, ảnh 24" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 25 trên 30"><img src="../../public/images/album/images_25.webp" alt="Khoảnh khắc công tác, ảnh 25" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 26 trên 30"><img src="../../public/images/album/images_26.webp" alt="Khoảnh khắc công tác, ảnh 26" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 27 trên 30"><img src="../../public/images/album/images_27.webp" alt="Khoảnh khắc công tác, ảnh 27" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 28 trên 30"><img src="../../public/images/album/images_28.webp" alt="Khoảnh khắc công tác, ảnh 28" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 29 trên 30"><img src="../../public/images/album/images_29.webp" alt="Khoảnh khắc công tác, ảnh 29" loading="lazy"></button></li>
+      <li><button class="ph" type="button" data-caption="" aria-label="Xem ảnh 30 trên 30"><img src="../../public/images/album/images_30.webp" alt="Khoảnh khắc công tác, ảnh 30" loading="lazy"></button></li>
+    </ul>
+  </section>
+</div>
+
+<dialog class="lightbox" id="lb" aria-labelledby="lb-count">
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div class="lb-bar">
+      <div class="lb-text">
+        <p class="mono-label" id="lb-count">1 / 30</p>
+        <p class="lb-cap" id="lb-cap" hidden></p>
+      </div>
+      <div class="lb-actions">
+        <button class="btn btn-secondary btn-sm" type="button" id="lb-prev">Ảnh trước</button>
+        <button class="btn btn-secondary btn-sm" type="button" id="lb-next">Ảnh sau</button>
+        <button class="btn btn-secondary btn-sm" type="button" id="lb-close">Đóng</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+  <footer class="site-footer">
+    <span>© 2026 Bảo Phong</span>
+    <span class="text-links">
+      <a href="#/album">Album</a> ·
+      <a href="https://github.com/phongbao-uopeopleuni" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.facebook.com/pbao280/" target="_blank" rel="noopener">Facebook</a> ·
+      <a href="mailto:baophongcmu@gmail.com">Email</a>
+    </span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme-btn');
+  var moon = document.getElementById('ico-moon');
+  var sun = document.getElementById('ico-sun');
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    var dark = theme === 'dark';
+    moon.hidden = dark; sun.hidden = !dark;
+    btn.setAttribute('aria-label', dark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
+  }
+  var forced = new URLSearchParams(location.search).get('theme');
+  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  apply(forced === 'dark' || forced === 'light' ? forced : (prefersDark ? 'dark' : 'light'));
+  btn.addEventListener('click', function () {
+    apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  var menuBtn = document.getElementById('menu-btn');
+  var sheet = document.getElementById('sheet');
+  function setMenu(open) {
+    sheet.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
+  }
+  menuBtn.addEventListener('click', function () { setMenu(sheet.hidden); });
+  sheet.addEventListener('click', function (e) { if (e.target.tagName === 'A') setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+  var links = document.querySelectorAll('.nav a[data-target]');
+  var byId = {};
+  links.forEach(function (a) { byId[a.dataset.target] = a; });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting || document.getElementById('page-home').hidden) return;
+        links.forEach(function (a) { a.removeAttribute('aria-current'); });
+        var hit = byId[en.target.id];
+        if (hit) hit.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    ['top', 'du-an', 'san-pham', 'hanh-trinh', 'lien-he'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+
+  /* Two "pages" in one file: #/album stands in for the /album route. */
+  var home = document.getElementById('page-home');
+  var album = document.getElementById('page-album');
+  function route() {
+    var onAlbum = location.hash === '#/album';
+    home.hidden = onAlbum;
+    album.hidden = !onAlbum;
+    if (onAlbum) {
+      links.forEach(function (a) { a.removeAttribute('aria-current'); });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    } else if (location.hash.length > 1) {
+      var el = document.getElementById(location.hash.slice(1));
+      if (el) el.scrollIntoView();
+    }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  var lb = document.getElementById('lb');
+  var lbImg = document.getElementById('lb-img');
+  var lbCount = document.getElementById('lb-count');
+  var lbCap = document.getElementById('lb-cap');
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('.ph'));
+  var current = 0, opener = null;
+  function show(i) {
+    current = (i + tiles.length) % tiles.length;
+    var img = tiles[current].querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbCount.textContent = (current + 1) + ' / ' + tiles.length;
+    var cap = tiles[current].dataset.caption || '';
+    lbCap.textContent = cap;
+    lbCap.hidden = !cap;
+  }
+  tiles.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      opener = t;
+      show(i);
+      if (typeof lb.showModal === 'function') lb.showModal(); else lb.setAttribute('open', '');
+    });
+  });
+  document.getElementById('lb-prev').addEventListener('click', function () { show(current - 1); });
+  document.getElementById('lb-next').addEventListener('click', function () { show(current + 1); });
+  document.getElementById('lb-close').addEventListener('click', function () { lb.close(); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+  lb.addEventListener('close', function () { if (opener) opener.focus(); });
+})();
+</script>
+</body>
+</html>
