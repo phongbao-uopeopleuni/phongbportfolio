@@ -23,6 +23,12 @@
   --radius-media: 14px;
 
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.04);
+
+  /* Hoa van nen. Chi ve tren nen trang, khong bao gio nam sau chu:
+     moi the deu duc mau --color-panel nen do tuong phan khong doi. */
+  --pattern-dot: rgb(17 19 23 / 0.07);
+  --pattern-line: rgb(17 19 23 / 0.04);
+  --pattern-glow: rgb(194 65 12 / 0.07);
 }
 
 /* Bang mau toi. Do tuong phan: ink/panel 15.9:1, muted/panel 7.3:1,
@@ -40,6 +46,10 @@
   /* Bong chi dung o giao dien sang; nen toi thi vien da du tach lop. */
   --shadow-card: none;
   color-scheme: dark;
+
+  --pattern-dot: rgb(241 243 245 / 0.07);
+  --pattern-line: rgb(241 243 245 / 0.035);
+  --pattern-glow: rgb(251 146 60 / 0.10);
 }
 
 :root {
@@ -146,5 +156,55 @@
 
   .lift:hover {
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hoa van nen                                                          */
+/*                                                                      */
+/* Hai lop co dinh nam duoi noi dung (z-index -1), khong bat chuot.     */
+/* Dat tren NEN TRANG chu khong phai sau chu, nen khong lam giam        */
+/* do tuong phan cua bat ky doan van nao.                               */
+/* ------------------------------------------------------------------ */
+
+/* Lop 1: luoi cham + luoi ke mo, kieu giay ke ky thuat. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--pattern-dot) 1px, transparent 0),
+    linear-gradient(to right, var(--pattern-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--pattern-line) 1px, transparent 1px);
+  background-size:
+    28px 28px,
+    112px 112px,
+    112px 112px;
+  /* Nhat dan xuong duoi de phan cuoi trang khong bi roi mat. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 78%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 78%);
+}
+
+/* Lop 2: quang sang mau nhan o goc tren, rat nhe. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(60rem 32rem at 78% -8%, var(--pattern-glow), transparent 70%),
+    radial-gradient(44rem 26rem at 8% 2%, var(--pattern-glow), transparent 72%);
+}
+
+/* Man hinh hep: thua lưới cho do roi mat. */
+@media (max-width: 767px) {
+  body::before {
+    background-size:
+      22px 22px,
+      88px 88px,
+      88px 88px;
   }
 }
