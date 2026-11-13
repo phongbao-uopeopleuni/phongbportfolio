@@ -139,6 +139,19 @@ const Header = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
+  /* Vuot qua nguong desktop thi dong sheet.
+     Nut mo/dong bi an bang CSS tu 768px tro len, nen neu giu trang thai mo
+     thi sheet se ket lai giua man hinh ma khong con cach nao tat. */
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const sync = () => {
+      if (mq.matches) setOpen(false);
+    };
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   const items = [
     {id: 'projects', label: t.nav.projects},
     {id: 'works', label: t.nav.works},
@@ -251,7 +264,7 @@ const Header = () => {
           {open ? (
             <div
               id="mobile-sheet"
-              className="absolute inset-x-0 top-[72px] rounded-card border border-line bg-raised p-2 shadow-card"
+              className="absolute inset-x-0 top-[72px] rounded-card border border-line bg-raised p-2 shadow-card md:hidden"
             >
               {items.map((item) =>
                 onHome ? (
