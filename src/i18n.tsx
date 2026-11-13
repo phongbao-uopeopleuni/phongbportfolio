@@ -241,7 +241,7 @@ const en = {
       },
       {
         label: 'Certificates',
-        text: 'TOEIC 700 · Pedagogical training (vocational–college)',
+        text: 'TOEIC 700 · Pedagogical training (vocational–college) · Office computing',
       },
     ],
   },
@@ -547,7 +547,7 @@ const vi: typeof en = {
       },
       {
         label: 'Chứng chỉ',
-        text: 'TOEIC 700 · Nghiệp vụ sư phạm Trung cấp – Cao đẳng',
+        text: 'TOEIC 700 · Nghiệp vụ sư phạm Trung cấp – Cao đẳng · Tin học văn phòng',
       },
     ],
   },
