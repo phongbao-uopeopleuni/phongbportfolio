@@ -246,6 +246,8 @@ const en = {
     ],
   },
   album: {
+    index: '04',
+    viewAll: 'View all 30 photos →',
     backHome: 'Back to home',
     pageLabel: '// Work album',
     pageTitle: 'Moments at work',
@@ -306,7 +308,7 @@ const en = {
     itemsLabel: 'self-designed publications',
   },
   contact: {
-    index: '04',
+    index: '05',
     label: '// Contact',
     title: "Let's connect",
     description:
@@ -552,6 +554,8 @@ const vi: typeof en = {
     ],
   },
   album: {
+    index: '04',
+    viewAll: 'Xem tất cả 30 ảnh →',
     backHome: 'Về trang chủ',
     pageLabel: '// Album công tác',
     pageTitle: 'Khoảnh khắc công tác',
@@ -612,7 +616,7 @@ const vi: typeof en = {
     itemsLabel: 'ấn phẩm tự thiết kế',
   },
   contact: {
-    index: '04',
+    index: '05',
     label: '// Liên hệ',
     title: 'Kết nối với tôi',
     description:

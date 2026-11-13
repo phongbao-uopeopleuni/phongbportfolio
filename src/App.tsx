@@ -733,7 +733,49 @@ const ExperienceSection = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/* 04 Lien he                                                           */
+/* 04 Album — dai anh chay                                              */
+/* ------------------------------------------------------------------ */
+
+const AlbumStrip = () => {
+  const {t} = useI18n();
+
+  /* Dai trang tri nen dung ban thu nho rieng (~16 kB/anh thay vi ~240 kB).
+     16 anh la du dai de vong lap khong thay lap lai. */
+  const strip = t.album.photos.slice(0, 16);
+  const thumb = (src: string) =>
+    publicUrl(src.replace('/images/album/', '/images/album/thumbs/'));
+
+  return (
+    <Section
+      id="album"
+      index={t.album.index}
+      label={t.album.pageLabel}
+      title={t.album.pageTitle}
+      desc={t.album.note}
+      pill={<PillLink to="/album">{t.album.viewAll}</PillLink>}
+    >
+      <div className="marquee -mx-12 max-lg:-mx-10 max-md:-mx-5">
+        {/* Anh chi de trang tri: noi dung that nam o /album, va day la ban
+            nhan doi nen an khoi trinh doc man hinh de khong doc lap hai lan. */}
+        <div className="marquee-track" aria-hidden="true">
+          {[...strip, ...strip].map((photo, i) => (
+            <img
+              key={`${photo.src}-${i}`}
+              src={thumb(photo.src)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="mr-3 h-40 w-auto rounded-media bg-surface object-cover max-md:mr-2 max-md:h-28"
+            />
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 05 Lien he                                                           */
 /* ------------------------------------------------------------------ */
 
 const ContactSection = () => {
@@ -841,6 +883,7 @@ const HomePage = () => {
       <ProjectsSection />
       <WorksSection />
       <ExperienceSection />
+      <AlbumStrip />
       <ContactSection />
     </main>
   );

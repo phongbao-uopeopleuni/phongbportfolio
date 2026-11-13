@@ -208,3 +208,46 @@ body::after {
       88px 88px;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Dai anh chay ngang (album o trang chu)                               */
+/* ------------------------------------------------------------------ */
+
+.marquee {
+  overflow: hidden;
+  /* Mo dan hai dau de anh khong bi cat cut ngang */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  /* Noi dung duoc nhan doi, chay tu 0 ve -50% nen vong lap lien mach */
+  animation: marquee-scroll 70s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Dung lai khi re chuot hoac khi focus bang ban phim */
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}
