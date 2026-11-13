@@ -17,7 +17,7 @@ import {Link, Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import {I18nProvider, useI18n} from './i18n';
 import {SHOWCASE_ENABLED} from './features/showcase/enabled';
 import Lightbox from './components/Lightbox';
-import heroProfileBundled from './assets/hero/profile.jpg?url';
+import heroProfileBundled from './assets/hero/profile.webp?url';
 
 /** Duong dan trong public/ phai kem Vite base, neu khong se vo tren GitHub Pages. */
 export function publicUrl(path: string): string {
